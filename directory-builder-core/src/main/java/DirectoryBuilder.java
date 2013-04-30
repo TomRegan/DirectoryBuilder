@@ -1,13 +1,12 @@
 import java.io.File;
-import java.util.List;
 
 public class DirectoryBuilder
 {
-    final File parent;
+    final File rootDirectory;
 
-    private DirectoryBuilder(File parent)
+    private DirectoryBuilder(File rootDirectory)
     {
-        this.parent = parent;
+        this.rootDirectory = rootDirectory;
     }
 
     public static DirectoryBuilder createDirectoryBuilder(File rootDirectory)
@@ -15,11 +14,11 @@ public class DirectoryBuilder
         return new DirectoryBuilder(rootDirectory);
     }
 
-    public void createDirectoryStructure(List<DirectoryDescriptor> descriptors)
+    public void createDirectoryStructure(DirectoryDescriptor... descriptors)
     {
         for (DirectoryDescriptor descriptor : descriptors)
         {
-            new File(parent, descriptor.getName()).mkdirs();
+            descriptor.create(rootDirectory);
         }
     }
 }

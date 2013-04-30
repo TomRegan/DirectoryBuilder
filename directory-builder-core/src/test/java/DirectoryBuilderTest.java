@@ -10,32 +10,31 @@ import static org.junit.Assert.assertEquals;
 
 public class DirectoryBuilderTest
 {
-
     private DirectoryBuilder directoryBuilder;
     private File rootDirectory;
 
-    private List<DirectoryDescriptor> getDirectoryDescriptors(String[] ... directories)
+    private DirectoryDescriptor[] getDirectoryDescriptors(String... directories)
     {
         List<DirectoryDescriptor> descriptors = new ArrayList<DirectoryDescriptor>();
-        for (String[] branch : directories)
+        for (String branches : directories)
         {
+            String[] branch = branches.split("/");
             for (int i = 0; i < branch.length; ++i)
             {
-                String directory = branch[i];
                 DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.createDirectoryDescriptor();
-                directoryDescriptor.setName(directory);
+                directoryDescriptor.setName(branch[i]);
                 if (i == 0)
                 {
                     descriptors.add(directoryDescriptor);
                 }
                 else
                 {
-                    DirectoryDescriptor parentDescriptor = descriptors.get(descriptors.size() - 1);
+                    DirectoryDescriptor parentDescriptor = descriptors.get(descriptors.size() - 1).getLastChild();
                     parentDescriptor.addChild(directoryDescriptor);
                 }
             }
         }
-        return descriptors;
+        return descriptors.toArray(new DirectoryDescriptor[descriptors.size()]);
     }
 
     @Before
@@ -48,24 +47,22 @@ public class DirectoryBuilderTest
     @Test
     public void shouldCreateDirectoriesGivenDescriptor()
     {
-        List<DirectoryDescriptor> descriptors = getDirectoryDescriptors(new String[]{"foo"}, new String[]{"bar"});
+        DirectoryDescriptor[] descriptors = getDirectoryDescriptors("foo", "bar");
         directoryBuilder.createDirectoryStructure(descriptors);
-        boolean expectedFoo = new File(rootDirectory, "foo").isDirectory();
-        boolean expectedBar = new File(rootDirectory, "bar").isDirectory();
-        assertEquals("directory 'foo' was not created", true, expectedFoo);
-        assertEquals("directory 'bar' was not created", true, expectedBar);
+        assertEquals("directory 'foo' was not created", true, new File(rootDirectory, "foo").isDirectory());
+        assertEquals("directory 'bar' was not created", true, new File(rootDirectory, "bar").isDirectory());
     }
 
     @Test
     public void shouldCreateNestedDirectoriesGivenDescriptor()
     {
-        List<DirectoryDescriptor> descriptors = getDirectoryDescriptors(new String[]{"foo", "bar"});
+        DirectoryDescriptor[] descriptors = getDirectoryDescriptors("foo/bar/baz");
         directoryBuilder.createDirectoryStructure(descriptors);
-        boolean expectedFoo = new File(rootDirectory, "foo/bar").isDirectory();
-        assertEquals("one descriptors was not created", 1, descriptors.size());
+        assertEquals("more than one descriptor was created", 1, descriptors.length);
         assertEquals("directory 'bar' was created", false, new File(rootDirectory, "bar").isDirectory());
         assertEquals("directory 'foo' was not created", true, new File(rootDirectory, "foo").isDirectory());
-        assertEquals("did not create branch foo/bar", true, expectedFoo);
+        assertEquals("did not create branch foo/bar", true, new File(rootDirectory, "foo/bar").isDirectory());
+        assertEquals("did not create branch foo/bar/baz", true, new File(rootDirectory, "foo/bar/baz").isDirectory());
     }
 
 }
