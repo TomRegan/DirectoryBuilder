@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<directorystructure>
+    <directory name='Blade'>
+        <directory name='Liberator'>
+            <directory name='etc'>
+                <file input='rttpd.conf.template'>rttpd.conf</file>
+            </directory>
+        </directory>
+    </directory>
+</directorystructure>

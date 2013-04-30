@@ -1,4 +1,13 @@
+# compiled files
 *.class
+
+# idea files
+.idea/
+*.iml
+
+# gradle / build files
+.gradle/
+build/
 
 # Package Files #
 *.jar
