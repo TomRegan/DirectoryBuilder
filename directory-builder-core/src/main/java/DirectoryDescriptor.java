@@ -1,15 +1,22 @@
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DirectoryDescriptor
 {
+    private final FileFactory fileFactory;
     private String name;
     private List<DirectoryDescriptor> children;
 
-    public static DirectoryDescriptor createDirectoryDescriptor()
+    private DirectoryDescriptor(FileFactory fileFactory)
     {
-        return new DirectoryDescriptor();
+        this.fileFactory = fileFactory;
+    }
+
+    public static DirectoryDescriptor createDirectoryDescriptor(FileFactory fileFactory)
+    {
+        return new DirectoryDescriptor(fileFactory);
     }
 
     public void setName(String name)
@@ -26,10 +33,13 @@ public class DirectoryDescriptor
         children.add(directoryDescriptor);
     }
 
-    public void create(File parentDirectory)
+    public void create(File parentDirectory) throws IOException
     {
-        File currentDirectory = new File(parentDirectory, name);
-        currentDirectory.mkdirs();
+        File currentDirectory = fileFactory.createFile(parentDirectory, name);
+        if (!currentDirectory.mkdir())
+        {
+            throw fileFactory.createException("could not create directory " + name);
+        }
         if (children != null)
         {
             for (DirectoryDescriptor child : children)

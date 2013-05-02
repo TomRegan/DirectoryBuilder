@@ -1,27 +1,37 @@
 import com.google.common.io.Files;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class DirectoryBuilderTest
 {
     private DirectoryBuilder directoryBuilder;
     private File rootDirectory;
 
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
     private DirectoryDescriptor[] getDirectoryDescriptors(String... directories)
     {
+        FileFactory fileFactory = FileFactory.getFileFactory();
         List<DirectoryDescriptor> descriptors = new ArrayList<DirectoryDescriptor>();
         for (String branches : directories)
         {
             String[] branch = branches.split("/");
             for (int i = 0; i < branch.length; ++i)
             {
-                DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.createDirectoryDescriptor();
+                DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.createDirectoryDescriptor(fileFactory);
                 directoryDescriptor.setName(branch[i]);
                 if (i == 0)
                 {
@@ -45,7 +55,7 @@ public class DirectoryBuilderTest
     }
 
     @Test
-    public void shouldCreateDirectoriesGivenDescriptor()
+    public void shouldCreateDirectoriesGivenDescriptor() throws IOException
     {
         DirectoryDescriptor[] descriptors = getDirectoryDescriptors("foo", "bar");
         directoryBuilder.createDirectoryStructure(descriptors);
@@ -54,7 +64,7 @@ public class DirectoryBuilderTest
     }
 
     @Test
-    public void shouldCreateNestedDirectoriesGivenDescriptor()
+    public void shouldCreateNestedDirectoriesGivenDescriptor() throws IOException
     {
         DirectoryDescriptor[] descriptors = getDirectoryDescriptors("foo/bar/baz");
         directoryBuilder.createDirectoryStructure(descriptors);
@@ -63,6 +73,19 @@ public class DirectoryBuilderTest
         assertEquals("directory 'foo' was not created", true, new File(rootDirectory, "foo").isDirectory());
         assertEquals("did not create branch foo/bar", true, new File(rootDirectory, "foo/bar").isDirectory());
         assertEquals("did not create branch foo/bar/baz", true, new File(rootDirectory, "foo/bar/baz").isDirectory());
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenMakeDirectoryFails() throws IOException
+    {
+        File mockFile = mock(File.class);
+        when(mockFile.mkdir()).thenReturn(false);
+        FileFactory fileFactory = mock(FileFactory.class);
+        when(fileFactory.createFile(any(File.class), any(String.class))).thenReturn(mockFile);
+        when(fileFactory.createException(any(String.class))).thenReturn(new IOException());
+        DirectoryDescriptor descriptor = DirectoryDescriptor.createDirectoryDescriptor(fileFactory);
+        exception.expect(IOException.class);
+        directoryBuilder.createDirectoryStructure(descriptor);
     }
 
 }

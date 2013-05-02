@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.IOException;
 
 public class DirectoryBuilder
 {
@@ -14,7 +15,7 @@ public class DirectoryBuilder
         return new DirectoryBuilder(rootDirectory);
     }
 
-    public void createDirectoryStructure(DirectoryDescriptor... descriptors)
+    public void createDirectoryStructure(DirectoryDescriptor... descriptors) throws IOException
     {
         for (DirectoryDescriptor descriptor : descriptors)
         {
