@@ -29,18 +29,19 @@ public class DirectoryBuilderTest
         for (String branches : directories)
         {
             String[] branch = branches.split("/");
-            for (int i = 0; i < branch.length; ++i)
+            DirectoryDescriptor lastDirectory = null;
+            for (String directory : branch)
             {
-                DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.createDirectoryDescriptor(branch[i], fileFactory);
-                if (i == 0)
+                DirectoryDescriptor newDirectory = DirectoryDescriptor.createDirectoryDescriptor(directory, fileFactory);
+                if (lastDirectory == null)
                 {
-                    descriptors.add(directoryDescriptor);
+                    descriptors.add(newDirectory);
                 }
                 else
                 {
-                    DirectoryDescriptor parentDescriptor = descriptors.get(descriptors.size() - 1).getLastChild();
-                    parentDescriptor.addChild(directoryDescriptor);
+                    lastDirectory.addChild(newDirectory);
                 }
+                lastDirectory = newDirectory;
             }
         }
         return descriptors.toArray(new DirectoryDescriptor[descriptors.size()]);

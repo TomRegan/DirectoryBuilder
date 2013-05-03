@@ -44,11 +44,4 @@ public class DirectoryDescriptor
             }
         }
     }
-
-    public DirectoryDescriptor getLastChild()
-    {
-        return children != null
-                ? children.get(children.size() - 1)
-                : this;
-    }
 }
