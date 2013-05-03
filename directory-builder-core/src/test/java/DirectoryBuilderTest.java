@@ -31,8 +31,7 @@ public class DirectoryBuilderTest
             String[] branch = branches.split("/");
             for (int i = 0; i < branch.length; ++i)
             {
-                DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.createDirectoryDescriptor(fileFactory);
-                directoryDescriptor.setName(branch[i]);
+                DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.createDirectoryDescriptor(branch[i], fileFactory);
                 if (i == 0)
                 {
                     descriptors.add(directoryDescriptor);
@@ -79,16 +78,11 @@ public class DirectoryBuilderTest
     public void shouldCreateArbitraryDirectoryStructureGivenDescriptor() throws IOException
     {
         FileFactory factory = FileFactory.createFileFactory();
-        DirectoryDescriptor a = DirectoryDescriptor.createDirectoryDescriptor(factory);
-        DirectoryDescriptor b = DirectoryDescriptor.createDirectoryDescriptor(factory);
-        DirectoryDescriptor c = DirectoryDescriptor.createDirectoryDescriptor(factory);
-        DirectoryDescriptor d = DirectoryDescriptor.createDirectoryDescriptor(factory);
-        DirectoryDescriptor e = DirectoryDescriptor.createDirectoryDescriptor(factory);
-        a.setName("a");
-        b.setName("b");
-        c.setName("c");
-        d.setName("d");
-        e.setName("e");
+        DirectoryDescriptor a = DirectoryDescriptor.createDirectoryDescriptor("a", factory);
+        DirectoryDescriptor b = DirectoryDescriptor.createDirectoryDescriptor("b", factory);
+        DirectoryDescriptor c = DirectoryDescriptor.createDirectoryDescriptor("c", factory);
+        DirectoryDescriptor d = DirectoryDescriptor.createDirectoryDescriptor("d", factory);
+        DirectoryDescriptor e = DirectoryDescriptor.createDirectoryDescriptor("e", factory);
         a.addChild(b);
         b.addChild(c);
         b.addChild(d);
@@ -108,7 +102,7 @@ public class DirectoryBuilderTest
         when(mockFile.mkdir()).thenReturn(false);
         FileFactory fileFactory = mock(FileFactory.class);
         when(fileFactory.createFile(any(File.class), any(String.class))).thenReturn(mockFile);
-        DirectoryDescriptor descriptor = DirectoryDescriptor.createDirectoryDescriptor(fileFactory);
+        DirectoryDescriptor descriptor = DirectoryDescriptor.createDirectoryDescriptor(null, fileFactory);
         exception.expect(IOException.class);
         directoryBuilder.createDirectoryStructure(descriptor);
     }

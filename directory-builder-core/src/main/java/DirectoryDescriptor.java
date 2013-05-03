@@ -6,22 +6,18 @@ import java.util.List;
 public class DirectoryDescriptor
 {
     private final FileFactory fileFactory;
-    private String name;
+    private final String name;
     private List<DirectoryDescriptor> children;
 
-    private DirectoryDescriptor(FileFactory fileFactory)
+    private DirectoryDescriptor(String name, FileFactory fileFactory)
     {
         this.fileFactory = fileFactory;
-    }
-
-    public static DirectoryDescriptor createDirectoryDescriptor(FileFactory fileFactory)
-    {
-        return new DirectoryDescriptor(fileFactory);
-    }
-
-    public void setName(String name)
-    {
         this.name = name;
+    }
+
+    public static DirectoryDescriptor createDirectoryDescriptor(String name, FileFactory fileFactory)
+    {
+        return new DirectoryDescriptor(name, fileFactory);
     }
 
     public void addChild(DirectoryDescriptor directoryDescriptor)
