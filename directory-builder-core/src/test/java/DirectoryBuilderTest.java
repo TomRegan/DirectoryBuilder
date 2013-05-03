@@ -24,7 +24,7 @@ public class DirectoryBuilderTest
 
     private DirectoryDescriptor[] getDirectoryDescriptors(String... directories)
     {
-        FileFactory fileFactory = FileFactory.getFileFactory();
+        FileFactory fileFactory = FileFactory.createFileFactory();
         List<DirectoryDescriptor> descriptors = new ArrayList<DirectoryDescriptor>();
         for (String branches : directories)
         {
@@ -73,6 +73,32 @@ public class DirectoryBuilderTest
         assertEquals("directory 'foo' was not created", true, new File(rootDirectory, "foo").isDirectory());
         assertEquals("did not create branch foo/bar", true, new File(rootDirectory, "foo/bar").isDirectory());
         assertEquals("did not create branch foo/bar/baz", true, new File(rootDirectory, "foo/bar/baz").isDirectory());
+    }
+
+    @Test
+    public void shouldCreateArbitraryDirectoryStructureGivenDescriptor() throws IOException
+    {
+        FileFactory factory = FileFactory.createFileFactory();
+        DirectoryDescriptor a = DirectoryDescriptor.createDirectoryDescriptor(factory);
+        DirectoryDescriptor b = DirectoryDescriptor.createDirectoryDescriptor(factory);
+        DirectoryDescriptor c = DirectoryDescriptor.createDirectoryDescriptor(factory);
+        DirectoryDescriptor d = DirectoryDescriptor.createDirectoryDescriptor(factory);
+        DirectoryDescriptor e = DirectoryDescriptor.createDirectoryDescriptor(factory);
+        a.setName("a");
+        b.setName("b");
+        c.setName("c");
+        d.setName("d");
+        e.setName("e");
+        a.addChild(b);
+        b.addChild(c);
+        b.addChild(d);
+        d.addChild(e);
+        directoryBuilder.createDirectoryStructure(a);
+        assertEquals("did not create branch a/", true, new File(rootDirectory, "a/").isDirectory());
+        assertEquals("did not create branch a/b", true, new File(rootDirectory, "a/b").isDirectory());
+        assertEquals("did not create branch a/b/c", true, new File(rootDirectory, "a/b/c").isDirectory());
+        assertEquals("did not create branch a/b/d", true, new File(rootDirectory, "a/b/d").isDirectory());
+        assertEquals("did not create branch a/b/d/e", true, new File(rootDirectory, "a/b/d/e").isDirectory());
     }
 
     @Test
