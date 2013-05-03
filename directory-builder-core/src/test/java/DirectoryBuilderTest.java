@@ -82,7 +82,6 @@ public class DirectoryBuilderTest
         when(mockFile.mkdir()).thenReturn(false);
         FileFactory fileFactory = mock(FileFactory.class);
         when(fileFactory.createFile(any(File.class), any(String.class))).thenReturn(mockFile);
-        when(fileFactory.createException(any(String.class))).thenReturn(new IOException());
         DirectoryDescriptor descriptor = DirectoryDescriptor.createDirectoryDescriptor(fileFactory);
         exception.expect(IOException.class);
         directoryBuilder.createDirectoryStructure(descriptor);

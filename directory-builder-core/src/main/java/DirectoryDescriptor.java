@@ -38,7 +38,7 @@ public class DirectoryDescriptor
         File currentDirectory = fileFactory.createFile(parentDirectory, name);
         if (!currentDirectory.mkdir())
         {
-            throw fileFactory.createException("could not create directory " + name);
+            throw new IOException("could not create directory " + name);
         }
         if (children != null)
         {
