@@ -31,15 +31,18 @@ public class TemplateFile extends File
 
     public boolean createNewFile() throws IOException
     {
-        boolean result = super.createNewFile();
-        try
+        if (super.createNewFile())
         {
-            Files.copy(this.template, super.getAbsoluteFile());
+            try
+            {
+                Files.copy(this.template, super.getAbsoluteFile());
+            }
+            catch (IOException e)
+            {
+                // to be substitutable, we have to ignore this exception
+            }
+            return true;
         }
-        catch (IOException e)
-        {
-            // to be substitutable, we have to ignore this exception
-        }
-        return result;
+        return false;
     }
 }
