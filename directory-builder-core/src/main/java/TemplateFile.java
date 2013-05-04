@@ -14,22 +14,32 @@
  * limitations under the License.
  */
 
+import com.google.common.io.Files;
+
 import java.io.File;
+import java.io.IOException;
 
-public class FileFactory
+public class TemplateFile extends File
 {
-    public static FileFactory createFileFactory()
+    private final File template;
+
+    public TemplateFile(File template, File parentDirectory, String name)
     {
-        return new FileFactory();
+        super(parentDirectory, name);
+        this.template = template;
     }
 
-    public File createFile(File parentDirectory, String name)
+    public boolean createNewFile() throws IOException
     {
-        return new File(parentDirectory, name);
-    }
-
-    public File createFile(File template, File parentDirectory, String name)
-    {
-        return new TemplateFile(template, parentDirectory, name);
+        boolean result = super.createNewFile();
+        try
+        {
+            Files.copy(this.template, super.getAbsoluteFile());
+        }
+        catch (IOException e)
+        {
+            // to be substitutable, we have to ignore this exception
+        }
+        return result;
     }
 }

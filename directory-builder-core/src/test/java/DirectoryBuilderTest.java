@@ -22,6 +22,7 @@ import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class DirectoryBuilderTest
     @Rule
     public ExpectedException exception = ExpectedException.none();
     private FileFactory mockFileFactory;
+    private File template;
 
     private DirectoryDescriptor[] getDirectoryDescriptors(String... directories)
     {
@@ -72,6 +74,8 @@ public class DirectoryBuilderTest
         when(mockFile.createNewFile()).thenReturn(false);
         mockFileFactory = mock(FileFactory.class);
         when(mockFileFactory.createFile(any(File.class), any(String.class))).thenReturn(mockFile);
+        when(mockFileFactory.createFile(any(File.class), any(File.class), any(String.class))).thenReturn(mockFile);
+        template = new File("src/test/resources/test.template");
     }
 
     @Test
@@ -126,7 +130,7 @@ public class DirectoryBuilderTest
     @Test
     public void shouldCreateFileGivenDescriptor() throws IOException
     {
-        FileDescriptor fileDescriptor = FileDescriptor.createFileDescriptor("foo.txt");
+        FileDescriptor fileDescriptor = FileDescriptor.createFileDescriptor(template, "foo.txt");
         directoryBuilder.createDirectoryStructure(fileDescriptor);
         assertEquals("did not create foo.txt", true, new File(rootDirectory, "foo.txt").isFile());
     }
@@ -135,8 +139,8 @@ public class DirectoryBuilderTest
     public void shouldHandleNestingFilesInsideDirectories() throws IOException
     {
         DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.createDirectoryDescriptor("foo");
-        FileDescriptor spam = FileDescriptor.createFileDescriptor("spam.txt");
-        FileDescriptor eggs = FileDescriptor.createFileDescriptor("eggs.txt");
+        FileDescriptor spam = FileDescriptor.createFileDescriptor(template, "spam.txt");
+        FileDescriptor eggs = FileDescriptor.createFileDescriptor(template, "eggs.txt");
         directoryDescriptor.addChild(spam);
         directoryDescriptor.addChild(eggs);
         directoryBuilder.createDirectoryStructure(directoryDescriptor);
@@ -148,9 +152,20 @@ public class DirectoryBuilderTest
     @Test
     public void shouldThrowExceptionWhenCreateFileFails() throws IOException
     {
-        FileDescriptor fileDescriptor = FileDescriptor.createFileDescriptor("CrashTextDummy.txt", mockFileFactory);
+        FileDescriptor fileDescriptor = FileDescriptor.createFileDescriptor(template, "CrashTextDummy.txt", mockFileFactory);
         exception.expect(IOException.class);
         directoryBuilder.createDirectoryStructure(fileDescriptor);
+    }
+
+    @Test
+    public void shouldCreateFileContentsGivenTemplate() throws IOException
+    {
+        List<String> expected = new ArrayList<String>();
+        expected.add("ohai wurld xxx");
+        FileDescriptor fileDescriptor = FileDescriptor.createFileDescriptor(template, "foo.txt");
+        directoryBuilder.createDirectoryStructure(fileDescriptor);
+        List<String> actual = Files.readLines(new File(rootDirectory, "foo.txt"), Charset.defaultCharset());
+        assertEquals("foo.txt did not contain the expected contents", expected, actual);
     }
 
 }

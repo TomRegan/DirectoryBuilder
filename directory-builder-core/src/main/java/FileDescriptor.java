@@ -21,33 +21,34 @@ public class FileDescriptor implements IDescriptor
 {
     private final FileFactory fileFactory;
     private final String name;
+    private File template;
 
-    private FileDescriptor(String name)
+    public FileDescriptor(File template, String name, FileFactory fileFactory)
     {
-        this.fileFactory = FileFactory.createFileFactory();
-        this.name = name;
-    }
-
-    public FileDescriptor(String name, FileFactory fileFactory)
-    {
+        this.template = template;
         this.fileFactory = fileFactory;
         this.name = name;
     }
 
-    public static FileDescriptor createFileDescriptor(String name)
+    public FileDescriptor(File template, String name)
     {
-        return new FileDescriptor(name);
+        this(template, name, FileFactory.createFileFactory());
     }
 
-    public static FileDescriptor createFileDescriptor(String name, FileFactory fileFactory)
+    public static FileDescriptor createFileDescriptor(File template, String name, FileFactory fileFactory)
     {
-        return new FileDescriptor(name, fileFactory);
+        return new FileDescriptor(template, name, fileFactory);
+    }
+
+    public static FileDescriptor createFileDescriptor(File template, String name)
+    {
+        return new FileDescriptor(template, name);
     }
 
     @Override
     public void create(File parentDirectory) throws IOException
     {
-        File file = fileFactory.createFile(parentDirectory, name);
+        File file = fileFactory.createFile(template, parentDirectory, name);
         if (!file.createNewFile())
         {
             throw new IOException("could not create file " + file.getAbsolutePath());
