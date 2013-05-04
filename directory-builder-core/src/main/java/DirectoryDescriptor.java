@@ -19,11 +19,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DirectoryDescriptor
+public class DirectoryDescriptor implements IDescriptor
 {
     private final FileFactory fileFactory;
     private final String name;
-    private List<DirectoryDescriptor> children;
+    private List<IDescriptor> children;
 
     private DirectoryDescriptor(String name)
     {
@@ -51,7 +51,7 @@ public class DirectoryDescriptor
     {
         if (!hasChildren())
         {
-            children = new ArrayList<DirectoryDescriptor>();
+            children = new ArrayList<IDescriptor>();
         }
         children.add(directoryDescriptor);
     }
@@ -61,11 +61,11 @@ public class DirectoryDescriptor
         File currentDirectory = fileFactory.createFile(parentDirectory, name);
         if (!currentDirectory.mkdir())
         {
-            throw new IOException("could not create directory " + name);
+            throw new IOException("could not create directory " + currentDirectory.getAbsolutePath());
         }
         if (hasChildren())
         {
-            for (DirectoryDescriptor child : children)
+            for (IDescriptor child : children)
             {
                 child.create(currentDirectory);
             }

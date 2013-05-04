@@ -17,25 +17,7 @@
 import java.io.File;
 import java.io.IOException;
 
-public class DirectoryBuilder
+public interface IDescriptor
 {
-    final File rootDirectory;
-
-    private DirectoryBuilder(File rootDirectory)
-    {
-        this.rootDirectory = rootDirectory;
-    }
-
-    public static DirectoryBuilder createDirectoryBuilder(File rootDirectory)
-    {
-        return new DirectoryBuilder(rootDirectory);
-    }
-
-    public void createDirectoryStructure(IDescriptor... descriptors) throws IOException
-    {
-        for (IDescriptor descriptor : descriptors)
-        {
-            descriptor.create(rootDirectory);
-        }
-    }
+    void create(File parentDirectory) throws IOException;
 }

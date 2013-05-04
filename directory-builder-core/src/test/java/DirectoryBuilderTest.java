@@ -122,4 +122,12 @@ public class DirectoryBuilderTest
         directoryBuilder.createDirectoryStructure(descriptor);
     }
 
+    @Test
+    public void shouldCreateFileGivenDescriptor() throws IOException
+    {
+        FileDescriptor fileDescriptor = FileDescriptor.createFileDescriptor("foo.txt");
+        directoryBuilder.createDirectoryStructure(fileDescriptor);
+        assertEquals("did not create foo.txt", true, new File(rootDirectory, "foo.txt").isFile());
+    }
+
 }

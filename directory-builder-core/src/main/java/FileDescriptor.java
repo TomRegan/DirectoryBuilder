@@ -17,25 +17,24 @@
 import java.io.File;
 import java.io.IOException;
 
-public class DirectoryBuilder
+public class FileDescriptor implements IDescriptor
 {
-    final File rootDirectory;
+    private final String name;
 
-    private DirectoryBuilder(File rootDirectory)
+    private FileDescriptor(String name)
     {
-        this.rootDirectory = rootDirectory;
+        this.name = name;
     }
 
-    public static DirectoryBuilder createDirectoryBuilder(File rootDirectory)
+    public static FileDescriptor createFileDescriptor(String name)
     {
-        return new DirectoryBuilder(rootDirectory);
+        return new FileDescriptor(name);
     }
 
-    public void createDirectoryStructure(IDescriptor... descriptors) throws IOException
+    @Override
+    public void create(File parentDirectory) throws IOException
     {
-        for (IDescriptor descriptor : descriptors)
-        {
-            descriptor.create(rootDirectory);
-        }
+        // TODO check result of createNewFile
+        new File(parentDirectory, name).createNewFile();
     }
 }
