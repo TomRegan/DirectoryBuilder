@@ -28,8 +28,8 @@ public class FileFactory
         return new File(parentDirectory, name);
     }
 
-    public File createFile(File template, File parentDirectory, String name)
+    public File createFile(File template, File parentDirectory, String name, FileDescriptor delegate)
     {
-        return new TemplateFile(template, parentDirectory, name);
+        return new TemplateFile(template, parentDirectory, name, delegate);
     }
 }

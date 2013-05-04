@@ -74,7 +74,7 @@ public class DirectoryBuilderTest
         when(mockFile.createNewFile()).thenReturn(false);
         mockFileFactory = mock(FileFactory.class);
         when(mockFileFactory.createFile(any(File.class), any(String.class))).thenReturn(mockFile);
-        when(mockFileFactory.createFile(any(File.class), any(File.class), any(String.class))).thenReturn(mockFile);
+        when(mockFileFactory.createFile(any(File.class), any(File.class), any(String.class), any(FileDescriptor.class))).thenReturn(mockFile);
         template = new File("src/test/resources/test.template");
     }
 
@@ -161,6 +161,7 @@ public class DirectoryBuilderTest
     public void shouldCreateFileContentsGivenTemplate() throws IOException
     {
         List<String> expected = new ArrayList<String>();
+        expected.add("// foo.txt");
         expected.add("ohai wurld xxx");
         FileDescriptor fileDescriptor = FileDescriptor.createFileDescriptor(template, "foo.txt");
         directoryBuilder.createDirectoryStructure(fileDescriptor);

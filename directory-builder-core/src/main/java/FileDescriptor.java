@@ -21,7 +21,7 @@ public class FileDescriptor implements IDescriptor
 {
     private final FileFactory fileFactory;
     private final String name;
-    private File template;
+    private final File template;
 
     public FileDescriptor(File template, String name, FileFactory fileFactory)
     {
@@ -48,10 +48,22 @@ public class FileDescriptor implements IDescriptor
     @Override
     public void create(File parentDirectory) throws IOException
     {
-        File file = fileFactory.createFile(template, parentDirectory, name);
+        File file = fileFactory.createFile(template, parentDirectory, name, this);
         if (!file.createNewFile())
         {
-            throw new IOException("could not create file " + file.getAbsolutePath());
+            throw new IOException("could not create " + file.getAbsolutePath());
         }
     }
+
+    public String getClassName()
+    {
+        return getClass().getName();
+    }
+
+    @SuppressWarnings("unused") // used in template
+    public String getName()
+    {
+        return name;
+    }
+
 }

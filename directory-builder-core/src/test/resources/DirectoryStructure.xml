@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <directorystructure>
-    <directory name='Blade'>
-        <directory name='Liberator'>
+    <directory name='test'>
+        <directory name='filtered'>
             <directory name='etc'>
-                <file input='rttpd.conf.template'>rttpd.conf</file>
+                <file descriptor="File" template='test.template'>hello.txt</file>
+            </directory>
+            <directory name="empty">
             </directory>
         </directory>
     </directory>
