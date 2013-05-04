@@ -132,6 +132,20 @@ public class DirectoryBuilderTest
     }
 
     @Test
+    public void shouldHandleNestingFilesInsideDirectories() throws IOException
+    {
+        DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.createDirectoryDescriptor("foo");
+        FileDescriptor spam = FileDescriptor.createFileDescriptor("spam.txt");
+        FileDescriptor eggs = FileDescriptor.createFileDescriptor("eggs.txt");
+        directoryDescriptor.addChild(spam);
+        directoryDescriptor.addChild(eggs);
+        directoryBuilder.createDirectoryStructure(directoryDescriptor);
+        assertEquals("did not create directory foo", true, new File(rootDirectory, "foo").isDirectory());
+        assertEquals("did not create file spam.txt", true, new File(rootDirectory, "foo/spam.txt").isFile());
+        assertEquals("did not create file eggs.txt", true, new File(rootDirectory, "foo/eggs.txt").isFile());
+    }
+
+    @Test
     public void shouldThrowExceptionWhenCreateFileFails() throws IOException
     {
         FileDescriptor fileDescriptor = FileDescriptor.createFileDescriptor("CrashTextDummy.txt", mockFileFactory);

@@ -47,13 +47,13 @@ public class DirectoryDescriptor implements IDescriptor
         return new DirectoryDescriptor(name, fileFactory);
     }
 
-    public void addChild(DirectoryDescriptor directoryDescriptor)
+    public void addChild(IDescriptor descriptor)
     {
         if (!hasChildren())
         {
             children = new ArrayList<IDescriptor>();
         }
-        children.add(directoryDescriptor);
+        children.add(descriptor);
     }
 
     public void create(File parentDirectory) throws IOException
