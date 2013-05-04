@@ -1,3 +1,5 @@
 language: java
+before_script: gradle assemble
+script: gradle check
 notifications:
   email: false
