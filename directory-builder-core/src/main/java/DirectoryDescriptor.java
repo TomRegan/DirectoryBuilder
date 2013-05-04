@@ -9,10 +9,21 @@ public class DirectoryDescriptor
     private final String name;
     private List<DirectoryDescriptor> children;
 
+    private DirectoryDescriptor(String name)
+    {
+        this.fileFactory = FileFactory.createFileFactory();
+        this.name = name;
+    }
+
     private DirectoryDescriptor(String name, FileFactory fileFactory)
     {
         this.fileFactory = fileFactory;
         this.name = name;
+    }
+
+    public static DirectoryDescriptor createDirectoryDescriptor(String name)
+    {
+        return new DirectoryDescriptor(name);
     }
 
     public static DirectoryDescriptor createDirectoryDescriptor(String name, FileFactory fileFactory)
@@ -22,7 +33,7 @@ public class DirectoryDescriptor
 
     public void addChild(DirectoryDescriptor directoryDescriptor)
     {
-        if (children == null)
+        if (!hasChildren())
         {
             children = new ArrayList<DirectoryDescriptor>();
         }
@@ -36,12 +47,17 @@ public class DirectoryDescriptor
         {
             throw new IOException("could not create directory " + name);
         }
-        if (children != null)
+        if (hasChildren())
         {
             for (DirectoryDescriptor child : children)
             {
                 child.create(currentDirectory);
             }
         }
+    }
+
+    private boolean hasChildren()
+    {
+        return children != null;
     }
 }
