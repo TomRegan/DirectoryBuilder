@@ -19,10 +19,18 @@ import java.io.IOException;
 
 public class FileDescriptor implements IDescriptor
 {
+    private final FileFactory fileFactory;
     private final String name;
 
     private FileDescriptor(String name)
     {
+        this.fileFactory = FileFactory.createFileFactory();
+        this.name = name;
+    }
+
+    public FileDescriptor(String name, FileFactory fileFactory)
+    {
+        this.fileFactory = fileFactory;
         this.name = name;
     }
 
@@ -31,10 +39,18 @@ public class FileDescriptor implements IDescriptor
         return new FileDescriptor(name);
     }
 
+    public static FileDescriptor createFileDescriptor(String name, FileFactory fileFactory)
+    {
+        return new FileDescriptor(name, fileFactory);
+    }
+
     @Override
     public void create(File parentDirectory) throws IOException
     {
-        // TODO check result of createNewFile
-        new File(parentDirectory, name).createNewFile();
+        File file = fileFactory.createFile(parentDirectory, name);
+        if (!file.createNewFile())
+        {
+            throw new IOException("could not create file " + file.getAbsolutePath());
+        }
     }
 }

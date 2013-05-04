@@ -37,6 +37,7 @@ public class DirectoryBuilderTest
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
+    private FileFactory mockFileFactory;
 
     private DirectoryDescriptor[] getDirectoryDescriptors(String... directories)
     {
@@ -67,6 +68,10 @@ public class DirectoryBuilderTest
     {
         rootDirectory = Files.createTempDir();
         directoryBuilder = DirectoryBuilder.createDirectoryBuilder(rootDirectory);
+        File mockFile = mock(File.class);
+        when(mockFile.createNewFile()).thenReturn(false);
+        mockFileFactory = mock(FileFactory.class);
+        when(mockFileFactory.createFile(any(File.class), any(String.class))).thenReturn(mockFile);
     }
 
     @Test
@@ -113,10 +118,6 @@ public class DirectoryBuilderTest
     @Test
     public void shouldThrowExceptionWhenMakeDirectoryFails() throws IOException
     {
-        File mockFile = mock(File.class);
-        when(mockFile.mkdir()).thenReturn(false);
-        FileFactory mockFileFactory = mock(FileFactory.class);
-        when(mockFileFactory.createFile(any(File.class), any(String.class))).thenReturn(mockFile);
         DirectoryDescriptor descriptor = DirectoryDescriptor.createDirectoryDescriptor("CrashTestDummy", mockFileFactory);
         exception.expect(IOException.class);
         directoryBuilder.createDirectoryStructure(descriptor);
@@ -128,6 +129,14 @@ public class DirectoryBuilderTest
         FileDescriptor fileDescriptor = FileDescriptor.createFileDescriptor("foo.txt");
         directoryBuilder.createDirectoryStructure(fileDescriptor);
         assertEquals("did not create foo.txt", true, new File(rootDirectory, "foo.txt").isFile());
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenCreateFileFails() throws IOException
+    {
+        FileDescriptor fileDescriptor = FileDescriptor.createFileDescriptor("CrashTextDummy.txt", mockFileFactory);
+        exception.expect(IOException.class);
+        directoryBuilder.createDirectoryStructure(fileDescriptor);
     }
 
 }
