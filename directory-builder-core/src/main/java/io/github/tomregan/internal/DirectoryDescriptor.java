@@ -1,4 +1,4 @@
-/*
+package io.github.tomregan.internal;/*
  * Copyright 2013 Tom Regan
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -76,4 +76,20 @@ public class DirectoryDescriptor implements IDescriptor
     {
         return children != null;
     }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (!(o.getClass() == getClass()))
+        {
+            return false;
+        }
+        DirectoryDescriptor that = (DirectoryDescriptor) o;
+        if (hasChildren() ? !children.equals(that.children) : that.hasChildren())
+        {
+            return false;
+        }
+        return this.name.equals(that.name);
+    }
+
 }

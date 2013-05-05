@@ -3,10 +3,9 @@
     <directory name='test'>
         <directory name='filtered'>
             <directory name='etc'>
-                <file descriptor="File" template='test.template'>hello.txt</file>
+                <file template='test.template'>hello.txt</file>
             </directory>
-            <directory name="empty">
-            </directory>
+            <directory name="empty"/>
         </directory>
     </directory>
 </directorystructure>

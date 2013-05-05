@@ -1,4 +1,4 @@
-/*
+package io.github.tomregan;/*
  * Copyright 2013 Tom Regan
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,9 @@
  */
 
 import com.google.common.io.Files;
+import io.github.tomregan.internal.DirectoryDescriptor;
+import io.github.tomregan.internal.FileDescriptor;
+import io.github.tomregan.internal.FileFactory;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

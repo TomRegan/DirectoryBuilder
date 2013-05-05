@@ -1,4 +1,4 @@
-/*
+package io.github.tomregan.internal;/*
  * Copyright 2013 Tom Regan
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

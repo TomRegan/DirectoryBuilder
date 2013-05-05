@@ -1,4 +1,4 @@
-/*
+package io.github.tomregan;/*
  * Copyright 2013 Tom Regan
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,22 +14,30 @@
  * limitations under the License.
  */
 
+import io.github.tomregan.internal.IDescriptor;
+
 import java.io.File;
+import java.io.IOException;
 
-public class FileFactory
+public class DirectoryBuilder
 {
-    public static FileFactory createFileFactory()
+    final File rootDirectory;
+
+    private DirectoryBuilder(File rootDirectory)
     {
-        return new FileFactory();
+        this.rootDirectory = rootDirectory;
     }
 
-    public File createFile(File parentDirectory, String name)
+    public static DirectoryBuilder createDirectoryBuilder(File rootDirectory)
     {
-        return new File(parentDirectory, name);
+        return new DirectoryBuilder(rootDirectory);
     }
 
-    public File createFile(File template, File parentDirectory, String name, FileDescriptor delegate)
+    public void createDirectoryStructure(IDescriptor... descriptors) throws IOException
     {
-        return new TemplateFile(template, parentDirectory, name, delegate);
+        for (IDescriptor descriptor : descriptors)
+        {
+            descriptor.create(rootDirectory);
+        }
     }
 }
