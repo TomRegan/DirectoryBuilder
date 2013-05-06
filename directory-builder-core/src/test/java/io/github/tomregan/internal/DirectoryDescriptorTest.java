@@ -23,6 +23,13 @@ import static org.junit.Assert.assertEquals;
 public class DirectoryDescriptorTest
 {
     @Test
+    public void shouldTestObjectEquality()
+    {
+        DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.createDirectoryDescriptor("foo");
+        assertEquals("DirectoryDescriptor not equal to itself", directoryDescriptor, directoryDescriptor);
+    }
+
+    @Test
     public void shouldTestEqualityOnName()
     {
         DirectoryDescriptor a0 = DirectoryDescriptor.createDirectoryDescriptor("a");
@@ -35,6 +42,7 @@ public class DirectoryDescriptorTest
     {
         DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.createDirectoryDescriptor("foo");
         String string = "bar";
+        //noinspection EqualsBetweenInconvertibleTypes
         assertEquals("did not identify inequality of DirectoryDescriptor and String", false, directoryDescriptor.equals(string));
     }
 
@@ -45,6 +53,8 @@ public class DirectoryDescriptorTest
         DirectoryDescriptor b = DirectoryDescriptor.createDirectoryDescriptor("foo");
         DirectoryDescriptor c = DirectoryDescriptor.createDirectoryDescriptor("bar");
         b.addChild(c);
-        assertEquals("did not handle presence of children", false, a.equals(b));
+        assertEquals("a equal to b", false, a.equals(b));
+        a.addChild(c);
+        assertEquals("a not equal to b", true, a.equals(b));
     }
 }

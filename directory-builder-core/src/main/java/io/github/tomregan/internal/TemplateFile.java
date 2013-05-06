@@ -1,4 +1,4 @@
-package io.github.tomregan.internal;/*
+/*
  * Copyright 2013 Tom Regan
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +14,8 @@ package io.github.tomregan.internal;/*
  * limitations under the License.
  */
 
+package io.github.tomregan.internal;
+
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -23,10 +25,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class TemplateFile extends File
+class TemplateFile extends File
 {
     private final File template;
-    private FileDescriptor delegate;
+    private final FileDescriptor delegate;
 
     public TemplateFile(File template, File parentDirectory, String name, FileDescriptor delegate)
     {

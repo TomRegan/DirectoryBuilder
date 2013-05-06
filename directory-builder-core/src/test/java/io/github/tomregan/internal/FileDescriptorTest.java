@@ -27,6 +27,6 @@ public class FileDescriptorTest
     @Test
     public void testGetClassName() throws Exception
     {
-        assertEquals("name was not FileDescriptor", "FileDescriptor", new FileDescriptor(new File(""), "foo.txt").getClassName());
+        assertEquals("name was not FileDescriptor", "FileDescriptor", FileDescriptor.createFileDescriptor(new File(""), "foo.txt").getClassName());
     }
 }

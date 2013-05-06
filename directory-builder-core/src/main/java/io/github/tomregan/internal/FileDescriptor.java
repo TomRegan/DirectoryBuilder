@@ -1,4 +1,4 @@
-package io.github.tomregan.internal;/*
+/*
  * Copyright 2013 Tom Regan
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +14,8 @@ package io.github.tomregan.internal;/*
  * limitations under the License.
  */
 
+package io.github.tomregan.internal;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -23,18 +25,19 @@ public class FileDescriptor implements IDescriptor
     private final String name;
     private final File template;
 
-    public FileDescriptor(File template, String name, FileFactory fileFactory)
+    private FileDescriptor(File template, String name, FileFactory fileFactory)
     {
         this.template = template;
         this.fileFactory = fileFactory;
         this.name = name;
     }
 
-    public FileDescriptor(File template, String name)
+    private FileDescriptor(File template, String name)
     {
         this(template, name, FileFactory.createFileFactory());
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static FileDescriptor createFileDescriptor(File template, String name, FileFactory fileFactory)
     {
         return new FileDescriptor(template, name, fileFactory);

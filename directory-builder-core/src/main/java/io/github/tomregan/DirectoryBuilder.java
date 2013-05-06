@@ -1,4 +1,4 @@
-package io.github.tomregan;/*
+/*
  * Copyright 2013 Tom Regan
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +14,8 @@ package io.github.tomregan;/*
  * limitations under the License.
  */
 
+package io.github.tomregan;
+
 import io.github.tomregan.internal.IDescriptor;
 
 import java.io.File;
@@ -21,7 +23,7 @@ import java.io.IOException;
 
 public class DirectoryBuilder
 {
-    final File rootDirectory;
+    private final File rootDirectory;
 
     private DirectoryBuilder(File rootDirectory)
     {

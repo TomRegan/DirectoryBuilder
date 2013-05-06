@@ -1,4 +1,4 @@
-package io.github.tomregan.internal;/*
+/*
  * Copyright 2013 Tom Regan
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +13,8 @@ package io.github.tomregan.internal;/*
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package io.github.tomregan.internal;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,6 +44,7 @@ public class DirectoryDescriptor implements IDescriptor
         return new DirectoryDescriptor(name);
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static DirectoryDescriptor createDirectoryDescriptor(String name, FileFactory fileFactory)
     {
         return new DirectoryDescriptor(name, fileFactory);
@@ -80,16 +83,16 @@ public class DirectoryDescriptor implements IDescriptor
     @Override
     public boolean equals(Object o)
     {
+        if (super.equals(o))
+        {
+            return true;
+        }
         if (!(o.getClass() == getClass()))
         {
             return false;
         }
         DirectoryDescriptor that = (DirectoryDescriptor) o;
-        if (hasChildren() ? !children.equals(that.children) : that.hasChildren())
-        {
-            return false;
-        }
-        return this.name.equals(that.name);
+        return !(hasChildren() ? !children.equals(that.children) : that.hasChildren()) && this.name.equals(that.name);
     }
 
 }

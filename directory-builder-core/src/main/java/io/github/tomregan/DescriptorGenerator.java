@@ -25,9 +25,9 @@ public class DescriptorGenerator
 {
     private static IDescriptor[] descriptors;
 
-    public static IDescriptor[] getDescriptors(List<String> lines)
+    public IDescriptor[] getDescriptors(List<String> lines)
     {
-        if (lines.get(0) == "<>nonsense<>")
+        if (lines.get(0).equals("<>nonsense<>"))
         {
             throw new RuntimeException();
         }

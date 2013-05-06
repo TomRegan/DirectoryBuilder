@@ -1,4 +1,4 @@
-package io.github.tomregan.internal;/*
+/*
  * Copyright 2013 Tom Regan
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +13,8 @@ package io.github.tomregan.internal;/*
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package io.github.tomregan.internal;
 
 import java.io.File;
 import java.io.IOException;
