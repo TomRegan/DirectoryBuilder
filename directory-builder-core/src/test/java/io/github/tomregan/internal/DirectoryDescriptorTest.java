@@ -23,14 +23,14 @@ import static org.junit.Assert.assertEquals;
 public class DirectoryDescriptorTest
 {
     @Test
-    public void shouldTestObjectEquality()
+    public void testObjectEquality()
     {
         DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.createDirectoryDescriptor("foo");
         assertEquals("DirectoryDescriptor not equal to itself", directoryDescriptor, directoryDescriptor);
     }
 
     @Test
-    public void shouldTestEqualityOnName()
+    public void testEqualityOnName()
     {
         DirectoryDescriptor a0 = DirectoryDescriptor.createDirectoryDescriptor("a");
         DirectoryDescriptor a1 = DirectoryDescriptor.createDirectoryDescriptor("a");
@@ -38,7 +38,7 @@ public class DirectoryDescriptorTest
     }
 
     @Test
-    public void shouldTestEqualityWithOtherObjects()
+    public void testEqualityWithOtherObjects()
     {
         DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.createDirectoryDescriptor("foo");
         String string = "bar";
@@ -47,7 +47,7 @@ public class DirectoryDescriptorTest
     }
 
     @Test
-    public void shouldTestEqualityWithChildren()
+    public void testEqualityWithChildren()
     {
         DirectoryDescriptor a = DirectoryDescriptor.createDirectoryDescriptor("foo");
         DirectoryDescriptor b = DirectoryDescriptor.createDirectoryDescriptor("foo");
@@ -57,4 +57,5 @@ public class DirectoryDescriptorTest
         a.addChild(c);
         assertEquals("a not equal to b", true, a.equals(b));
     }
+
 }
