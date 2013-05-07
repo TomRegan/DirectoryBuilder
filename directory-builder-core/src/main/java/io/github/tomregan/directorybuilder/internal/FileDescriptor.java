@@ -69,4 +69,19 @@ public class FileDescriptor implements IDescriptor
         return name;
     }
 
+    @Override
+    public boolean equals(Object o)
+    {
+        if (super.equals(0))
+        {
+            return true;
+        }
+        if (!(getClass() == o.getClass()))
+        {
+            return false;
+        }
+        FileDescriptor that = (FileDescriptor) o;
+        return name.equals(that.name) && template.getAbsolutePath().equals(that.template.getAbsolutePath());
+    }
+
 }
