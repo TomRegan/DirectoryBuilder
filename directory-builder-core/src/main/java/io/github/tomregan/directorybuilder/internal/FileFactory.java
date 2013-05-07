@@ -14,28 +14,24 @@
  * limitations under the License.
  */
 
-package io.github.tomregan;
+package io.github.tomregan.directorybuilder.internal;
 
-import io.github.tomregan.internal.DirectoryDescriptor;
-import io.github.tomregan.internal.IDescriptor;
+import java.io.File;
 
-import java.util.List;
-
-public class DescriptorGenerator
+public class FileFactory
 {
-    private static IDescriptor[] descriptors;
-
-    public IDescriptor[] getDescriptors(List<String> lines)
+    public static FileFactory createFileFactory()
     {
-        if (lines.get(0).equals("<>nonsense<>"))
-        {
-            throw new RuntimeException();
-        }
-        return new IDescriptor[]{DirectoryDescriptor.createDirectoryDescriptor("test")};
+        return new FileFactory();
     }
 
-    public static DescriptorGenerator createDescriptorGenerator()
+    public File createFile(File parentDirectory, String name)
     {
-        return new DescriptorGenerator();
+        return new File(parentDirectory, name);
+    }
+
+    public File createFile(File template, File parentDirectory, String name, FileDescriptor delegate)
+    {
+        return new TemplateFile(template, parentDirectory, name, delegate);
     }
 }

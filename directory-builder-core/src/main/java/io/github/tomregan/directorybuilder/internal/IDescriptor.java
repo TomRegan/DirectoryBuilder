@@ -14,19 +14,12 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.internal;
-
-import org.junit.Test;
+package io.github.tomregan.directorybuilder.internal;
 
 import java.io.File;
+import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-
-public class FileDescriptorTest
+public interface IDescriptor
 {
-    @Test
-    public void testGetClassName() throws Exception
-    {
-        assertEquals("name was not FileDescriptor", "FileDescriptor", FileDescriptor.createFileDescriptor(new File(""), "foo.txt").getClassName());
-    }
+    void create(File parentDirectory) throws IOException;
 }

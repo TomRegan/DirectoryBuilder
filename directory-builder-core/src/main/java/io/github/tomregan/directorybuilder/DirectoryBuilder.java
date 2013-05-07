@@ -14,12 +14,33 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.internal;
+package io.github.tomregan.directorybuilder;
+
+
+import io.github.tomregan.directorybuilder.internal.IDescriptor;
 
 import java.io.File;
 import java.io.IOException;
 
-public interface IDescriptor
+public class DirectoryBuilder
 {
-    void create(File parentDirectory) throws IOException;
+    private final File rootDirectory;
+
+    private DirectoryBuilder(File rootDirectory)
+    {
+        this.rootDirectory = rootDirectory;
+    }
+
+    public static DirectoryBuilder createDirectoryBuilder(File rootDirectory)
+    {
+        return new DirectoryBuilder(rootDirectory);
+    }
+
+    public void createDirectoryStructure(IDescriptor... descriptors) throws IOException
+    {
+        for (IDescriptor descriptor : descriptors)
+        {
+            descriptor.create(rootDirectory);
+        }
+    }
 }

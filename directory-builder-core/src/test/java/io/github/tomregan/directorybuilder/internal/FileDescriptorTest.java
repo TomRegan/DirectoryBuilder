@@ -14,24 +14,19 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.internal;
+package io.github.tomregan.directorybuilder.internal;
+
+import org.junit.Test;
 
 import java.io.File;
 
-public class FileFactory
+import static org.junit.Assert.assertEquals;
+
+public class FileDescriptorTest
 {
-    public static FileFactory createFileFactory()
+    @Test
+    public void testGetClassName() throws Exception
     {
-        return new FileFactory();
-    }
-
-    public File createFile(File parentDirectory, String name)
-    {
-        return new File(parentDirectory, name);
-    }
-
-    public File createFile(File template, File parentDirectory, String name, FileDescriptor delegate)
-    {
-        return new TemplateFile(template, parentDirectory, name, delegate);
+        assertEquals("name was not FileDescriptor", "FileDescriptor", FileDescriptor.createFileDescriptor(new File(""), "foo.txt").getClassName());
     }
 }
