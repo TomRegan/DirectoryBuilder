@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder;
+package io.github.tomregan.directorybuilder.impl;
 
-import io.github.tomregan.directorybuilder.internal.DirectoryDescriptor;
-import io.github.tomregan.directorybuilder.internal.FileDescriptor;
-import io.github.tomregan.directorybuilder.internal.IDescriptor;
-import org.xml.sax.*;
+import io.github.tomregan.directorybuilder.Descriptor;
+import io.github.tomregan.directorybuilder.XmlDirectoryDescriptorReader;
+import org.xml.sax.Attributes;
+import org.xml.sax.Locator;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -28,27 +30,29 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class DescriptorGenerator implements ContentHandler
+public class XmlDirectoryDescriptorReaderImpl implements XmlDirectoryDescriptorReader
 {
-    private IDescriptor[] descriptors;
+    private Descriptor[] descriptors;
+    private final XMLReader xmlReader;
 
-    private DescriptorGenerator(File input) throws ParserConfigurationException, SAXException, IOException
+    private XmlDirectoryDescriptorReaderImpl() throws ParserConfigurationException, SAXException
     {
         SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
         saxParserFactory.setNamespaceAware(true);
         SAXParser saxParser = saxParserFactory.newSAXParser();
-        XMLReader xmlReader = saxParser.getXMLReader();
+        xmlReader = saxParser.getXMLReader();
         xmlReader.setContentHandler(this);
-        xmlReader.parse(input.getPath());
     }
 
-    public static DescriptorGenerator createDescriptorGenerator(File input) throws ParserConfigurationException, SAXException, IOException
+    public static XmlDirectoryDescriptorReader newReaderInstance() throws ParserConfigurationException, SAXException
     {
-        return new DescriptorGenerator(input);
+        return new XmlDirectoryDescriptorReaderImpl();
     }
 
-    public IDescriptor[] getDescriptors()
+    @Override
+    public Descriptor[] getDescriptors(File directoryStructureXML) throws IOException, SAXException
     {
+        xmlReader.parse(directoryStructureXML.getPath());
         return descriptors;
     }
 
@@ -88,7 +92,7 @@ public class DescriptorGenerator implements ContentHandler
         }
         else
         {
-            descriptors = new IDescriptor[]{DirectoryDescriptor.createDirectoryDescriptor("test")};
+            descriptors = new Descriptor[]{DirectoryDescriptor.createDirectoryDescriptor("test")};
         }
     }
 

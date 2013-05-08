@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.internal;
+package io.github.tomregan.directorybuilder.impl;
+
+import io.github.tomregan.directorybuilder.Descriptor;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DirectoryDescriptor implements IDescriptor
+public class DirectoryDescriptor implements Descriptor
 {
     private final FileFactory fileFactory;
     private final String name;
-    private List<IDescriptor> children;
+    private List<Descriptor> children;
 
     private DirectoryDescriptor(String name)
     {
@@ -50,11 +52,11 @@ public class DirectoryDescriptor implements IDescriptor
         return new DirectoryDescriptor(name, fileFactory);
     }
 
-    public void addChild(IDescriptor descriptor)
+    public void addChild(Descriptor descriptor)
     {
         if (!hasChildren())
         {
-            children = new ArrayList<IDescriptor>();
+            children = new ArrayList<Descriptor>();
         }
         children.add(descriptor);
     }
@@ -68,7 +70,7 @@ public class DirectoryDescriptor implements IDescriptor
         }
         if (hasChildren())
         {
-            for (IDescriptor child : children)
+            for (Descriptor child : children)
             {
                 child.create(currentDirectory);
             }

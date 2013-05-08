@@ -16,9 +16,9 @@
 
 package io.github.tomregan.directorybuilder;
 
-import io.github.tomregan.directorybuilder.internal.DirectoryDescriptor;
-import io.github.tomregan.directorybuilder.internal.FileDescriptor;
-import io.github.tomregan.directorybuilder.internal.IDescriptor;
+import io.github.tomregan.directorybuilder.impl.DirectoryDescriptor;
+import io.github.tomregan.directorybuilder.impl.FileDescriptor;
+import io.github.tomregan.directorybuilder.impl.XmlDirectoryDescriptorReaderImpl;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -31,13 +31,13 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertArrayEquals;
 
-public class DescriptorGeneratorTest
+public class XmlDirectoryDescriptorReaderTest
 {
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
-    private DescriptorGenerator descriptorGenerator;
+    private XmlDirectoryDescriptorReader xmlDirectoryDescriptorReader;
 
     private File getInput(String filename)
     {
@@ -48,24 +48,25 @@ public class DescriptorGeneratorTest
     public void shouldCreateDirectoryDescriptorGivenValidDirectoryXML() throws IOException, SAXException, ParserConfigurationException
     {
         DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.createDirectoryDescriptor("test");
-        IDescriptor[] expected = {directoryDescriptor};
-        descriptorGenerator = DescriptorGenerator.createDescriptorGenerator(getInput("testDirectoryDescriptor.xml"));
-        assertArrayEquals("did not create DirectoryDescriptor", expected, descriptorGenerator.getDescriptors());
+        Descriptor[] expected = {directoryDescriptor};
+        xmlDirectoryDescriptorReader = XmlDirectoryDescriptorReaderImpl.newReaderInstance();
+        assertArrayEquals("did not create DirectoryDescriptor", expected, xmlDirectoryDescriptorReader.getDescriptors(getInput("testDirectoryDescriptor.xml")));
     }
 
     @Test
     public void shouldCreateFileDescriptorGivenValidFileXML() throws IOException, SAXException, ParserConfigurationException
     {
         FileDescriptor fileDescriptor = FileDescriptor.createFileDescriptor(new File("foo.template"), "foo.txt");
-        IDescriptor[] expected = {fileDescriptor};
-        descriptorGenerator = DescriptorGenerator.createDescriptorGenerator(getInput("testFileDescriptor.xml"));
-        assertArrayEquals("did not create FileDescriptor", expected, descriptorGenerator.getDescriptors());
+        Descriptor[] expected = {fileDescriptor};
+        xmlDirectoryDescriptorReader = XmlDirectoryDescriptorReaderImpl.newReaderInstance();
+        assertArrayEquals("did not create FileDescriptor", expected, xmlDirectoryDescriptorReader.getDescriptors(getInput("testFileDescriptor.xml")));
     }
 
     @Test
     public void shouldThrowExceptionGivenInvalidXML() throws IOException, SAXException, ParserConfigurationException
     {
+        xmlDirectoryDescriptorReader = XmlDirectoryDescriptorReaderImpl.newReaderInstance();
         exception.expect(SAXParseException.class);
-        descriptorGenerator = DescriptorGenerator.createDescriptorGenerator(getInput("invalid.txt"));
+        xmlDirectoryDescriptorReader.getDescriptors(getInput("invalid.txt"));
     }
 }

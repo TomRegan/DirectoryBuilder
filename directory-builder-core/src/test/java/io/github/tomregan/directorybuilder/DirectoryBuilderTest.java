@@ -17,9 +17,10 @@
 package io.github.tomregan.directorybuilder;
 
 import com.google.common.io.Files;
-import io.github.tomregan.directorybuilder.internal.DirectoryDescriptor;
-import io.github.tomregan.directorybuilder.internal.FileDescriptor;
-import io.github.tomregan.directorybuilder.internal.FileFactory;
+import io.github.tomregan.directorybuilder.impl.DirectoryBuilderImpl;
+import io.github.tomregan.directorybuilder.impl.DirectoryDescriptor;
+import io.github.tomregan.directorybuilder.impl.FileDescriptor;
+import io.github.tomregan.directorybuilder.impl.FileFactory;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -74,7 +75,7 @@ public class DirectoryBuilderTest
     public void setUp() throws Exception
     {
         rootDirectory = Files.createTempDir();
-        directoryBuilder = DirectoryBuilder.createDirectoryBuilder(rootDirectory);
+        directoryBuilder = DirectoryBuilderImpl.createDirectoryBuilder(rootDirectory);
         File mockFile = mock(File.class);
         when(mockFile.createNewFile()).thenReturn(false);
         mockFileFactory = mock(FileFactory.class);

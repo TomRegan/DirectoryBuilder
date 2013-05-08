@@ -16,9 +16,13 @@
 
 package io.github.tomregan.directorybuilder;
 
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
+
+import java.io.File;
 import java.io.IOException;
 
-public interface DirectoryBuilder
+public interface XmlDirectoryDescriptorReader extends ContentHandler
 {
-    void createDirectoryStructure(Descriptor... descriptors) throws IOException;
+    Descriptor[] getDescriptors(File directoryStructureXML) throws IOException, SAXException;
 }

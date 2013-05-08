@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.internal;
+package io.github.tomregan.directorybuilder.impl;
+
+import io.github.tomregan.directorybuilder.Descriptor;
 
 import java.io.File;
 import java.io.IOException;
 
-public class FileDescriptor implements IDescriptor
+public class FileDescriptor implements Descriptor
 {
     private final FileFactory fileFactory;
     private final String name;
@@ -63,7 +65,6 @@ public class FileDescriptor implements IDescriptor
         return getClass().getSimpleName();
     }
 
-    @SuppressWarnings("unused") // used in template
     public String getName()
     {
         return name;

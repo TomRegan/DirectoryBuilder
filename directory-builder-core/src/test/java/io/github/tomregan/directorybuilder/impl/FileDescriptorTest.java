@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.internal;
+package io.github.tomregan.directorybuilder.impl;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -73,5 +73,13 @@ public class FileDescriptorTest
         FileDescriptor c = FileDescriptor.createFileDescriptor(new File("a.template"), "a.txt");
         assertFalse("a equal to b", a.equals(b));
         assertEquals("b not equal to c", b, c);
+    }
+
+    @Test
+    public void testGetters()
+    {
+        FileDescriptor fileDescriptor = FileDescriptor.createFileDescriptor(template, "SomeName.txt");
+        // getName is only used in the test template, so it's not excercised by other tests
+        assertEquals("getter did not return name", "SomeName.txt", fileDescriptor.getName());
     }
 }
