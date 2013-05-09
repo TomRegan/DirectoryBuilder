@@ -17,10 +17,10 @@
 package io.github.tomregan.directorybuilder;
 
 import com.google.common.io.Files;
-import io.github.tomregan.directorybuilder.impl.DirectoryBuilderImpl;
-import io.github.tomregan.directorybuilder.impl.DirectoryDescriptor;
-import io.github.tomregan.directorybuilder.impl.FileDescriptor;
-import io.github.tomregan.directorybuilder.impl.FileFactory;
+import io.github.tomregan.directorybuilder.internal.DirectoryBuilderImpl;
+import io.github.tomregan.directorybuilder.internal.DirectoryDescriptor;
+import io.github.tomregan.directorybuilder.internal.FileDescriptor;
+import io.github.tomregan.directorybuilder.internal.FileFactory;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -56,7 +56,8 @@ public class DirectoryBuilderTest
             DirectoryDescriptor lastDirectory = null;
             for (String directory : branch)
             {
-                DirectoryDescriptor newDirectory = DirectoryDescriptor.createDirectoryDescriptor(directory);
+                DirectoryDescriptor newDirectory = DirectoryDescriptor.newInstance();
+                newDirectory.setName(directory);
                 if (lastDirectory == null)
                 {
                     descriptors.add(newDirectory);
@@ -75,7 +76,7 @@ public class DirectoryBuilderTest
     public void setUp() throws Exception
     {
         rootDirectory = Files.createTempDir();
-        directoryBuilder = DirectoryBuilderImpl.createDirectoryBuilder(rootDirectory);
+        directoryBuilder = DirectoryBuilderImpl.newInstance(rootDirectory);
         File mockFile = mock(File.class);
         when(mockFile.createNewFile()).thenReturn(false);
         mockFileFactory = mock(FileFactory.class);
@@ -108,15 +109,20 @@ public class DirectoryBuilderTest
     @Test
     public void shouldCreateArbitraryDirectoryStructureGivenDescriptor() throws IOException
     {
-        DirectoryDescriptor a = DirectoryDescriptor.createDirectoryDescriptor("a");
-        DirectoryDescriptor b = DirectoryDescriptor.createDirectoryDescriptor("b");
-        DirectoryDescriptor c = DirectoryDescriptor.createDirectoryDescriptor("c");
-        DirectoryDescriptor d = DirectoryDescriptor.createDirectoryDescriptor("d");
-        DirectoryDescriptor e = DirectoryDescriptor.createDirectoryDescriptor("e");
+        DirectoryDescriptor a = DirectoryDescriptor.newInstance();
+        DirectoryDescriptor b = DirectoryDescriptor.newInstance();
+        DirectoryDescriptor c = DirectoryDescriptor.newInstance();
+        DirectoryDescriptor d = DirectoryDescriptor.newInstance();
+        DirectoryDescriptor e = DirectoryDescriptor.newInstance();
         a.addChild(b);
         b.addChild(c);
         b.addChild(d);
         d.addChild(e);
+        a.setName("a");
+        b.setName("b");
+        c.setName("c");
+        d.setName("d");
+        e.setName("e");
         directoryBuilder.createDirectoryStructure(a);
         assertEquals("did not create branch a/", true, new File(rootDirectory, "a/").isDirectory());
         assertEquals("did not create branch a/b", true, new File(rootDirectory, "a/b").isDirectory());
@@ -128,7 +134,8 @@ public class DirectoryBuilderTest
     @Test
     public void shouldThrowExceptionWhenMakeDirectoryFails() throws IOException
     {
-        DirectoryDescriptor descriptor = DirectoryDescriptor.createDirectoryDescriptor("CrashTestDummy", mockFileFactory);
+        DirectoryDescriptor descriptor = DirectoryDescriptor.newInstance(mockFileFactory);
+        descriptor.setName("CrashTestDummy");
         exception.expect(IOException.class);
         directoryBuilder.createDirectoryStructure(descriptor);
     }
@@ -136,7 +143,8 @@ public class DirectoryBuilderTest
     @Test
     public void shouldCreateFileGivenDescriptor() throws IOException
     {
-        FileDescriptor fileDescriptor = FileDescriptor.createFileDescriptor(template, "foo.txt");
+        FileDescriptor fileDescriptor = FileDescriptor.newInstance(template);
+        fileDescriptor.setName("foo.txt");
         directoryBuilder.createDirectoryStructure(fileDescriptor);
         assertEquals("did not create foo.txt", true, new File(rootDirectory, "foo.txt").isFile());
     }
@@ -144,9 +152,12 @@ public class DirectoryBuilderTest
     @Test
     public void shouldHandleNestingFilesInsideDirectories() throws IOException
     {
-        DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.createDirectoryDescriptor("foo");
-        FileDescriptor spam = FileDescriptor.createFileDescriptor(template, "spam.txt");
-        FileDescriptor eggs = FileDescriptor.createFileDescriptor(template, "eggs.txt");
+        DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.newInstance();
+        FileDescriptor spam = FileDescriptor.newInstance(template);
+        FileDescriptor eggs = FileDescriptor.newInstance(template);
+        directoryDescriptor.setName("foo");
+        spam.setName("spam.txt");
+        eggs.setName("eggs.txt");
         directoryDescriptor.addChild(spam);
         directoryDescriptor.addChild(eggs);
         directoryBuilder.createDirectoryStructure(directoryDescriptor);
@@ -158,7 +169,8 @@ public class DirectoryBuilderTest
     @Test
     public void shouldThrowExceptionWhenCreateFileFails() throws IOException
     {
-        FileDescriptor fileDescriptor = FileDescriptor.createFileDescriptor(template, "CrashTextDummy.txt", mockFileFactory);
+        FileDescriptor fileDescriptor = FileDescriptor.newInstance(template, mockFileFactory);
+        fileDescriptor.setName("CrashTestDummy.txt");
         exception.expect(IOException.class);
         directoryBuilder.createDirectoryStructure(fileDescriptor);
     }
@@ -169,7 +181,8 @@ public class DirectoryBuilderTest
         List<String> expected = new ArrayList<String>();
         expected.add("// foo.txt");
         expected.add("ohai wurld xxx");
-        FileDescriptor fileDescriptor = FileDescriptor.createFileDescriptor(template, "foo.txt");
+        FileDescriptor fileDescriptor = FileDescriptor.newInstance(template);
+        fileDescriptor.setName("foo.txt");
         directoryBuilder.createDirectoryStructure(fileDescriptor);
         List<String> actual = Files.readLines(new File(rootDirectory, "foo.txt"), Charset.defaultCharset());
         assertEquals("foo.txt did not contain the expected contents", expected, actual);

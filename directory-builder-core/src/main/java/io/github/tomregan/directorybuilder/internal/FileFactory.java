@@ -14,14 +14,24 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder;
+package io.github.tomregan.directorybuilder.internal;
 
 import java.io.File;
-import java.io.IOException;
 
-public interface Descriptor
+public class FileFactory
 {
-    void create(File parentDirectory) throws IOException;
+    public static FileFactory createFileFactory()
+    {
+        return new FileFactory();
+    }
 
-    void setName(String name);
+    public File createFile(File parentDirectory, String name)
+    {
+        return new File(parentDirectory, name);
+    }
+
+    public File createFile(File template, File parentDirectory, String name, FileDescriptor delegate)
+    {
+        return new TemplateFile(template, parentDirectory, name, delegate);
+    }
 }

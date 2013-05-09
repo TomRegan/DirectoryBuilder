@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.impl;
+package io.github.tomregan.directorybuilder.internal;
 
 import io.github.tomregan.directorybuilder.Descriptor;
 
@@ -26,30 +26,28 @@ import java.util.List;
 public class DirectoryDescriptor implements Descriptor
 {
     private final FileFactory fileFactory;
-    private final String name;
+    private String name;
     private List<Descriptor> children;
 
-    private DirectoryDescriptor(String name)
+    private DirectoryDescriptor()
     {
         this.fileFactory = FileFactory.createFileFactory();
-        this.name = name;
     }
 
-    private DirectoryDescriptor(String name, FileFactory fileFactory)
+    private DirectoryDescriptor(FileFactory fileFactory)
     {
         this.fileFactory = fileFactory;
-        this.name = name;
     }
 
-    public static DirectoryDescriptor createDirectoryDescriptor(String name)
+    public static DirectoryDescriptor newInstance()
     {
-        return new DirectoryDescriptor(name);
+        return new DirectoryDescriptor();
     }
 
     @SuppressWarnings("SameParameterValue")
-    public static DirectoryDescriptor createDirectoryDescriptor(String name, FileFactory fileFactory)
+    public static DirectoryDescriptor newInstance(FileFactory fileFactory)
     {
-        return new DirectoryDescriptor(name, fileFactory);
+        return new DirectoryDescriptor(fileFactory);
     }
 
     public void addChild(Descriptor descriptor)
@@ -77,6 +75,12 @@ public class DirectoryDescriptor implements Descriptor
         }
     }
 
+    @Override
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
     private boolean hasChildren()
     {
         return children != null;
@@ -94,7 +98,11 @@ public class DirectoryDescriptor implements Descriptor
             return false;
         }
         DirectoryDescriptor that = (DirectoryDescriptor) o;
-        return !(hasChildren() ? !children.equals(that.children) : that.hasChildren()) && this.name.equals(that.name);
+        if (name != null ? !name.equals(that.name) : that.name != null)
+        {
+            return false;
+        }
+        return !(hasChildren() ? !children.equals(that.children) : that.hasChildren());
     }
 
 }

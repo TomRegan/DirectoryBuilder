@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.impl;
+package io.github.tomregan.directorybuilder.internal;
 
 import org.junit.Test;
 
@@ -25,22 +25,24 @@ public class DirectoryDescriptorTest
     @Test
     public void testObjectEquality()
     {
-        DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.createDirectoryDescriptor("foo");
+        DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.newInstance();
         assertEquals("DirectoryDescriptor not equal to itself", directoryDescriptor, directoryDescriptor);
     }
 
     @Test
     public void testEqualityOnName()
     {
-        DirectoryDescriptor a0 = DirectoryDescriptor.createDirectoryDescriptor("a");
-        DirectoryDescriptor a1 = DirectoryDescriptor.createDirectoryDescriptor("a");
+        DirectoryDescriptor a0 = DirectoryDescriptor.newInstance();
+        DirectoryDescriptor a1 = DirectoryDescriptor.newInstance();
+        a0.setName("a");
+        a1.setName("a");
         assertEquals("a0 not equal to a1", true, a0.equals(a1));
     }
 
     @Test
     public void testEqualityWithOtherObjects()
     {
-        DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.createDirectoryDescriptor("foo");
+        DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.newInstance();
         String string = "bar";
         //noinspection EqualsBetweenInconvertibleTypes
         assertEquals("did not identify inequality of DirectoryDescriptor and String", false, directoryDescriptor.equals(string));
@@ -49,9 +51,12 @@ public class DirectoryDescriptorTest
     @Test
     public void testEqualityWithChildren()
     {
-        DirectoryDescriptor a = DirectoryDescriptor.createDirectoryDescriptor("foo");
-        DirectoryDescriptor b = DirectoryDescriptor.createDirectoryDescriptor("foo");
-        DirectoryDescriptor c = DirectoryDescriptor.createDirectoryDescriptor("bar");
+        DirectoryDescriptor a = DirectoryDescriptor.newInstance();
+        DirectoryDescriptor b = DirectoryDescriptor.newInstance();
+        DirectoryDescriptor c = DirectoryDescriptor.newInstance();
+        a.setName("a");
+        b.setName("a");
+        c.setName("c");
         b.addChild(c);
         assertEquals("a equal to b", false, a.equals(b));
         a.addChild(c);

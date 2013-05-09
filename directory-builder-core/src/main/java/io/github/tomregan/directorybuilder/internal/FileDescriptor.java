@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.impl;
+package io.github.tomregan.directorybuilder.internal;
 
 import io.github.tomregan.directorybuilder.Descriptor;
 
@@ -24,30 +24,29 @@ import java.io.IOException;
 public class FileDescriptor implements Descriptor
 {
     private final FileFactory fileFactory;
-    private final String name;
+    private String name;
     private final File template;
 
-    private FileDescriptor(File template, String name, FileFactory fileFactory)
+    private FileDescriptor(File template, FileFactory fileFactory)
     {
         this.template = template;
         this.fileFactory = fileFactory;
-        this.name = name;
     }
 
-    private FileDescriptor(File template, String name)
+    private FileDescriptor(File template)
     {
-        this(template, name, FileFactory.createFileFactory());
+        this(template, FileFactory.createFileFactory());
     }
 
     @SuppressWarnings("SameParameterValue")
-    public static FileDescriptor createFileDescriptor(File template, String name, FileFactory fileFactory)
+    public static FileDescriptor newInstance(File template, FileFactory fileFactory)
     {
-        return new FileDescriptor(template, name, fileFactory);
+        return new FileDescriptor(template, fileFactory);
     }
 
-    public static FileDescriptor createFileDescriptor(File template, String name)
+    public static FileDescriptor newInstance(File template)
     {
-        return new FileDescriptor(template, name);
+        return new FileDescriptor(template);
     }
 
     @Override
@@ -58,6 +57,12 @@ public class FileDescriptor implements Descriptor
         {
             throw new IOException("could not create " + file.getAbsolutePath());
         }
+    }
+
+    @Override
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
     public String getClassName()
@@ -82,7 +87,11 @@ public class FileDescriptor implements Descriptor
             return false;
         }
         FileDescriptor that = (FileDescriptor) o;
-        return name.equals(that.name) && template.getAbsolutePath().equals(that.template.getAbsolutePath());
+        if (name != null ? !name.equals(that.name) : that.name != null)
+        {
+            return false;
+        }
+        return template.getAbsolutePath().equals(that.template.getAbsolutePath());
     }
 
 }

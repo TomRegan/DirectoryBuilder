@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.impl;
+package io.github.tomregan.directorybuilder.internal;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;

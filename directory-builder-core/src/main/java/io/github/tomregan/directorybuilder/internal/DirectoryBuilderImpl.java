@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.impl;
+package io.github.tomregan.directorybuilder.internal;
 
 
 import io.github.tomregan.directorybuilder.Descriptor;
@@ -32,7 +32,7 @@ public class DirectoryBuilderImpl implements DirectoryBuilder
         this.rootDirectory = rootDirectory;
     }
 
-    public static DirectoryBuilder createDirectoryBuilder(File rootDirectory)
+    public static DirectoryBuilder newInstance(File rootDirectory)
     {
         return new DirectoryBuilderImpl(rootDirectory);
     }

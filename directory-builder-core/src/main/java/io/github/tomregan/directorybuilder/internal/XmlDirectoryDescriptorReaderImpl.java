@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.impl;
+package io.github.tomregan.directorybuilder.internal;
 
 import io.github.tomregan.directorybuilder.Descriptor;
 import io.github.tomregan.directorybuilder.XmlDirectoryDescriptorReader;
@@ -32,11 +32,13 @@ import java.io.IOException;
 
 public class XmlDirectoryDescriptorReaderImpl implements XmlDirectoryDescriptorReader
 {
+    private final DescriptorFactory descriptorFactory;
     private Descriptor[] descriptors;
     private final XMLReader xmlReader;
 
-    private XmlDirectoryDescriptorReaderImpl() throws ParserConfigurationException, SAXException
+    private XmlDirectoryDescriptorReaderImpl(DescriptorFactory descriptorFactory) throws ParserConfigurationException, SAXException
     {
+        this.descriptorFactory = descriptorFactory;
         SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
         saxParserFactory.setNamespaceAware(true);
         SAXParser saxParser = saxParserFactory.newSAXParser();
@@ -44,9 +46,9 @@ public class XmlDirectoryDescriptorReaderImpl implements XmlDirectoryDescriptorR
         xmlReader.setContentHandler(this);
     }
 
-    public static XmlDirectoryDescriptorReader newReaderInstance() throws ParserConfigurationException, SAXException
+    public static XmlDirectoryDescriptorReader newInstance(DescriptorFactory descriptorFactory) throws ParserConfigurationException, SAXException
     {
-        return new XmlDirectoryDescriptorReaderImpl();
+        return new XmlDirectoryDescriptorReaderImpl(descriptorFactory);
     }
 
     @Override
@@ -84,15 +86,10 @@ public class XmlDirectoryDescriptorReaderImpl implements XmlDirectoryDescriptorR
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
     {
-        if (qName.equalsIgnoreCase("file"))
+        Descriptor descriptor = descriptorFactory.getDescriptorForElement(qName);
+        if (descriptor != null)
         {
-            String template = attributes.getValue("template");
-            String name = attributes.getValue("name");
-            descriptors = new FileDescriptor[]{FileDescriptor.createFileDescriptor(new File(template), name)};
-        }
-        else
-        {
-            descriptors = new Descriptor[]{DirectoryDescriptor.createDirectoryDescriptor("test")};
+            descriptors = new Descriptor[]{descriptor};
         }
     }
 

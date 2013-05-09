@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.impl;
+package io.github.tomregan.directorybuilder.internal;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,22 +38,26 @@ public class FileDescriptorTest
     @Test
     public void testGetClassName() throws Exception
     {
-        assertEquals("name was not FileDescriptor", "FileDescriptor", FileDescriptor.createFileDescriptor(template, "foo.txt").getClassName());
+        assertEquals("name was not FileDescriptor", "FileDescriptor", FileDescriptor.newInstance(template).getClassName());
     }
 
     @Test
     public void testEqualsDetectsIdentity()
     {
-        FileDescriptor a = FileDescriptor.createFileDescriptor(template, "a.txt");
+        FileDescriptor a = FileDescriptor.newInstance(template);
+        a.setName("a.txt");
         assertEquals("a not equal to a", a, a);
     }
 
     @Test
     public void testEqualsSelectsOnName()
     {
-        FileDescriptor a = FileDescriptor.createFileDescriptor(template, "a.txt");
-        FileDescriptor b = FileDescriptor.createFileDescriptor(template, "a.txt");
-        FileDescriptor c = FileDescriptor.createFileDescriptor(template, "c.txt");
+        FileDescriptor a = FileDescriptor.newInstance(template);
+        a.setName("a.txt");
+        FileDescriptor b = FileDescriptor.newInstance(template);
+        b.setName("a.txt");
+        FileDescriptor c = FileDescriptor.newInstance(template);
+        c.setName("c.txt");
         assertEquals("a not equal to b", a, b);
         assertFalse("a equal to c", a.equals(c));
     }
@@ -62,15 +66,18 @@ public class FileDescriptorTest
     public void testEqualsDetectsDifferentClasses()
     {
         //noinspection EqualsBetweenInconvertibleTypes
-        assertFalse("FileDescriptor equal to String", FileDescriptor.createFileDescriptor(template, "a.txt").equals(""));
+        assertFalse("FileDescriptor equal to String", FileDescriptor.newInstance(template).equals(""));
     }
 
     @Test
     public void testEqualsSelectsOnTemplate()
     {
-        FileDescriptor a = FileDescriptor.createFileDescriptor(template, "a.txt");
-        FileDescriptor b = FileDescriptor.createFileDescriptor(new File("a.template"), "a.txt");
-        FileDescriptor c = FileDescriptor.createFileDescriptor(new File("a.template"), "a.txt");
+        FileDescriptor a = FileDescriptor.newInstance(template);
+        a.setName("a.txt");
+        FileDescriptor b = FileDescriptor.newInstance(new File("a.template"));
+        b.setName("a.txt");
+        FileDescriptor c = FileDescriptor.newInstance(new File("a.template"));
+        c.setName("a.txt");
         assertFalse("a equal to b", a.equals(b));
         assertEquals("b not equal to c", b, c);
     }
@@ -78,7 +85,8 @@ public class FileDescriptorTest
     @Test
     public void testGetters()
     {
-        FileDescriptor fileDescriptor = FileDescriptor.createFileDescriptor(template, "SomeName.txt");
+        FileDescriptor fileDescriptor = FileDescriptor.newInstance(template);
+        fileDescriptor.setName("SomeName.txt");
         // getName is only used in the test template, so it's not excercised by other tests
         assertEquals("getter did not return name", "SomeName.txt", fileDescriptor.getName());
     }
