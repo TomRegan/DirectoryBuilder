@@ -18,8 +18,6 @@ package io.github.tomregan.directorybuilder.internal;
 
 import io.github.tomregan.directorybuilder.Descriptor;
 
-import java.io.File;
-
 public class DescriptorFactory
 {
     private DescriptorFactory()
@@ -40,7 +38,7 @@ public class DescriptorFactory
         }
         else if (element.equals("file"))
         {
-            result = FileDescriptor.newInstance(new File(""));
+            result = FileDescriptor.newInstance();
         }
         return result;
     }

@@ -35,7 +35,7 @@ public class DescriptorFactoryTest
     @Test
     public void testNewInstanceReturnsDescriptorFactory()
     {
-        assertThat("did not return desciprtor factory", DescriptorFactory.newInstance(), instanceOf(DescriptorFactory.class));
+        assertThat("did not return DescriptorFactory", DescriptorFactory.newInstance(), instanceOf(DescriptorFactory.class));
     }
 
     @Test

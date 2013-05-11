@@ -20,7 +20,7 @@ import java.io.File;
 
 public class FileFactory
 {
-    public static FileFactory createFileFactory()
+    public static FileFactory newInstance()
     {
         return new FileFactory();
     }

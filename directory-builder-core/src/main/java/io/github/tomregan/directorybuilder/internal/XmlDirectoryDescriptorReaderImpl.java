@@ -28,13 +28,16 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class XmlDirectoryDescriptorReaderImpl implements XmlDirectoryDescriptorReader
 {
     private final DescriptorFactory descriptorFactory;
-    private Descriptor[] descriptors;
+    private List<Descriptor> descriptorStack = new ArrayList<Descriptor>();
     private final XMLReader xmlReader;
+    private int depth;
 
     private XmlDirectoryDescriptorReaderImpl(DescriptorFactory descriptorFactory) throws ParserConfigurationException, SAXException
     {
@@ -55,7 +58,7 @@ public class XmlDirectoryDescriptorReaderImpl implements XmlDirectoryDescriptorR
     public Descriptor[] getDescriptors(File directoryStructureXML) throws IOException, SAXException
     {
         xmlReader.parse(directoryStructureXML.getPath());
-        return descriptors;
+        return descriptorStack.toArray(new Descriptor[descriptorStack.size()]);
     }
 
     @Override
@@ -89,13 +92,34 @@ public class XmlDirectoryDescriptorReaderImpl implements XmlDirectoryDescriptorR
         Descriptor descriptor = descriptorFactory.getDescriptorForElement(qName);
         if (descriptor != null)
         {
-            descriptors = new Descriptor[]{descriptor};
+            depth++;
+            descriptor.setProperty("name", attributes.getValue("name"));
+            String template = attributes.getValue("template");
+            if (template != null)
+            {
+                descriptor.setProperty("template", template);
+            }
+            addChild(descriptor);
+            descriptorStack.add(descriptor);
+        }
+    }
+
+    private void addChild(Descriptor descriptor)
+    {
+        if (descriptorStack.size() > 0)
+        {
+            descriptorStack.get(descriptorStack.size() - 1).addChild(descriptor);
         }
     }
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException
     {
+        if (depth > 1)
+        {
+            descriptorStack.remove(descriptorStack.size() - 1);
+        }
+        depth--;
     }
 
     @Override

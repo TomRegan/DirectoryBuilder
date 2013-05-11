@@ -18,10 +18,15 @@ package io.github.tomregan.directorybuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Properties;
 
 public interface Descriptor
 {
     void create(File parentDirectory) throws IOException;
 
-    void setName(String name);
+    void addChild(Descriptor descriptor);
+
+    void setProperty(String name, String value);
+
+    public Properties getProperties();
 }

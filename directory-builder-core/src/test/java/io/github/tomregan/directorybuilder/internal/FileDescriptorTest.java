@@ -19,45 +19,49 @@ package io.github.tomregan.directorybuilder.internal;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
+import java.util.Properties;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.*;
 
 public class FileDescriptorTest
 {
 
-    private File template;
+    private String template;
+
+    private FileDescriptor getFileDescriptor(String name, String template)
+    {
+        FileDescriptor fileDescriptor = FileDescriptor.newInstance();
+        fileDescriptor.setProperty("name", name);
+        fileDescriptor.setProperty("template", template);
+        return fileDescriptor;
+    }
 
     @Before
     public void setUp()
     {
-        template = new File("");
+        template = "";
     }
 
     @Test
     public void testGetClassName() throws Exception
     {
-        assertEquals("name was not FileDescriptor", "FileDescriptor", FileDescriptor.newInstance(template).getClassName());
+        assertEquals("name was not FileDescriptor", "FileDescriptor", FileDescriptor.newInstance().getClassName());
     }
 
     @Test
     public void testEqualsDetectsIdentity()
     {
-        FileDescriptor a = FileDescriptor.newInstance(template);
-        a.setName("a.txt");
+        FileDescriptor a = getFileDescriptor("a.txt", template);
         assertEquals("a not equal to a", a, a);
     }
 
     @Test
     public void testEqualsSelectsOnName()
     {
-        FileDescriptor a = FileDescriptor.newInstance(template);
-        a.setName("a.txt");
-        FileDescriptor b = FileDescriptor.newInstance(template);
-        b.setName("a.txt");
-        FileDescriptor c = FileDescriptor.newInstance(template);
-        c.setName("c.txt");
+        FileDescriptor a = getFileDescriptor("a.txt", template);
+        FileDescriptor b = getFileDescriptor("a.txt", template);
+        FileDescriptor c = getFileDescriptor("c.txt", template);
         assertEquals("a not equal to b", a, b);
         assertFalse("a equal to c", a.equals(c));
     }
@@ -65,19 +69,15 @@ public class FileDescriptorTest
     @Test
     public void testEqualsDetectsDifferentClasses()
     {
-        //noinspection EqualsBetweenInconvertibleTypes
-        assertFalse("FileDescriptor equal to String", FileDescriptor.newInstance(template).equals(""));
+        assertFalse("FileDescriptor equal to String", FileDescriptor.newInstance().equals(""));
     }
 
     @Test
     public void testEqualsSelectsOnTemplate()
     {
-        FileDescriptor a = FileDescriptor.newInstance(template);
-        a.setName("a.txt");
-        FileDescriptor b = FileDescriptor.newInstance(new File("a.template"));
-        b.setName("a.txt");
-        FileDescriptor c = FileDescriptor.newInstance(new File("a.template"));
-        c.setName("a.txt");
+        FileDescriptor a = getFileDescriptor("a.txt", template);
+        FileDescriptor b = getFileDescriptor("a.txt", "a.template");
+        FileDescriptor c = getFileDescriptor("a.txt", "a.template");
         assertFalse("a equal to b", a.equals(b));
         assertEquals("b not equal to c", b, c);
     }
@@ -85,9 +85,13 @@ public class FileDescriptorTest
     @Test
     public void testGetters()
     {
-        FileDescriptor fileDescriptor = FileDescriptor.newInstance(template);
-        fileDescriptor.setName("SomeName.txt");
-        // getName is only used in the test template, so it's not excercised by other tests
+        FileDescriptor fileDescriptor = getFileDescriptor("SomeName.txt", template);
+        // getName is only used in the test template, so it's not exercised by other tests
         assertEquals("getter did not return name", "SomeName.txt", fileDescriptor.getName());
+        assertThat("did not return properties object", fileDescriptor.getProperties(), instanceOf(java.util.Properties.class));
+        // I want to get a copy of the properties object, not a reference, so I can muck about with it
+        Properties p1 = fileDescriptor.getProperties();
+        Properties p2 = fileDescriptor.getProperties();
+        assertEquals("did not return unique properties object", false, p1 == p2);
     }
 }

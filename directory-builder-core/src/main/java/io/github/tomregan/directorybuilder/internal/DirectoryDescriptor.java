@@ -22,17 +22,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class DirectoryDescriptor implements Descriptor
 {
     private final FileFactory fileFactory;
     private String name;
     private List<Descriptor> children;
-
-    private DirectoryDescriptor()
-    {
-        this.fileFactory = FileFactory.createFileFactory();
-    }
 
     private DirectoryDescriptor(FileFactory fileFactory)
     {
@@ -41,15 +37,15 @@ public class DirectoryDescriptor implements Descriptor
 
     public static DirectoryDescriptor newInstance()
     {
-        return new DirectoryDescriptor();
+        return new DirectoryDescriptor(FileFactory.newInstance());
     }
 
-    @SuppressWarnings("SameParameterValue")
     public static DirectoryDescriptor newInstance(FileFactory fileFactory)
     {
         return new DirectoryDescriptor(fileFactory);
     }
 
+    @Override
     public void addChild(Descriptor descriptor)
     {
         if (!hasChildren())
@@ -59,6 +55,7 @@ public class DirectoryDescriptor implements Descriptor
         children.add(descriptor);
     }
 
+    @Override
     public void create(File parentDirectory) throws IOException
     {
         File currentDirectory = fileFactory.createFile(parentDirectory, name);
@@ -76,9 +73,17 @@ public class DirectoryDescriptor implements Descriptor
     }
 
     @Override
-    public void setName(String name)
+    public void setProperty(String name, String value)
     {
-        this.name = name;
+        this.name = value;
+    }
+
+    @Override
+    public Properties getProperties()
+    {
+        Properties properties = new Properties();
+        properties.setProperty("name", name);
+        return properties;
     }
 
     private boolean hasChildren()

@@ -20,38 +20,34 @@ import io.github.tomregan.directorybuilder.Descriptor;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Properties;
 
 public class FileDescriptor implements Descriptor
 {
     private final FileFactory fileFactory;
-    private String name;
-    private final File template;
+    private final Properties properties;
 
-    private FileDescriptor(File template, FileFactory fileFactory)
+    private FileDescriptor(FileFactory fileFactory)
     {
-        this.template = template;
         this.fileFactory = fileFactory;
+        properties = new Properties();
     }
 
-    private FileDescriptor(File template)
+    public static FileDescriptor newInstance(FileFactory fileFactory)
     {
-        this(template, FileFactory.createFileFactory());
+        return new FileDescriptor(fileFactory);
     }
 
-    @SuppressWarnings("SameParameterValue")
-    public static FileDescriptor newInstance(File template, FileFactory fileFactory)
+    public static FileDescriptor newInstance()
     {
-        return new FileDescriptor(template, fileFactory);
-    }
-
-    public static FileDescriptor newInstance(File template)
-    {
-        return new FileDescriptor(template);
+        return new FileDescriptor(FileFactory.newInstance());
     }
 
     @Override
     public void create(File parentDirectory) throws IOException
     {
+        String name = properties.getProperty("name");
+        File template = new File(properties.getProperty("template"));
         File file = fileFactory.createFile(template, parentDirectory, name, this);
         if (!file.createNewFile())
         {
@@ -60,19 +56,30 @@ public class FileDescriptor implements Descriptor
     }
 
     @Override
-    public void setName(String name)
+    public void addChild(Descriptor descriptor)
     {
-        this.name = name;
     }
 
-    public String getClassName()
+    @Override
+    public void setProperty(String name, String value)
+    {
+        properties.setProperty(name, value);
+    }
+
+    @Override
+    public Properties getProperties()
+    {
+        return new Properties(properties);
+    }
+
+    String getClassName()
     {
         return getClass().getSimpleName();
     }
 
     public String getName()
     {
-        return name;
+        return properties.getProperty("name");
     }
 
     @Override
@@ -87,11 +94,15 @@ public class FileDescriptor implements Descriptor
             return false;
         }
         FileDescriptor that = (FileDescriptor) o;
-        if (name != null ? !name.equals(that.name) : that.name != null)
+        String thisName = properties.getProperty("name");
+        String thatName = that.properties.getProperty("name");
+        if (thisName != null ? !thisName.equals(thatName) : thatName != null)
         {
             return false;
         }
-        return template.getAbsolutePath().equals(that.template.getAbsolutePath());
+        String thisTemplate = properties.getProperty("template");
+        String thatTemplate = that.properties.getProperty("template");
+        return thisTemplate != null && thisTemplate.equals(thatTemplate);
     }
 
 }

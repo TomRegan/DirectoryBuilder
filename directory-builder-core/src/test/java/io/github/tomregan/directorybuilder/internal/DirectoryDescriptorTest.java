@@ -34,8 +34,8 @@ public class DirectoryDescriptorTest
     {
         DirectoryDescriptor a0 = DirectoryDescriptor.newInstance();
         DirectoryDescriptor a1 = DirectoryDescriptor.newInstance();
-        a0.setName("a");
-        a1.setName("a");
+        a0.setProperty("name", "a");
+        a1.setProperty("name", "a");
         assertEquals("a0 not equal to a1", true, a0.equals(a1));
     }
 
@@ -54,9 +54,9 @@ public class DirectoryDescriptorTest
         DirectoryDescriptor a = DirectoryDescriptor.newInstance();
         DirectoryDescriptor b = DirectoryDescriptor.newInstance();
         DirectoryDescriptor c = DirectoryDescriptor.newInstance();
-        a.setName("a");
-        b.setName("a");
-        c.setName("c");
+        a.setProperty("name", "a");
+        b.setProperty("name", "a");
+        c.setProperty("name", "c");
         b.addChild(c);
         assertEquals("a equal to b", false, a.equals(b));
         a.addChild(c);

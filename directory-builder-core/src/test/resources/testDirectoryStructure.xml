@@ -1,0 +1,12 @@
+<directorystructure>
+    <directory name="src">
+        <directory name="main">
+            <directory name="java"/>
+        </directory>
+        <directory name="test">
+            <directory name="java"/>
+            <directory name="resources"/>
+        </directory>
+    </directory>
+    <directory name="bin"/>
+</directorystructure>
