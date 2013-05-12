@@ -17,8 +17,8 @@
 package io.github.tomregan.directorybuilder.internal;
 
 
-import io.github.tomregan.directorybuilder.Descriptor;
 import io.github.tomregan.directorybuilder.DirectoryBuilder;
+import io.github.tomregan.directorybuilder.descriptors.Descriptor;
 
 import java.io.File;
 import java.io.IOException;

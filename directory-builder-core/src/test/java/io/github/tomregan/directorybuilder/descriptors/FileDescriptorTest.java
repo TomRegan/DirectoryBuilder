@@ -14,11 +14,16 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.internal;
+package io.github.tomregan.directorybuilder.descriptors;
 
+import com.google.common.io.Files;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -28,6 +33,10 @@ public class FileDescriptorTest
 {
 
     private String template;
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+    private File rootDirectory;
 
     private FileDescriptor getFileDescriptor(String name, String template)
     {
@@ -40,7 +49,9 @@ public class FileDescriptorTest
     @Before
     public void setUp()
     {
-        template = "";
+        template = "src/test/resources/test.template";
+        rootDirectory = Files.createTempDir();
+
     }
 
     @Test
@@ -93,5 +104,13 @@ public class FileDescriptorTest
         Properties p1 = fileDescriptor.getProperties();
         Properties p2 = fileDescriptor.getProperties();
         assertEquals("did not return unique properties object", false, p1 == p2);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenTemplateMissing() throws IOException
+    {
+        FileDescriptor fileDescriptor = getFileDescriptor("Crash.txt", "nx-template");
+        exception.expect(IOException.class);
+        fileDescriptor.create(rootDirectory);
     }
 }

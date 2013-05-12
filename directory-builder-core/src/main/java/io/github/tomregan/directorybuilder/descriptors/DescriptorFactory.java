@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.internal;
-
-import io.github.tomregan.directorybuilder.Descriptor;
+package io.github.tomregan.directorybuilder.descriptors;
 
 public class DescriptorFactory
 {

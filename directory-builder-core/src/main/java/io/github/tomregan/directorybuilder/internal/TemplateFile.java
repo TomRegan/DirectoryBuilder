@@ -16,6 +16,7 @@
 
 package io.github.tomregan.directorybuilder.internal;
 
+import io.github.tomregan.directorybuilder.descriptors.FileDescriptor;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -52,7 +53,9 @@ class TemplateFile extends File
             }
             catch (Exception e)
             {
-                // to be substitutable, we have to ignore this exception
+                // to be substitutable, we would have to ignore this exception, but this hides any failure
+                // to load the template
+                throw new IOException(e.getMessage(), e);
             }
             finally
             {

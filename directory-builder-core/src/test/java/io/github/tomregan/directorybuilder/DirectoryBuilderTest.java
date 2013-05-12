@@ -17,15 +17,20 @@
 package io.github.tomregan.directorybuilder;
 
 import com.google.common.io.Files;
+import io.github.tomregan.directorybuilder.descriptors.Descriptor;
+import io.github.tomregan.directorybuilder.descriptors.DescriptorFactory;
+import io.github.tomregan.directorybuilder.descriptors.DirectoryDescriptor;
+import io.github.tomregan.directorybuilder.descriptors.FileDescriptor;
 import io.github.tomregan.directorybuilder.internal.DirectoryBuilderImpl;
-import io.github.tomregan.directorybuilder.internal.DirectoryDescriptor;
-import io.github.tomregan.directorybuilder.internal.FileDescriptor;
 import io.github.tomregan.directorybuilder.internal.FileFactory;
+import io.github.tomregan.directorybuilder.internal.XmlDirectoryDescriptorReaderImpl;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -191,6 +196,31 @@ public class DirectoryBuilderTest
         directoryBuilder.createDirectoryStructure(fileDescriptor);
         List<String> actual = Files.readLines(new File(rootDirectory, "foo.txt"), Charset.defaultCharset());
         assertEquals("foo.txt did not contain the expected contents", expected, actual);
+    }
+
+    private boolean isDirectory(String path)
+    {
+        return new File(rootDirectory, path).isDirectory();
+    }
+
+    @Test
+    public void shouldCreateMavenDirectoryStructure() throws ParserConfigurationException, SAXException, IOException
+    {
+        XmlDirectoryDescriptorReader reader = XmlDirectoryDescriptorReaderImpl.newInstance(DescriptorFactory.newInstance());
+        Descriptor[] descriptors = reader.getDescriptors(new File("src/test/resources/testDirectoryStructure.xml"));
+        DirectoryBuilder builder = DirectoryBuilderImpl.newInstance(rootDirectory);
+        builder.createDirectoryStructure(descriptors);
+
+        assertEquals("did not create 'src' directory", true, isDirectory("src"));
+        assertEquals("did not create 'main' directory", true, isDirectory("src/main"));
+        assertEquals("did not create 'java' directory", true, isDirectory("src/main/java"));
+        assertEquals("did not create 'test' directory", true, isDirectory("src/test"));
+        assertEquals("did not create 'java' directory", true, isDirectory("src/test/java"));
+        assertEquals("did not create 'resources' directory", true, isDirectory("src/test/resources"));
+        assertEquals("did not create 'bin' directory", true, isDirectory("bin"));
+
+        assertEquals("did not create 'test.java", true, new File(rootDirectory, "src/main/java/test.java").isFile());
+        assertEquals("did not create 'README.txt", true, new File(rootDirectory, "README.txt").isFile());
     }
 
 }

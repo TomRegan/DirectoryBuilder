@@ -14,19 +14,32 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder;
+package io.github.tomregan.directorybuilder.descriptors;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
-public interface Descriptor
+abstract public class Descriptor
 {
-    void create(File parentDirectory) throws IOException;
+    protected Properties properties;
 
-    void addChild(Descriptor descriptor);
+    protected Descriptor()
+    {
+        properties = new Properties();
+    }
 
-    void setProperty(String name, String value);
+    abstract public void create(File parentDirectory) throws IOException;
 
-    public Properties getProperties();
+    abstract public void addChild(Descriptor descriptor);
+
+    public void setProperty(String name, String value)
+    {
+        properties.setProperty(name, value);
+    }
+
+    public Properties getProperties()
+    {
+        return new Properties(properties);
+    }
 }

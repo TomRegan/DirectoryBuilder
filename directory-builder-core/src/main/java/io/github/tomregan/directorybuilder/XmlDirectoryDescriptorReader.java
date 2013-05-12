@@ -16,6 +16,7 @@
 
 package io.github.tomregan.directorybuilder;
 
+import io.github.tomregan.directorybuilder.descriptors.Descriptor;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 

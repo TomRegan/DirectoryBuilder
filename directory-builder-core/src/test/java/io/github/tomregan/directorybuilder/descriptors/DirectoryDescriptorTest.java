@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.internal;
+package io.github.tomregan.directorybuilder.descriptors;
 
 import org.junit.Test;
 

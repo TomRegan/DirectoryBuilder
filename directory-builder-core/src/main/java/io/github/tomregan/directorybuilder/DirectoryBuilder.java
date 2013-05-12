@@ -16,6 +16,8 @@
 
 package io.github.tomregan.directorybuilder;
 
+import io.github.tomregan.directorybuilder.descriptors.Descriptor;
+
 import java.io.IOException;
 
 public interface DirectoryBuilder

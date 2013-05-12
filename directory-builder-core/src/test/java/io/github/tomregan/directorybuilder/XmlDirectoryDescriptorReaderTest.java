@@ -16,9 +16,10 @@
 
 package io.github.tomregan.directorybuilder;
 
-import io.github.tomregan.directorybuilder.internal.DescriptorFactory;
-import io.github.tomregan.directorybuilder.internal.DirectoryDescriptor;
-import io.github.tomregan.directorybuilder.internal.FileDescriptor;
+import io.github.tomregan.directorybuilder.descriptors.Descriptor;
+import io.github.tomregan.directorybuilder.descriptors.DescriptorFactory;
+import io.github.tomregan.directorybuilder.descriptors.DirectoryDescriptor;
+import io.github.tomregan.directorybuilder.descriptors.FileDescriptor;
 import io.github.tomregan.directorybuilder.internal.XmlDirectoryDescriptorReaderImpl;
 import org.junit.Before;
 import org.junit.Rule;
@@ -90,6 +91,6 @@ public class XmlDirectoryDescriptorReaderTest
     public void shouldBuildDescriptorTree() throws IOException, SAXException
     {
         Descriptor[] actual = xmlDirectoryDescriptorReader.getDescriptors(getInput("testDirectoryStructure.xml"));
-        assertEquals("did not create 2 root directory descriptors", 2, actual.length);
+        assertEquals("did not create 3 root descriptors", 3, actual.length);
     }
 }

@@ -14,23 +14,20 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.internal;
+package io.github.tomregan.directorybuilder.descriptors;
 
-import io.github.tomregan.directorybuilder.Descriptor;
+import io.github.tomregan.directorybuilder.internal.FileFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Properties;
 
-public class FileDescriptor implements Descriptor
+public class FileDescriptor extends Descriptor
 {
     private final FileFactory fileFactory;
-    private final Properties properties;
 
     private FileDescriptor(FileFactory fileFactory)
     {
         this.fileFactory = fileFactory;
-        properties = new Properties();
     }
 
     public static FileDescriptor newInstance(FileFactory fileFactory)
@@ -58,21 +55,10 @@ public class FileDescriptor implements Descriptor
     @Override
     public void addChild(Descriptor descriptor)
     {
+        // currently do nothing, but maybe throw an illegal transition exception here?
     }
 
-    @Override
-    public void setProperty(String name, String value)
-    {
-        properties.setProperty(name, value);
-    }
-
-    @Override
-    public Properties getProperties()
-    {
-        return new Properties(properties);
-    }
-
-    String getClassName()
+    public String getClassName()
     {
         return getClass().getSimpleName();
     }
@@ -85,7 +71,7 @@ public class FileDescriptor implements Descriptor
     @Override
     public boolean equals(Object o)
     {
-        if (super.equals(0))
+        if (super.equals(o))
         {
             return true;
         }

@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.internal;
+package io.github.tomregan.directorybuilder.descriptors;
 
-import io.github.tomregan.directorybuilder.Descriptor;
+import io.github.tomregan.directorybuilder.internal.FileFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
-public class DirectoryDescriptor implements Descriptor
+public class DirectoryDescriptor extends Descriptor
 {
     private final FileFactory fileFactory;
-    private String name;
     private List<Descriptor> children;
 
     private DirectoryDescriptor(FileFactory fileFactory)
@@ -58,6 +56,7 @@ public class DirectoryDescriptor implements Descriptor
     @Override
     public void create(File parentDirectory) throws IOException
     {
+        String name = properties.getProperty("name");
         File currentDirectory = fileFactory.createFile(parentDirectory, name);
         if (!currentDirectory.mkdir())
         {
@@ -70,20 +69,6 @@ public class DirectoryDescriptor implements Descriptor
                 child.create(currentDirectory);
             }
         }
-    }
-
-    @Override
-    public void setProperty(String name, String value)
-    {
-        this.name = value;
-    }
-
-    @Override
-    public Properties getProperties()
-    {
-        Properties properties = new Properties();
-        properties.setProperty("name", name);
-        return properties;
     }
 
     private boolean hasChildren()
@@ -103,7 +88,9 @@ public class DirectoryDescriptor implements Descriptor
             return false;
         }
         DirectoryDescriptor that = (DirectoryDescriptor) o;
-        if (name != null ? !name.equals(that.name) : that.name != null)
+        String thisName = properties.getProperty("name");
+        String thatName = that.properties.getProperty("name");
+        if (thisName != null ? !thisName.equals(thatName) : thatName != null)
         {
             return false;
         }

@@ -16,8 +16,9 @@
 
 package io.github.tomregan.directorybuilder.internal;
 
-import io.github.tomregan.directorybuilder.Descriptor;
 import io.github.tomregan.directorybuilder.XmlDirectoryDescriptorReader;
+import io.github.tomregan.directorybuilder.descriptors.Descriptor;
+import io.github.tomregan.directorybuilder.descriptors.DescriptorFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -93,6 +94,7 @@ public class XmlDirectoryDescriptorReaderImpl implements XmlDirectoryDescriptorR
         if (descriptor != null)
         {
             depth++;
+            // TODO replace with iteration over the descriptor's properties
             descriptor.setProperty("name", attributes.getValue("name"));
             String template = attributes.getValue("template");
             if (template != null)

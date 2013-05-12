@@ -16,6 +16,8 @@
 
 package io.github.tomregan.directorybuilder.internal;
 
+import io.github.tomregan.directorybuilder.descriptors.FileDescriptor;
+
 import java.io.File;
 
 public class FileFactory
