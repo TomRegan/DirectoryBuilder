@@ -59,25 +59,25 @@ public class DirectoryDescriptorReaderTest
     public void shouldCreateDirectoryDescriptorGivenValidDirectoryXML() throws IOException, SAXException
     {
         DirectoryDescriptor foo = DirectoryDescriptor.newInstance();
-        foo.setProperty("name", "foo");
+        foo.setValueForAttribute("name", "foo");
         Descriptor[] expected = {foo};
         Descriptor[] actual = directoryDescriptorReader.getDescriptors(getInput("testDirectoryDescriptor.xml"));
         DirectoryDescriptor directoryDescriptor = (DirectoryDescriptor) actual[0];
         assertArrayEquals("did not create DirectoryDescriptor", expected, actual);
-        assertEquals("did not return name property", "foo", directoryDescriptor.getProperties().getProperty("name"));
+        assertEquals("did not return name property", "foo", directoryDescriptor.getValueForAttribute("name"));
     }
 
     @Test
     public void shouldCreateFileDescriptorGivenValidFileXML() throws IOException, SAXException
     {
         FileDescriptor foo = FileDescriptor.newInstance();
-        foo.setProperty("name", "foo.txt");
-        foo.setProperty("template", "foo.template");
+        foo.setValueForAttribute("name", "foo.txt");
+        foo.setValueForAttribute("template", "foo.template");
         Descriptor[] expected = {foo};
         Descriptor[] actual = directoryDescriptorReader.getDescriptors(getInput("testFileDescriptor.xml"));
         FileDescriptor fileDescriptor = (FileDescriptor) actual[0];
         assertArrayEquals("did not create FileDescriptor", expected, actual);
-        assertEquals("did not return 'name' property", "foo.txt", fileDescriptor.getProperties().getProperty("name"));
+        assertEquals("did not return 'name' property", "foo.txt", fileDescriptor.getValueForAttribute("name"));
     }
 
     @Test

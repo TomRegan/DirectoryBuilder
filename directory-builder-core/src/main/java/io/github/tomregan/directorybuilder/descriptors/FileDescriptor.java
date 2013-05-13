@@ -27,9 +27,10 @@ public class FileDescriptor extends Descriptor
 
     private FileDescriptor(FileFactory fileFactory)
     {
+        super("name", "template");
         this.fileFactory = fileFactory;
-        properties.put("name", "");
-        properties.put("template", "");
+//        properties.put("name", "");
+//        properties.put("template", "");
     }
 
     public static FileDescriptor newInstance(FileFactory fileFactory)

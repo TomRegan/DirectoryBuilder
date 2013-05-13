@@ -55,8 +55,8 @@ public class DirectoryBuilderTest
     private FileDescriptor getFileDescriptor(String name, String template)
     {
         FileDescriptor fileDescriptor = FileDescriptor.newInstance();
-        fileDescriptor.setProperty("name", name);
-        fileDescriptor.setProperty("template", template);
+        fileDescriptor.setValueForAttribute("name", name);
+        fileDescriptor.setValueForAttribute("template", template);
         return fileDescriptor;
     }
 
@@ -70,7 +70,7 @@ public class DirectoryBuilderTest
             for (String directory : branch)
             {
                 DirectoryDescriptor newDirectory = DirectoryDescriptor.newInstance();
-                newDirectory.setProperty("name", directory);
+                newDirectory.setValueForAttribute("name", directory);
                 if (lastDirectory == null)
                 {
                     descriptors.add(newDirectory);
@@ -131,11 +131,11 @@ public class DirectoryBuilderTest
         b.addChild(c);
         b.addChild(d);
         d.addChild(e);
-        a.setProperty("name", "a");
-        b.setProperty("name", "b");
-        c.setProperty("name", "c");
-        d.setProperty("name", "d");
-        e.setProperty("name", "e");
+        a.setValueForAttribute("name", "a");
+        b.setValueForAttribute("name", "b");
+        c.setValueForAttribute("name", "c");
+        d.setValueForAttribute("name", "d");
+        e.setValueForAttribute("name", "e");
         directoryBuilder.createDirectoryStructure(a);
         assertEquals("did not create branch a/", true, new File(rootDirectory, "a/").isDirectory());
         assertEquals("did not create branch a/b", true, new File(rootDirectory, "a/b").isDirectory());
@@ -148,7 +148,7 @@ public class DirectoryBuilderTest
     public void shouldThrowExceptionWhenMakeDirectoryFails() throws IOException
     {
         DirectoryDescriptor descriptor = DirectoryDescriptor.newInstance(mockFileFactory);
-        descriptor.setProperty("name", "CrashTestDummy");
+        descriptor.setValueForAttribute("name", "CrashTestDummy");
         exception.expect(IOException.class);
         directoryBuilder.createDirectoryStructure(descriptor);
     }
@@ -165,7 +165,7 @@ public class DirectoryBuilderTest
     public void shouldHandleNestingFilesInsideDirectories() throws IOException
     {
         DirectoryDescriptor directoryDescriptor = DirectoryDescriptor.newInstance();
-        directoryDescriptor.setProperty("name", "foo");
+        directoryDescriptor.setValueForAttribute("name", "foo");
         FileDescriptor spam = getFileDescriptor("spam.txt", template);
         FileDescriptor eggs = getFileDescriptor("eggs.txt", template);
         directoryDescriptor.addChild(spam);
@@ -180,8 +180,8 @@ public class DirectoryBuilderTest
     public void shouldThrowExceptionWhenCreateFileFails() throws IOException
     {
         FileDescriptor fileDescriptor = FileDescriptor.newInstance(mockFileFactory);
-        fileDescriptor.setProperty("name", "CrashTestDummy.txt");
-        fileDescriptor.setProperty("template", template);
+        fileDescriptor.setValueForAttribute("name", "CrashTestDummy.txt");
+        fileDescriptor.setValueForAttribute("template", template);
         exception.expect(IOException.class);
         directoryBuilder.createDirectoryStructure(fileDescriptor);
     }

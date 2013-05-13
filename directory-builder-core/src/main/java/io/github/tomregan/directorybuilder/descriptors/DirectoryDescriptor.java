@@ -30,8 +30,8 @@ public class DirectoryDescriptor extends Descriptor
 
     private DirectoryDescriptor(FileFactory fileFactory)
     {
+        super("name");
         this.fileFactory = fileFactory;
-        properties.setProperty("name", "");
     }
 
     public static DirectoryDescriptor newInstance()

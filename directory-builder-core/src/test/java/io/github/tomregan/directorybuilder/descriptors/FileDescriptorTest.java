@@ -43,8 +43,8 @@ public class FileDescriptorTest
     private FileDescriptor getFileDescriptor(String name, String template)
     {
         FileDescriptor fileDescriptor = FileDescriptor.newInstance();
-        fileDescriptor.setProperty("name", name);
-        fileDescriptor.setProperty("template", template);
+        fileDescriptor.setValueForAttribute("name", name);
+        fileDescriptor.setValueForAttribute("template", template);
         return fileDescriptor;
     }
 
@@ -123,6 +123,6 @@ public class FileDescriptorTest
         Set<String> expected = new HashSet<String>();
         expected.add("template");
         expected.add("name");
-        assertEquals("did not return template and name", expected, fileDescriptor.getPropertyNames());
+        assertEquals("did not return template and name", expected, fileDescriptor.getAttributeNames());
     }
 }

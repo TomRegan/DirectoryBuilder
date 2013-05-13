@@ -94,9 +94,9 @@ public class XmlDirectoryDescriptorReader implements DirectoryDescriptorReader
         if (descriptor != null)
         {
             depth++;
-            for (String attribute : descriptor.getPropertyNames())
+            for (String attribute : descriptor.getAttributeNames())
             {
-                descriptor.setProperty(attribute, attributes.getValue(attribute));
+                descriptor.setValueForAttribute(attribute, attributes.getValue(attribute));
             }
             addChild(descriptor);
             descriptorStack.add(descriptor);

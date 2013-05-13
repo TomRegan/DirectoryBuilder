@@ -31,22 +31,36 @@ abstract public class Descriptor
         properties = new Properties();
     }
 
+    protected Descriptor(String... attributes)
+    {
+        this();
+        for (String attribute : attributes)
+        {
+            properties.setProperty(attribute, "");
+        }
+    }
+
     abstract public void create(File parentDirectory) throws IOException;
 
     abstract public void addChild(Descriptor descriptor);
 
-    public void setProperty(String name, String value)
+    public void setValueForAttribute(String name, String value)
     {
         properties.setProperty(name, value);
     }
 
-    public Properties getProperties()
+    public String getValueForAttribute(String name)
     {
-        return new Properties(properties);
+        return properties.getProperty(name);
     }
 
-    public Set<String> getPropertyNames()
+    public Set<String> getAttributeNames()
     {
         return new HashSet<String>(properties.stringPropertyNames());
+    }
+
+    protected Properties getProperties()
+    {
+        return new Properties(properties);
     }
 }
