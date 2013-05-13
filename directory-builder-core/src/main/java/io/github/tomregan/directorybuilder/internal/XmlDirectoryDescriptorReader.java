@@ -16,7 +16,7 @@
 
 package io.github.tomregan.directorybuilder.internal;
 
-import io.github.tomregan.directorybuilder.XmlDirectoryDescriptorReader;
+import io.github.tomregan.directorybuilder.DirectoryDescriptorReader;
 import io.github.tomregan.directorybuilder.descriptors.Descriptor;
 import io.github.tomregan.directorybuilder.descriptors.DescriptorFactory;
 import org.xml.sax.Attributes;
@@ -33,14 +33,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class XmlDirectoryDescriptorReaderImpl implements XmlDirectoryDescriptorReader
+public class XmlDirectoryDescriptorReader implements DirectoryDescriptorReader
 {
     private final DescriptorFactory descriptorFactory;
     private List<Descriptor> descriptorStack = new ArrayList<Descriptor>();
     private final XMLReader xmlReader;
     private int depth;
 
-    private XmlDirectoryDescriptorReaderImpl(DescriptorFactory descriptorFactory) throws ParserConfigurationException, SAXException
+    private XmlDirectoryDescriptorReader(DescriptorFactory descriptorFactory) throws ParserConfigurationException, SAXException
     {
         this.descriptorFactory = descriptorFactory;
         SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
@@ -50,9 +50,9 @@ public class XmlDirectoryDescriptorReaderImpl implements XmlDirectoryDescriptorR
         xmlReader.setContentHandler(this);
     }
 
-    public static XmlDirectoryDescriptorReader newInstance(DescriptorFactory descriptorFactory) throws ParserConfigurationException, SAXException
+    public static DirectoryDescriptorReader newInstance(DescriptorFactory descriptorFactory) throws ParserConfigurationException, SAXException
     {
-        return new XmlDirectoryDescriptorReaderImpl(descriptorFactory);
+        return new XmlDirectoryDescriptorReader(descriptorFactory);
     }
 
     @Override
@@ -94,12 +94,9 @@ public class XmlDirectoryDescriptorReaderImpl implements XmlDirectoryDescriptorR
         if (descriptor != null)
         {
             depth++;
-            // TODO replace with iteration over the descriptor's properties
-            descriptor.setProperty("name", attributes.getValue("name"));
-            String template = attributes.getValue("template");
-            if (template != null)
+            for (String attribute : descriptor.getPropertyNames())
             {
-                descriptor.setProperty("template", template);
+                descriptor.setProperty(attribute, attributes.getValue(attribute));
             }
             addChild(descriptor);
             descriptorStack.add(descriptor);

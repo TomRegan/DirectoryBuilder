@@ -23,7 +23,7 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
 
-public interface XmlDirectoryDescriptorReader extends ContentHandler
+public interface DirectoryDescriptorReader extends ContentHandler
 {
     Descriptor[] getDescriptors(File directoryStructureXML) throws IOException, SAXException;
 }

@@ -18,7 +18,9 @@ package io.github.tomregan.directorybuilder.descriptors;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 abstract public class Descriptor
 {
@@ -41,5 +43,10 @@ abstract public class Descriptor
     public Properties getProperties()
     {
         return new Properties(properties);
+    }
+
+    public Set<String> getPropertyNames()
+    {
+        return new HashSet<String>(properties.stringPropertyNames());
     }
 }

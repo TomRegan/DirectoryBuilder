@@ -27,6 +27,11 @@ public class FileFactory
         return new FileFactory();
     }
 
+    public File createFile(String name)
+    {
+        return new File(name);
+    }
+
     public File createFile(File parentDirectory, String name)
     {
         return new File(parentDirectory, name);

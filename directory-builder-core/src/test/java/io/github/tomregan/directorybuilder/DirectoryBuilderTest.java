@@ -23,7 +23,7 @@ import io.github.tomregan.directorybuilder.descriptors.DirectoryDescriptor;
 import io.github.tomregan.directorybuilder.descriptors.FileDescriptor;
 import io.github.tomregan.directorybuilder.internal.DirectoryBuilderImpl;
 import io.github.tomregan.directorybuilder.internal.FileFactory;
-import io.github.tomregan.directorybuilder.internal.XmlDirectoryDescriptorReaderImpl;
+import io.github.tomregan.directorybuilder.internal.XmlDirectoryDescriptorReader;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -206,7 +206,7 @@ public class DirectoryBuilderTest
     @Test
     public void shouldCreateMavenDirectoryStructure() throws ParserConfigurationException, SAXException, IOException
     {
-        XmlDirectoryDescriptorReader reader = XmlDirectoryDescriptorReaderImpl.newInstance(DescriptorFactory.newInstance());
+        DirectoryDescriptorReader reader = XmlDirectoryDescriptorReader.newInstance(DescriptorFactory.newInstance());
         Descriptor[] descriptors = reader.getDescriptors(new File("src/test/resources/testDirectoryStructure.xml"));
         DirectoryBuilder builder = DirectoryBuilderImpl.newInstance(rootDirectory);
         builder.createDirectoryStructure(descriptors);

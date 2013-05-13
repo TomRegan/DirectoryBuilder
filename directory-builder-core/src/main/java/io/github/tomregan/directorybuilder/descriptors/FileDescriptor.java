@@ -28,6 +28,8 @@ public class FileDescriptor extends Descriptor
     private FileDescriptor(FileFactory fileFactory)
     {
         this.fileFactory = fileFactory;
+        properties.put("name", "");
+        properties.put("template", "");
     }
 
     public static FileDescriptor newInstance(FileFactory fileFactory)
@@ -44,12 +46,21 @@ public class FileDescriptor extends Descriptor
     public void create(File parentDirectory) throws IOException
     {
         String name = properties.getProperty("name");
-        File template = new File(properties.getProperty("template"));
+        File template = fileFactory.createFile(properties.getProperty("template"));
+        if (!fileExists(template))
+        {
+            throw new IOException(properties.getProperty("template") + " file not found");
+        }
         File file = fileFactory.createFile(template, parentDirectory, name, this);
         if (!file.createNewFile())
         {
             throw new IOException("could not create " + file.getAbsolutePath());
         }
+    }
+
+    private boolean fileExists(File template)
+    {
+        return template != null && template.isFile();
     }
 
     @Override

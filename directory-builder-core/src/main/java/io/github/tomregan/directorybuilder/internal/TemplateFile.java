@@ -53,9 +53,7 @@ class TemplateFile extends File
             }
             catch (Exception e)
             {
-                // to be substitutable, we would have to ignore this exception, but this hides any failure
-                // to load the template
-                throw new IOException(e.getMessage(), e);
+                // to be substitutable, we have to ignore this exception
             }
             finally
             {

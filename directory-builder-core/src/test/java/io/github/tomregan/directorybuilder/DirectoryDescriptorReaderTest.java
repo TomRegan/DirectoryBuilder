@@ -20,7 +20,7 @@ import io.github.tomregan.directorybuilder.descriptors.Descriptor;
 import io.github.tomregan.directorybuilder.descriptors.DescriptorFactory;
 import io.github.tomregan.directorybuilder.descriptors.DirectoryDescriptor;
 import io.github.tomregan.directorybuilder.descriptors.FileDescriptor;
-import io.github.tomregan.directorybuilder.internal.XmlDirectoryDescriptorReaderImpl;
+import io.github.tomregan.directorybuilder.internal.XmlDirectoryDescriptorReader;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,13 +35,13 @@ import java.io.IOException;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-public class XmlDirectoryDescriptorReaderTest
+public class DirectoryDescriptorReaderTest
 {
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
-    private XmlDirectoryDescriptorReader xmlDirectoryDescriptorReader;
+    private DirectoryDescriptorReader directoryDescriptorReader;
 
     private File getInput(String filename)
     {
@@ -52,7 +52,7 @@ public class XmlDirectoryDescriptorReaderTest
     public void setUp() throws ParserConfigurationException, SAXException
     {
         DescriptorFactory descriptorFactory = DescriptorFactory.newInstance();
-        xmlDirectoryDescriptorReader = XmlDirectoryDescriptorReaderImpl.newInstance(descriptorFactory);
+        directoryDescriptorReader = XmlDirectoryDescriptorReader.newInstance(descriptorFactory);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class XmlDirectoryDescriptorReaderTest
         DirectoryDescriptor foo = DirectoryDescriptor.newInstance();
         foo.setProperty("name", "foo");
         Descriptor[] expected = {foo};
-        Descriptor[] actual = xmlDirectoryDescriptorReader.getDescriptors(getInput("testDirectoryDescriptor.xml"));
+        Descriptor[] actual = directoryDescriptorReader.getDescriptors(getInput("testDirectoryDescriptor.xml"));
         DirectoryDescriptor directoryDescriptor = (DirectoryDescriptor) actual[0];
         assertArrayEquals("did not create DirectoryDescriptor", expected, actual);
         assertEquals("did not return name property", "foo", directoryDescriptor.getProperties().getProperty("name"));
@@ -74,7 +74,7 @@ public class XmlDirectoryDescriptorReaderTest
         foo.setProperty("name", "foo.txt");
         foo.setProperty("template", "foo.template");
         Descriptor[] expected = {foo};
-        Descriptor[] actual = xmlDirectoryDescriptorReader.getDescriptors(getInput("testFileDescriptor.xml"));
+        Descriptor[] actual = directoryDescriptorReader.getDescriptors(getInput("testFileDescriptor.xml"));
         FileDescriptor fileDescriptor = (FileDescriptor) actual[0];
         assertArrayEquals("did not create FileDescriptor", expected, actual);
         assertEquals("did not return 'name' property", "foo.txt", fileDescriptor.getProperties().getProperty("name"));
@@ -84,13 +84,13 @@ public class XmlDirectoryDescriptorReaderTest
     public void shouldThrowExceptionGivenInvalidXML() throws IOException, SAXException
     {
         exception.expect(SAXParseException.class);
-        xmlDirectoryDescriptorReader.getDescriptors(getInput("invalid.txt"));
+        directoryDescriptorReader.getDescriptors(getInput("invalid.txt"));
     }
 
     @Test
     public void shouldBuildDescriptorTree() throws IOException, SAXException
     {
-        Descriptor[] actual = xmlDirectoryDescriptorReader.getDescriptors(getInput("testDirectoryStructure.xml"));
+        Descriptor[] actual = directoryDescriptorReader.getDescriptors(getInput("testDirectoryStructure.xml"));
         assertEquals("did not create 3 root descriptors", 3, actual.length);
     }
 }

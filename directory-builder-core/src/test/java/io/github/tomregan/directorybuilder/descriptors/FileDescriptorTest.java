@@ -24,7 +24,9 @@ import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
@@ -109,8 +111,18 @@ public class FileDescriptorTest
     @Test
     public void shouldThrowExceptionWhenTemplateMissing() throws IOException
     {
-        FileDescriptor fileDescriptor = getFileDescriptor("Crash.txt", "nx-template");
+        FileDescriptor fileDescriptor = getFileDescriptor("Crash.txt", "nx.template");
         exception.expect(IOException.class);
         fileDescriptor.create(rootDirectory);
+    }
+
+    @Test
+    public void testDescriptorReturnsAttributeList()
+    {
+        FileDescriptor fileDescriptor = getFileDescriptor("Filename.txt", "Template.template");
+        Set<String> expected = new HashSet<String>();
+        expected.add("template");
+        expected.add("name");
+        assertEquals("did not return template and name", expected, fileDescriptor.getPropertyNames());
     }
 }
