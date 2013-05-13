@@ -55,11 +55,45 @@ public class XmlDirectoryDescriptorReader implements DirectoryDescriptorReader
         return new XmlDirectoryDescriptorReader(descriptorFactory);
     }
 
+    private void addChild(Descriptor descriptor)
+    {
+        if (descriptorStack.size() > 0)
+        {
+            descriptorStack.get(descriptorStack.size() - 1).addChild(descriptor);
+        }
+    }
+
     @Override
     public Descriptor[] getDescriptors(File directoryStructureXML) throws IOException, SAXException
     {
         xmlReader.parse(directoryStructureXML.getPath());
         return descriptorStack.toArray(new Descriptor[descriptorStack.size()]);
+    }
+
+    @Override
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
+    {
+        Descriptor descriptor = descriptorFactory.getDescriptorForElement(qName);
+        if (descriptor != null)
+        {
+            depth++;
+            for (String attribute : descriptor.getAttributeNames())
+            {
+                descriptor.setValueForAttribute(attribute, attributes.getValue(attribute));
+            }
+            addChild(descriptor);
+            descriptorStack.add(descriptor);
+        }
+    }
+
+    @Override
+    public void endElement(String uri, String localName, String qName) throws SAXException
+    {
+        if (depth > 1)
+        {
+            descriptorStack.remove(descriptorStack.size() - 1);
+        }
+        depth--;
     }
 
     @Override
@@ -85,40 +119,6 @@ public class XmlDirectoryDescriptorReader implements DirectoryDescriptorReader
     @Override
     public void endPrefixMapping(String prefix) throws SAXException
     {
-    }
-
-    @Override
-    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
-    {
-        Descriptor descriptor = descriptorFactory.getDescriptorForElement(qName);
-        if (descriptor != null)
-        {
-            depth++;
-            for (String attribute : descriptor.getAttributeNames())
-            {
-                descriptor.setValueForAttribute(attribute, attributes.getValue(attribute));
-            }
-            addChild(descriptor);
-            descriptorStack.add(descriptor);
-        }
-    }
-
-    private void addChild(Descriptor descriptor)
-    {
-        if (descriptorStack.size() > 0)
-        {
-            descriptorStack.get(descriptorStack.size() - 1).addChild(descriptor);
-        }
-    }
-
-    @Override
-    public void endElement(String uri, String localName, String qName) throws SAXException
-    {
-        if (depth > 1)
-        {
-            descriptorStack.remove(descriptorStack.size() - 1);
-        }
-        depth--;
     }
 
     @Override
