@@ -86,8 +86,4 @@ abstract public class Descriptor
         return new HashSet<String>(properties.stringPropertyNames());
     }
 
-    protected Properties getProperties()
-    {
-        return new Properties(properties);
-    }
 }

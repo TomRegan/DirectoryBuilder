@@ -25,11 +25,10 @@ import org.junit.rules.ExpectedException;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.Set;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class FileDescriptorTest
 {
@@ -101,11 +100,6 @@ public class FileDescriptorTest
         FileDescriptor fileDescriptor = getFileDescriptor("SomeName.txt", template);
         // getName is only used in the test template, so it's not exercised by other tests
         assertEquals("getter did not return name", "SomeName.txt", fileDescriptor.getName());
-        assertThat("did not return properties object", fileDescriptor.getProperties(), instanceOf(java.util.Properties.class));
-        // I want to get a copy of the properties object, not a reference, so I can muck about with it
-        Properties p1 = fileDescriptor.getProperties();
-        Properties p2 = fileDescriptor.getProperties();
-        assertEquals("did not return unique properties object", false, p1 == p2);
     }
 
     @Test
