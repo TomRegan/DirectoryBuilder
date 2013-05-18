@@ -30,11 +30,18 @@ abstract public class Descriptor
 {
     private Properties properties;
 
+    /**
+     * Creates a no-attribute descriptor.
+     */
     protected Descriptor()
     {
         properties = new Properties();
     }
 
+    /**
+     * Creates a descriptor which expects the given attributes.
+     * @param attributes attributes which are expected to be set.
+     */
     protected Descriptor(String... attributes)
     {
         this();
