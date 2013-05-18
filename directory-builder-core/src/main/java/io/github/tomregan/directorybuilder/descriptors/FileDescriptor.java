@@ -29,8 +29,6 @@ public class FileDescriptor extends Descriptor
     {
         super("name", "template");
         this.fileFactory = fileFactory;
-//        properties.put("name", "");
-//        properties.put("template", "");
     }
 
     public static FileDescriptor newInstance(FileFactory fileFactory)
@@ -46,11 +44,11 @@ public class FileDescriptor extends Descriptor
     @Override
     public void create(File parentDirectory) throws IOException
     {
-        String name = properties.getProperty("name");
-        File template = fileFactory.createFile(properties.getProperty("template"));
+        String name = getValueForAttribute("name");
+        File template = fileFactory.createFile(getValueForAttribute("template"));
         if (!fileExists(template))
         {
-            throw new IOException(properties.getProperty("template") + " file not found");
+            throw new IOException(getValueForAttribute("template") + " file not found");
         }
         File file = fileFactory.createFile(template, parentDirectory, name, this);
         if (!file.createNewFile())
@@ -77,7 +75,7 @@ public class FileDescriptor extends Descriptor
 
     public String getName()
     {
-        return properties.getProperty("name");
+        return getValueForAttribute("name");
     }
 
     @Override
@@ -92,14 +90,14 @@ public class FileDescriptor extends Descriptor
             return false;
         }
         FileDescriptor that = (FileDescriptor) o;
-        String thisName = properties.getProperty("name");
-        String thatName = that.properties.getProperty("name");
+        String thisName = getValueForAttribute("name");
+        String thatName = that.getValueForAttribute("name");
         if (thisName != null ? !thisName.equals(thatName) : thatName != null)
         {
             return false;
         }
-        String thisTemplate = properties.getProperty("template");
-        String thatTemplate = that.properties.getProperty("template");
+        String thisTemplate = getValueForAttribute("template");
+        String thatTemplate = that.getValueForAttribute("template");
         return thisTemplate != null && thisTemplate.equals(thatTemplate);
     }
 

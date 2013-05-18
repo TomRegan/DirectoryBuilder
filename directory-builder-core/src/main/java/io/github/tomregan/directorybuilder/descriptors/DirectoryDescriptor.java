@@ -57,7 +57,7 @@ public class DirectoryDescriptor extends Descriptor
     @Override
     public void create(File parentDirectory) throws IOException
     {
-        String name = properties.getProperty("name");
+        String name = getValueForAttribute("name");
         File currentDirectory = fileFactory.createFile(parentDirectory, name);
         if (!currentDirectory.mkdir())
         {
@@ -89,8 +89,8 @@ public class DirectoryDescriptor extends Descriptor
             return false;
         }
         DirectoryDescriptor that = (DirectoryDescriptor) o;
-        String thisName = properties.getProperty("name");
-        String thatName = that.properties.getProperty("name");
+        String thisName = getValueForAttribute("name");
+        String thatName = that.getValueForAttribute("name");
         if (thisName != null ? !thisName.equals(thatName) : thatName != null)
         {
             return false;

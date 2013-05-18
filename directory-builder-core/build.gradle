@@ -21,5 +21,6 @@ javadoc {
         noTree = true
         noIndex = true
         noDeprecated = true
+        options.memberLevel = JavadocMemberLevel.PROTECTED
     }
 }

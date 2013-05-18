@@ -22,9 +22,13 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
+/**
+ * The <code>Descriptor</code> class represents a file or directory - a file system entity - which can be configured
+ * before being created on the file system.
+ */
 abstract public class Descriptor
 {
-    protected Properties properties;
+    private Properties properties;
 
     protected Descriptor()
     {
@@ -40,20 +44,43 @@ abstract public class Descriptor
         }
     }
 
+    /**
+     * Creates a file system entity.
+     * @param parentDirectory the parent of this descriptor.
+     * @throws IOException
+     */
     abstract public void create(File parentDirectory) throws IOException;
 
+    /**
+     * Adds a child descriptor.
+     * @param descriptor The child descriptor, for example a subdirectory.
+     */
     abstract public void addChild(Descriptor descriptor);
 
+    /**
+     * Sets the requested attribute to the value provided.
+     * @param name  the attribute.
+     * @param value the attribute value.
+     */
     public void setValueForAttribute(String name, String value)
     {
         properties.setProperty(name, value);
     }
 
+    /**
+     * Returns the current value for an attribute.
+     * @param name the attribute.
+     * @return the attribute value.
+     */
     public String getValueForAttribute(String name)
     {
         return properties.getProperty(name);
     }
 
+    /**
+     * Returns a set of all expected attributes.
+     * @return a set of all expected attributes.
+     */
     public Set<String> getAttributeNames()
     {
         return new HashSet<String>(properties.stringPropertyNames());
