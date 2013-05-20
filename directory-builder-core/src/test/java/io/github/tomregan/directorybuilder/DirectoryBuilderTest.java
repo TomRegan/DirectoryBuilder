@@ -21,9 +21,7 @@ import io.github.tomregan.directorybuilder.descriptors.Descriptor;
 import io.github.tomregan.directorybuilder.descriptors.DescriptorFactory;
 import io.github.tomregan.directorybuilder.descriptors.DirectoryDescriptor;
 import io.github.tomregan.directorybuilder.descriptors.FileDescriptor;
-import io.github.tomregan.directorybuilder.internal.DirectoryBuilderImpl;
 import io.github.tomregan.directorybuilder.internal.FileFactory;
-import io.github.tomregan.directorybuilder.internal.XmlDirectoryDescriptorReader;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -89,7 +87,7 @@ public class DirectoryBuilderTest
     public void setUp() throws Exception
     {
         rootDirectory = Files.createTempDir();
-        directoryBuilder = DirectoryBuilderImpl.newInstance(rootDirectory);
+        directoryBuilder = DirectoryBuilder.newInstance(rootDirectory);
         File mockFile = mock(File.class);
         when(mockFile.createNewFile()).thenReturn(false);
         mockFileFactory = mock(FileFactory.class);
@@ -206,9 +204,9 @@ public class DirectoryBuilderTest
     @Test
     public void shouldCreateMavenDirectoryStructure() throws ParserConfigurationException, SAXException, IOException
     {
-        DirectoryDescriptorReader reader = XmlDirectoryDescriptorReader.newInstance(DescriptorFactory.newInstance());
+        XmlDirectoryDescriptorReader reader = XmlDirectoryDescriptorReader.newInstance(DescriptorFactory.newInstance());
         Descriptor[] descriptors = reader.getDescriptors(new File("src/test/resources/testDirectoryStructure.xml"));
-        DirectoryBuilder builder = DirectoryBuilderImpl.newInstance(rootDirectory);
+        DirectoryBuilder builder = DirectoryBuilder.newInstance(rootDirectory);
         builder.createDirectoryStructure(descriptors);
 
         assertEquals("did not create 'src' directory", true, isDirectory("src"));

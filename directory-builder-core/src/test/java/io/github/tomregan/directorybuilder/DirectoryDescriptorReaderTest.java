@@ -20,7 +20,6 @@ import io.github.tomregan.directorybuilder.descriptors.Descriptor;
 import io.github.tomregan.directorybuilder.descriptors.DescriptorFactory;
 import io.github.tomregan.directorybuilder.descriptors.DirectoryDescriptor;
 import io.github.tomregan.directorybuilder.descriptors.FileDescriptor;
-import io.github.tomregan.directorybuilder.internal.XmlDirectoryDescriptorReader;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,7 +40,7 @@ public class DirectoryDescriptorReaderTest
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
-    private DirectoryDescriptorReader directoryDescriptorReader;
+    private XmlDirectoryDescriptorReader directoryDescriptorReader;
 
     private File getInput(String filename)
     {

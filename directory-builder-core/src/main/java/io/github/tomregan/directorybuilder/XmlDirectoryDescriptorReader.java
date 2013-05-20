@@ -14,15 +14,11 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.internal;
+package io.github.tomregan.directorybuilder;
 
-import io.github.tomregan.directorybuilder.DirectoryDescriptorReader;
 import io.github.tomregan.directorybuilder.descriptors.Descriptor;
 import io.github.tomregan.directorybuilder.descriptors.DescriptorFactory;
-import org.xml.sax.Attributes;
-import org.xml.sax.Locator;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
+import org.xml.sax.*;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -32,8 +28,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class XmlDirectoryDescriptorReader implements DirectoryDescriptorReader
+/**
+ * Parses an XML file and returns a tree of Descriptors.
+ */
+public class XmlDirectoryDescriptorReader implements ContentHandler
 {
     private final DescriptorFactory descriptorFactory;
     private List<Descriptor> descriptorStack = new ArrayList<Descriptor>();
@@ -50,7 +48,15 @@ public class XmlDirectoryDescriptorReader implements DirectoryDescriptorReader
         xmlReader.setContentHandler(this);
     }
 
-    public static DirectoryDescriptorReader newInstance(DescriptorFactory descriptorFactory) throws ParserConfigurationException, SAXException
+    /**
+     * Creates a new XmlDirectoryDescriptorReader
+     *
+     * @param descriptorFactory factory which can be called to supply descriptors based on the names of XML elements
+     * @return a new XmlDirectoryDescriptorReader
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
+    public static XmlDirectoryDescriptorReader newInstance(DescriptorFactory descriptorFactory) throws ParserConfigurationException, SAXException
     {
         return new XmlDirectoryDescriptorReader(descriptorFactory);
     }
@@ -63,7 +69,14 @@ public class XmlDirectoryDescriptorReader implements DirectoryDescriptorReader
         }
     }
 
-    @Override
+    /**
+     * Returns the descriptor trees parsed from XML.
+     *
+     * @param directoryStructureXML
+     * @return an array of descriptor trees.
+     * @throws IOException
+     * @throws SAXException
+     */
     public Descriptor[] getDescriptors(File directoryStructureXML) throws IOException, SAXException
     {
         xmlReader.parse(directoryStructureXML.getPath());

@@ -16,11 +16,47 @@
 
 package io.github.tomregan.directorybuilder;
 
+
 import io.github.tomregan.directorybuilder.descriptors.Descriptor;
 
+import java.io.File;
 import java.io.IOException;
 
-public interface DirectoryBuilder
+/**
+ * Creates directories and files from a descriptor tree or trees.
+ */
+public class DirectoryBuilder
 {
-    void createDirectoryStructure(Descriptor... descriptors) throws IOException;
+    private final File rootDirectory;
+
+    private DirectoryBuilder(File rootDirectory)
+    {
+        this.rootDirectory = rootDirectory;
+    }
+
+    /**
+     * Creates a new DirectoryBuilder.
+     *
+     * @param rootDirectory
+     * @return a DirectoryBuilder.
+     */
+    public static DirectoryBuilder newInstance(File rootDirectory)
+    {
+        return new DirectoryBuilder(rootDirectory);
+    }
+
+    /**
+     * Creates directories and files on the file system.
+     *
+     * @param descriptors one or more directory / file descriptor trees.
+     * @throws IOException
+     * @see XmlDirectoryDescriptorReader
+     */
+    public void createDirectoryStructure(Descriptor... descriptors) throws IOException
+    {
+        for (Descriptor descriptor : descriptors)
+        {
+            descriptor.create(rootDirectory);
+        }
+    }
 }

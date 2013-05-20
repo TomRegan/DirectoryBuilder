@@ -16,12 +16,13 @@
 
 package io.github.tomregan.directorybuilder.descriptors;
 
+import io.github.tomregan.directorybuilder.internal.DescriptorImpl;
 import io.github.tomregan.directorybuilder.internal.FileFactory;
 
 import java.io.File;
 import java.io.IOException;
 
-public class FileDescriptor extends Descriptor
+public class FileDescriptor extends DescriptorImpl
 {
     private final FileFactory fileFactory;
 

@@ -16,6 +16,7 @@
 
 package io.github.tomregan.directorybuilder.descriptors;
 
+import io.github.tomregan.directorybuilder.internal.DescriptorImpl;
 import io.github.tomregan.directorybuilder.internal.FileFactory;
 
 import java.io.File;
@@ -23,7 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DirectoryDescriptor extends Descriptor
+public class DirectoryDescriptor extends DescriptorImpl
 {
     private final FileFactory fileFactory;
     private List<Descriptor> children;
