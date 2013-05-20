@@ -22,7 +22,7 @@ import io.github.tomregan.directorybuilder.internal.FileFactory;
 import java.io.File;
 import java.io.IOException;
 
-public class FileDescriptor extends DescriptorImpl
+public class FileDescriptor extends DescriptorImpl implements TemplateDelegate
 {
     private final FileFactory fileFactory;
 
@@ -69,11 +69,13 @@ public class FileDescriptor extends DescriptorImpl
         // currently do nothing, but maybe throw an illegal transition exception here?
     }
 
-    public String getClassName()
+    @Override
+    public String getDescriptorId()
     {
         return getClass().getSimpleName();
     }
 
+    @Override
     public String getName()
     {
         return getValueForAttribute("name");

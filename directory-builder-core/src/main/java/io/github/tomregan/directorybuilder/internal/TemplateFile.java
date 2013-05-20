@@ -43,7 +43,7 @@ class TemplateFile extends File
         if (super.createNewFile())
         {
             VelocityContext velocityContext = new VelocityContext();
-            velocityContext.put(delegate.getClassName(), delegate);
+            velocityContext.put(delegate.getDescriptorId(), delegate);
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(super.getAbsoluteFile()));
             try
             {
