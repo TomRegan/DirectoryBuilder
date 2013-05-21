@@ -14,16 +14,23 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.descriptors;
+package io.github.tomregan.directorybuilderdemo;
 
-public class JavaSourcesDescriptorFactory extends DescriptorFactory
+public class DirectoryBuilderDemo
 {
-    private JavaSourcesDescriptorFactory()
+    public static void main(String[] args)
     {
+        DirectoryBuilderDemo app = DirectoryBuilderDemo.newInstance();
+        app.run();
     }
 
-    public static JavaSourcesDescriptorFactory newInstance()
+    private int run()
     {
-        return new JavaSourcesDescriptorFactory();
+        return 0;
+    }
+
+    private static DirectoryBuilderDemo newInstance()
+    {
+        return new DirectoryBuilderDemo();
     }
 }

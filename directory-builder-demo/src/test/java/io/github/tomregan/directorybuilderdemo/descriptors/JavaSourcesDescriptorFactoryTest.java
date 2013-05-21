@@ -16,7 +16,6 @@
 
 package io.github.tomregan.directorybuilderdemo.descriptors;
 
-import io.github.tomregan.directorybuilder.descriptors.JavaSourcesDescriptorFactory;
 import org.junit.Before;
 import org.junit.Test;
 
