@@ -1,26 +1,18 @@
-apply plugin: 'base'
-apply plugin: 'java'
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
-    testCompile 'junit:junit:4+'
     testCompile 'org.mockito:mockito-all:1.8.4'
-    compile 'com.google.guava:guava:14.0.1'
-    compile 'org.apache.velocity:velocity:1.6.2'
+
+    compile 'com.google.guava:guava:14.0.1',
+            'org.apache.velocity:velocity:1.6.2'
 }
 
 javadoc {
     exclude "**/internal/**"
     title = "Directory Builder API"
     options {
-        /*supported options: http://www.gradle.org/docs/current/javadoc/org/gradle/external/javadoc/StandardJavadocDocletOptions.html*/
         noHelp = true
         noTree = true
         noIndex = true
         noDeprecated = true
-        options.memberLevel = JavadocMemberLevel.PROTECTED
     }
 }

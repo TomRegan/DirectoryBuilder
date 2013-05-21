@@ -16,28 +16,14 @@
 
 package io.github.tomregan.directorybuilder.descriptors;
 
-public class DescriptorFactory
+public class JavaSourcesDescriptorFactory extends DescriptorFactory
 {
-    protected DescriptorFactory()
+    private JavaSourcesDescriptorFactory()
     {
     }
 
-    public static DescriptorFactory newInstance()
+    public static JavaSourcesDescriptorFactory newInstance()
     {
-        return new DescriptorFactory();
-    }
-
-    public Descriptor getDescriptorForElement(String element)
-    {
-        Descriptor result = null;
-        if (element.equals("directory"))
-        {
-            result = DirectoryDescriptor.newInstance();
-        }
-        else if (element.equals("file"))
-        {
-            result = FileDescriptor.newInstance();
-        }
-        return result;
+        return new JavaSourcesDescriptorFactory();
     }
 }

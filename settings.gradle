@@ -1,1 +1,2 @@
-include 'directory-builder-core'
+include 'directory-builder-core',
+        'directory-builder-demo'

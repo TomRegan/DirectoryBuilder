@@ -14,30 +14,23 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.descriptors;
+package io.github.tomregan.directorybuilder;
 
-public class DescriptorFactory
+public class DirectoryBuilderDemo
 {
-    protected DescriptorFactory()
+    public static void main(String[] args)
     {
+        DirectoryBuilderDemo app = DirectoryBuilderDemo.newInstance();
+        app.run();
     }
 
-    public static DescriptorFactory newInstance()
+    private int run()
     {
-        return new DescriptorFactory();
+        return 0;
     }
 
-    public Descriptor getDescriptorForElement(String element)
+    private static DirectoryBuilderDemo newInstance()
     {
-        Descriptor result = null;
-        if (element.equals("directory"))
-        {
-            result = DirectoryDescriptor.newInstance();
-        }
-        else if (element.equals("file"))
-        {
-            result = FileDescriptor.newInstance();
-        }
-        return result;
+        return new DirectoryBuilderDemo();
     }
 }

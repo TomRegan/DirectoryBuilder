@@ -1,3 +1,17 @@
+
 task wrapper(type: Wrapper) {
     gradleVersion = '1.6'
+}
+
+subprojects {
+    apply plugin: 'base'
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        testCompile 'junit:junit:4+'
+    }
 }
