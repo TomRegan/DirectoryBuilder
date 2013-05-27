@@ -16,6 +16,8 @@
 
 package io.github.tomregan.directorybuilderdemo.descriptors;
 
+import io.github.tomregan.directorybuilder.descriptors.DirectoryDescriptor;
+import io.github.tomregan.directorybuilder.descriptors.FileDescriptor;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,5 +39,13 @@ public class JavaSourcesDescriptorFactoryTest
     public void shouldReturnInstanceOfJavaSourceDescriptorFactory()
     {
         assertThat("not an instance of JavaSourcesDescriptorFactory", JavaSourcesDescriptorFactory.newInstance(), instanceOf(JavaSourcesDescriptorFactory.class));
+    }
+
+    @Test
+    public void shouldReturnCorrectDescriptorForElement()
+    {
+        assertThat("did not return directory descriptor", factory.getDescriptorForElement("directory"), instanceOf(DirectoryDescriptor.class));
+        assertThat("did not return file descriptor", factory.getDescriptorForElement("file"), instanceOf(FileDescriptor.class));
+        assertThat("did not return source directory descriptor", factory.getDescriptorForElement("sourcedirectory"), instanceOf(SourceDirectoryDescriptor.class));
     }
 }

@@ -16,6 +16,7 @@
 
 package io.github.tomregan.directorybuilderdemo.descriptors;
 
+import io.github.tomregan.directorybuilder.descriptors.Descriptor;
 import io.github.tomregan.directorybuilder.descriptors.DescriptorFactory;
 
 public class JavaSourcesDescriptorFactory extends DescriptorFactory
@@ -27,5 +28,16 @@ public class JavaSourcesDescriptorFactory extends DescriptorFactory
     public static JavaSourcesDescriptorFactory newInstance()
     {
         return new JavaSourcesDescriptorFactory();
+    }
+
+    @Override
+    public Descriptor getDescriptorForElement(String element)
+    {
+        Descriptor result = super.getDescriptorForElement(element);
+        if (result == null)
+        {
+            result = SourceDirectoryDescriptor.newInstance();
+        }
+        return result;
     }
 }
