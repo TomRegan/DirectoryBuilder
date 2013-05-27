@@ -14,4 +14,14 @@ public class JavaFileDescriptor extends FileDescriptor
     {
         return new JavaFileDescriptor(FileFactory.newInstance());
     }
+
+    public String getClassName()
+    {
+        return "HelloWorld";
+    }
+
+    public String getUser()
+    {
+        return "Tom";
+    }
 }

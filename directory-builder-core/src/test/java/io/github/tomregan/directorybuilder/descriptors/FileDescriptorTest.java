@@ -119,4 +119,18 @@ public class FileDescriptorTest
         expected.add("name");
         assertEquals("did not return template and name", expected, fileDescriptor.getAttributeNames());
     }
+
+    @Test
+    public void shouldThrowMeaningfulExceptionWhenTemplateNotSet()
+    {
+        try
+        {
+            FileDescriptor descriptor = FileDescriptor.newInstance();
+            descriptor.create(rootDirectory);
+        }
+        catch (IOException e)
+        {
+            assertEquals("message for no template was gibberish", "No template file was specified for FileDescriptor", e.getMessage());
+        }
+    }
 }

@@ -1,13 +1,13 @@
 
-class $JavaFile.Class {
-    public static $JavaFile.Class newInstance() {
-        return new $JavaFile.Class();
+class $JavaFileDescriptor.ClassName {
+    public static $JavaFileDescriptor.ClassName newInstance() {
+        return new ${JavaFileDescriptor.ClassName}();
     }
     public void greet(String name) {
         System.out.println("Hello, " + name + "!");
     }
     public static void main(String[] args) {
-        $JavaFile.Class hello = ${JavaFile.Class}.newInstance();
-        hello.greet("$JavaFile.User");
+        $JavaFileDescriptor.ClassName hello = ${JavaFileDescriptor.ClassName}.newInstance();
+        hello.greet("$JavaFileDescriptor.User");
     }
 }

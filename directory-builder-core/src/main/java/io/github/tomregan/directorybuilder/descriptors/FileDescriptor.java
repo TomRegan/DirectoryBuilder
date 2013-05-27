@@ -46,10 +46,14 @@ public class FileDescriptor extends DescriptorImpl implements TemplateDelegate
     public void create(File parentDirectory) throws IOException
     {
         String name = getValueForAttribute("name");
-        File template = fileFactory.createFile(getValueForAttribute("template"));
+        String templateFilename = getValueForAttribute("template");
+        File template = fileFactory.createFile(templateFilename);
         if (!fileExists(template))
         {
-            throw new IOException(getValueForAttribute("template") + " file not found");
+            String message = (templateFilename.isEmpty()
+                    ? "No template file was specified for " + getDescriptorId()
+                    : templateFilename + " file not found");
+            throw new IOException(message);
         }
         File file = fileFactory.createFile(template, parentDirectory, name, this);
         if (!file.createNewFile())
