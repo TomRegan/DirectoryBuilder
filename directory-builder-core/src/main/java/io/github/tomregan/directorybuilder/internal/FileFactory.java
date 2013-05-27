@@ -37,7 +37,7 @@ public class FileFactory
         return new File(parentDirectory, name);
     }
 
-    public File createFile(File template, File parentDirectory, String name, FileDescriptor delegate)
+    public File createFile(File template, File parentDirectory, String name, FileDescriptor delegate, ResourceResolver resourceResolver)
     {
         return new TemplateFile(template, parentDirectory, name, delegate);
     }

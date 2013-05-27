@@ -17,7 +17,10 @@
 package io.github.tomregan.directorybuilder.descriptors;
 
 import com.google.common.io.Files;
+import io.github.tomregan.directorybuilder.internal.FileFactory;
+import io.github.tomregan.directorybuilder.internal.ResourceResolver;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -29,6 +32,9 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 public class FileDescriptorTest
 {
@@ -132,5 +138,21 @@ public class FileDescriptorTest
         {
             assertEquals("message for no template was gibberish", "No template file was specified for FileDescriptor", e.getMessage());
         }
+    }
+
+    @Ignore // under development
+    @Test
+    public void shouldSetResourceResolver() throws IOException
+    {
+        String templateURI = "classpath:" + template;
+        FileFactory factory = mock(FileFactory.class);
+        when(factory.createFile(any(String.class))).thenReturn(new File(template));
+        when(factory.createFile(any(File.class), any(File.class), any(String.class), any(FileDescriptor.class), any(ResourceResolver.class))).thenReturn(new File(rootDirectory, "foo.txt"));
+        FileDescriptor descriptor = FileDescriptor.newInstance(factory);
+        descriptor.setValueForAttribute("name", "foo.txt");
+        descriptor.setValueForAttribute("template", templateURI);
+        descriptor.create(rootDirectory);
+
+        verify(factory).createFile(any(File.class), any(File.class), any(String.class), any(FileDescriptor.class), eq(ResourceResolver.CLASSPATH));
     }
 }

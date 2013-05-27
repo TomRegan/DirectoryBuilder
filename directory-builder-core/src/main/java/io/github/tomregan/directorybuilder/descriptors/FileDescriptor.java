@@ -18,6 +18,7 @@ package io.github.tomregan.directorybuilder.descriptors;
 
 import io.github.tomregan.directorybuilder.internal.DescriptorImpl;
 import io.github.tomregan.directorybuilder.internal.FileFactory;
+import io.github.tomregan.directorybuilder.internal.ResourceResolver;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,20 +47,28 @@ public class FileDescriptor extends DescriptorImpl implements TemplateDelegate
     public void create(File parentDirectory) throws IOException
     {
         String name = getValueForAttribute("name");
-        String templateFilename = getValueForAttribute("template");
+        String templateFilename = getTemplateFilenameFromURI(getValueForAttribute("template"));
         File template = fileFactory.createFile(templateFilename);
         if (!fileExists(template))
         {
             String message = (templateFilename.isEmpty()
                     ? "No template file was specified for " + getDescriptorId()
-                    : templateFilename + " file not found");
+                    : template.getPath() + " file not found");
             throw new IOException(message);
         }
-        File file = fileFactory.createFile(template, parentDirectory, name, this);
+        File file = fileFactory.createFile(template, parentDirectory, name, this, ResourceResolver.FILE);
         if (!file.createNewFile())
         {
             throw new IOException("could not create " + file.getAbsolutePath());
         }
+    }
+
+    private String getTemplateFilenameFromURI(String templateFilename)
+    {
+        String resource = "classpath:";
+        return templateFilename.startsWith(resource)
+                ? templateFilename.replaceFirst(resource, "")
+                : templateFilename;
     }
 
     private boolean fileExists(File template)
