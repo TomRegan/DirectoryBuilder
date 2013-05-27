@@ -2,3 +2,10 @@
 dependencies {
     compile project(":directory-builder-core")
 }
+
+jar {
+    from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest {
+        attributes 'Main-Class': 'io.github.tomregan.directorybuilderdemo.DirectoryBuilderDemo'
+    }
+}

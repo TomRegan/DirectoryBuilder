@@ -1,5 +1,6 @@
 package io.github.tomregan.directorybuilderdemo.descriptors;
 
+import com.google.common.io.Files;
 import io.github.tomregan.directorybuilder.descriptors.DirectoryDescriptor;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ public class SourceDirectoryDescriptorTest
     @Test
     public void shouldCreateDirectory() throws IOException
     {
-        File rootDir = new File("/Users/tom");
+        File rootDir = Files.createTempDir();
         DirectoryDescriptor src = DirectoryDescriptor.newInstance();
         DirectoryDescriptor main = DirectoryDescriptor.newInstance();
         SourceDirectoryDescriptor java = SourceDirectoryDescriptor.newInstance();
