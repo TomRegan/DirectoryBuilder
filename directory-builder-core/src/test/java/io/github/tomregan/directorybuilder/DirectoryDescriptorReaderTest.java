@@ -44,7 +44,7 @@ public class DirectoryDescriptorReaderTest
 
     private File getInput(String filename)
     {
-        return new File("src/test/resources/", filename);
+        return new File("directory-builder-core/src/test/resources/", filename);
     }
 
     @Before
