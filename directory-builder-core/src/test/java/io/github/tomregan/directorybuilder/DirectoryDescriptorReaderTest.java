@@ -28,8 +28,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -91,5 +90,12 @@ public class DirectoryDescriptorReaderTest
     {
         Descriptor[] actual = directoryDescriptorReader.getDescriptors(getInput("testDirectoryStructure.xml"));
         assertEquals("did not create 3 root descriptors", 3, actual.length);
+    }
+
+    @Test
+    public void shouldAcceptInputStream() throws IOException, SAXException
+    {
+        InputStream inputStream = new FileInputStream(getInput("testDirectoryStructure.xml"));
+        directoryDescriptorReader.getDescriptors(inputStream);
     }
 }

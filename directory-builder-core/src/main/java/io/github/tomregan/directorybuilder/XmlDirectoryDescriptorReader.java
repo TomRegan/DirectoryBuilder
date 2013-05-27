@@ -25,6 +25,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,6 +81,14 @@ public class XmlDirectoryDescriptorReader implements ContentHandler
     public Descriptor[] getDescriptors(File directoryStructureXML) throws IOException, SAXException
     {
         xmlReader.parse(directoryStructureXML.getPath());
+        return descriptorStack.toArray(new Descriptor[descriptorStack.size()]);
+    }
+
+    public Descriptor[] getDescriptors(InputStream inputStream) throws IOException, SAXException
+    {
+        InputSource inputSource = new InputSource();
+        inputSource.setByteStream(inputStream);
+        xmlReader.parse(inputSource);
         return descriptorStack.toArray(new Descriptor[descriptorStack.size()]);
     }
 
