@@ -57,6 +57,7 @@ public class DirectoryBuilderDemo
         }
         catch (IOException e)
         {
+            // FIXME not tested
             if (e instanceof java.net.MalformedURLException)
             {
                 System.err.println("Could not find XML descriptor " + descriptor + " on classpath.");

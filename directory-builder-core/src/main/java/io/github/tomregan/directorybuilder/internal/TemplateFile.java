@@ -45,6 +45,10 @@ class TemplateFile extends File
             VelocityContext velocityContext = new VelocityContext();
             velocityContext.put(delegate.getDescriptorId(), delegate);
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(super.getAbsoluteFile()));
+            // TODO set an appropriate resource loader
+            // see
+            // https://velocity.apache.org/engine/releases/velocity-1.5/developer-guide.html#resourceloaders
+            // should template name be a URI?
             try
             {
                 Template velocityTemplate = Velocity.getTemplate(template.getPath());
