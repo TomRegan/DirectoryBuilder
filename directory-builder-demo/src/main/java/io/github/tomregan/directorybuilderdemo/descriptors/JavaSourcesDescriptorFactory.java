@@ -34,9 +34,17 @@ public class JavaSourcesDescriptorFactory extends DescriptorFactory
     public Descriptor getDescriptorForElement(String element)
     {
         Descriptor result = super.getDescriptorForElement(element);
-        if (result == null)
+        if (result != null)
+        {
+            return result;
+        }
+        else if (element.equals("sourcedirectory"))
         {
             result = SourceDirectoryDescriptor.newInstance();
+        }
+        else if (element.equals("javafile"))
+        {
+            result = JavaFileDescriptor.newInstance();
         }
         return result;
     }

@@ -47,5 +47,6 @@ public class JavaSourcesDescriptorFactoryTest
         assertThat("did not return directory descriptor", factory.getDescriptorForElement("directory"), instanceOf(DirectoryDescriptor.class));
         assertThat("did not return file descriptor", factory.getDescriptorForElement("file"), instanceOf(FileDescriptor.class));
         assertThat("did not return source directory descriptor", factory.getDescriptorForElement("sourcedirectory"), instanceOf(SourceDirectoryDescriptor.class));
+        assertThat("did not return java file descriptor", factory.getDescriptorForElement("javafile"), instanceOf(JavaFileDescriptor.class));
     }
 }

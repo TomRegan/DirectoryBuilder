@@ -26,7 +26,7 @@ public class FileDescriptor extends DescriptorImpl implements TemplateDelegate
 {
     private final FileFactory fileFactory;
 
-    private FileDescriptor(FileFactory fileFactory)
+    protected FileDescriptor(FileFactory fileFactory)
     {
         super("name", "template");
         this.fileFactory = fileFactory;
