@@ -2,7 +2,7 @@
     <directory name="src">
         <directory name="main">
             <directory name="java">
-                <file template="directory-builder-core/src/test/resources/test.template" name="test.java"/>
+                <file template="src/test/resources/test.template" name="test.java"/>
             </directory>
         </directory>
         <directory name="test">
@@ -11,5 +11,5 @@
         </directory>
     </directory>
     <directory name="bin"/>
-    <file template="directory-builder-core/src/test/resources/test.template" name="README.txt"/>
+    <file template="src/test/resources/test.template" name="README.txt"/>
 </directorystructure>

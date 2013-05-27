@@ -93,7 +93,7 @@ public class DirectoryBuilderTest
         mockFileFactory = mock(FileFactory.class);
         when(mockFileFactory.createFile(any(File.class), any(String.class))).thenReturn(mockFile);
         when(mockFileFactory.createFile(any(File.class), any(File.class), any(String.class), any(FileDescriptor.class))).thenReturn(mockFile);
-        template = "directory-builder-core/src/test/resources/test.template";
+        template = "src/test/resources/test.template";
     }
 
     @Test
@@ -205,7 +205,7 @@ public class DirectoryBuilderTest
     public void shouldCreateMavenDirectoryStructure() throws ParserConfigurationException, SAXException, IOException
     {
         XmlDirectoryDescriptorReader reader = XmlDirectoryDescriptorReader.newInstance(DescriptorFactory.newInstance());
-        Descriptor[] descriptors = reader.getDescriptors(new File("directory-builder-core/src/test/resources/testDirectoryStructure.xml"));
+        Descriptor[] descriptors = reader.getDescriptors(new File("src/test/resources/testDirectoryStructure.xml"));
         DirectoryBuilder builder = DirectoryBuilder.newInstance(rootDirectory);
         builder.createDirectoryStructure(descriptors);
 

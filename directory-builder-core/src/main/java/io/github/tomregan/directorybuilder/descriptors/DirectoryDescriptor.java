@@ -29,7 +29,7 @@ public class DirectoryDescriptor extends DescriptorImpl
     private final FileFactory fileFactory;
     private List<Descriptor> children;
 
-    private DirectoryDescriptor(FileFactory fileFactory)
+    protected DirectoryDescriptor(FileFactory fileFactory)
     {
         super("name");
         this.fileFactory = fileFactory;
