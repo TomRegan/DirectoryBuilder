@@ -20,7 +20,6 @@ import com.google.common.io.Files;
 import io.github.tomregan.directorybuilder.internal.FileFactory;
 import io.github.tomregan.directorybuilder.internal.ResourceResolver;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -140,7 +139,6 @@ public class FileDescriptorTest
         }
     }
 
-    @Ignore // under development
     @Test
     public void shouldSetResourceResolver() throws IOException
     {

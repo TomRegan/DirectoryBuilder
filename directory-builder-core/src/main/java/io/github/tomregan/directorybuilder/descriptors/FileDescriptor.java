@@ -47,20 +47,29 @@ public class FileDescriptor extends DescriptorImpl implements TemplateDelegate
     public void create(File parentDirectory) throws IOException
     {
         String name = getValueForAttribute("name");
-        String templateFilename = getTemplateFilenameFromURI(getValueForAttribute("template"));
+        String templateURI = getValueForAttribute("template");
+        String templateFilename = getTemplateFilenameFromURI(templateURI);
         File template = fileFactory.createFile(templateFilename);
-        if (!fileExists(template))
+        // TODO if template is in a jar, check that it exists
+        if (ResourceResolver.FILE.equals(getResourceResolverForURI(templateURI)) && !fileExists(template))
         {
             String message = (templateFilename.isEmpty()
                     ? "No template file was specified for " + getDescriptorId()
                     : template.getPath() + " file not found");
             throw new IOException(message);
         }
-        File file = fileFactory.createFile(template, parentDirectory, name, this, ResourceResolver.FILE);
+        File file = fileFactory.createFile(template, parentDirectory, name, this, getResourceResolverForURI(templateURI));
         if (!file.createNewFile())
         {
-            throw new IOException("could not create " + file.getAbsolutePath());
+            throw new IOException("Could not create " + file.getAbsolutePath());
         }
+    }
+
+    private ResourceResolver getResourceResolverForURI(String uri)
+    {
+        return uri.startsWith("classpath:")
+                ? ResourceResolver.CLASSPATH
+                : ResourceResolver.FILE;
     }
 
     private String getTemplateFilenameFromURI(String templateFilename)

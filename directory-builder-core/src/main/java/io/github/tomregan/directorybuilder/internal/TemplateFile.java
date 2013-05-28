@@ -19,7 +19,9 @@ package io.github.tomregan.directorybuilder.internal;
 import io.github.tomregan.directorybuilder.descriptors.FileDescriptor;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -30,28 +32,39 @@ class TemplateFile extends File
 {
     private final File template;
     private final FileDescriptor delegate;
+    private final ResourceResolver resourceResolver;
 
-    public TemplateFile(File template, File parentDirectory, String name, FileDescriptor delegate)
+    public TemplateFile(File template, File parentDirectory, String name, FileDescriptor delegate, ResourceResolver resourceResolver)
     {
         super(parentDirectory, name);
         this.template = template;
         this.delegate = delegate;
+        this.resourceResolver = resourceResolver;
     }
 
     public boolean createNewFile() throws IOException
     {
         if (super.createNewFile())
         {
+            VelocityEngine velocityEngine = new VelocityEngine();
+
+            // TODO tidy up
+            // factory method that returns a properly configured VelocityEngine
+            if (resourceResolver.equals(ResourceResolver.CLASSPATH))
+            {
+                velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+                velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+            }
+            else
+            {
+                velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
+            }
             VelocityContext velocityContext = new VelocityContext();
             velocityContext.put(delegate.getDescriptorId(), delegate);
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(super.getAbsoluteFile()));
-            // TODO set an appropriate resource loader
-            // see
-            // https://velocity.apache.org/engine/releases/velocity-1.5/developer-guide.html#resourceloaders
-            // should template name be a URI?
             try
             {
-                Template velocityTemplate = Velocity.getTemplate(template.getPath());
+                Template velocityTemplate = velocityEngine.getTemplate(template.getPath());
                 velocityTemplate.merge(velocityContext, bufferedWriter);
                 bufferedWriter.flush();
             }
