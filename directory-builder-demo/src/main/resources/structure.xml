@@ -3,7 +3,7 @@
     <directory name="src">
         <directory name="main">
             <sourcedirectory name="java">
-                <javafile name="HelloWorld.java" template="HelloWorld.vm"/>
+                <javafile name="HelloWorld.java" template="classpath:HelloWorld.vm"/>
             </sourcedirectory>
         </directory>
     </directory>
