@@ -18,6 +18,7 @@ package io.github.tomregan.directorybuilderdemo.descriptors;
 
 import io.github.tomregan.directorybuilder.descriptors.DirectoryDescriptor;
 import io.github.tomregan.directorybuilder.descriptors.FileDescriptor;
+import io.github.tomregan.directorybuilderdemo.messaging.MessageService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,13 +33,13 @@ public class JavaSourcesDescriptorFactoryTest
     @Before
     public void setUp()
     {
-        factory = JavaSourcesDescriptorFactory.newInstance();
+        factory = JavaSourcesDescriptorFactory.newInstance(MessageService.newInstance());
     }
 
     @Test
     public void shouldReturnInstanceOfJavaSourceDescriptorFactory()
     {
-        assertThat("not an instance of JavaSourcesDescriptorFactory", JavaSourcesDescriptorFactory.newInstance(), instanceOf(JavaSourcesDescriptorFactory.class));
+        assertThat("not an instance of JavaSourcesDescriptorFactory", JavaSourcesDescriptorFactory.newInstance(null), instanceOf(JavaSourcesDescriptorFactory.class));
     }
 
     @Test

@@ -18,18 +18,21 @@ package io.github.tomregan.directorybuilderdemo.descriptors;
 
 import io.github.tomregan.directorybuilder.descriptors.Descriptor;
 import io.github.tomregan.directorybuilder.descriptors.DescriptorFactory;
+import io.github.tomregan.directorybuilderdemo.messaging.MessageService;
 
 public class JavaSourcesDescriptorFactory extends DescriptorFactory
 {
+    private final MessageService messageService;
     //TODO add registry to DescriptorFactory to avoid subclassing
 
-    private JavaSourcesDescriptorFactory()
+    private JavaSourcesDescriptorFactory(MessageService messageService)
     {
+        this.messageService = messageService;
     }
 
-    public static JavaSourcesDescriptorFactory newInstance()
+    public static JavaSourcesDescriptorFactory newInstance(MessageService messageService)
     {
-        return new JavaSourcesDescriptorFactory();
+        return new JavaSourcesDescriptorFactory(messageService);
     }
 
     @Override
@@ -44,7 +47,7 @@ public class JavaSourcesDescriptorFactory extends DescriptorFactory
             }
             else if (element.equals("javafile"))
             {
-                result = JavaFileDescriptor.newInstance();
+                result = JavaFileDescriptor.newInstance(messageService);
             }
         }
         return result;

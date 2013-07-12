@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.internal;
+package io.github.tomregan.directorybuilderdemo;
 
-public enum ResourceResolver
+public class UserInterface
 {
-    FILE, CLASSPATH
+    public String getUserName()
+    {
+        return System.console().readLine("Enter your name: ");
+    }
 }

@@ -20,6 +20,7 @@ import io.github.tomregan.directorybuilder.DirectoryBuilder;
 import io.github.tomregan.directorybuilder.ConfigurationProcessor;
 import io.github.tomregan.directorybuilder.descriptors.Descriptor;
 import io.github.tomregan.directorybuilderdemo.descriptors.JavaSourcesDescriptorFactory;
+import io.github.tomregan.directorybuilderdemo.messaging.MessageService;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -32,18 +33,22 @@ public class DirectoryBuilderDemo
     public static void main(String[] args)
     {
         DirectoryBuilderDemo app = DirectoryBuilderDemo.newInstance();
-        System.exit(app.run(new File(System.getProperty("user.dir"))));
+        System.exit(app.run(new File(System.getProperty("user.dir")), new UserInterface()));
     }
 
-    int run(File workingDirectory)
+    int run(File workingDirectory, UserInterface userInterface)
     {
         String descriptor = "/structure.xml";
         try
         {
+            MessageService messageService = MessageService.newInstance();
+
             ConfigurationProcessor configurationProcessor = ConfigurationProcessor.newInstance(
-                    JavaSourcesDescriptorFactory.newInstance());
+                    JavaSourcesDescriptorFactory.newInstance(messageService));
             Descriptor[] descriptors = configurationProcessor.getDescriptors(
                     getClass().getResourceAsStream(descriptor));
+            messageService.updateSubject("user", userInterface.getUserName());
+
             DirectoryBuilder builder = DirectoryBuilder.newInstance(workingDirectory);
             builder.createDirectoryStructure(descriptors);
         }
