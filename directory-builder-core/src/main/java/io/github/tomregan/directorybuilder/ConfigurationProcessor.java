@@ -32,14 +32,14 @@ import java.util.List;
 /**
  * Parses an XML file and returns a tree of Descriptors.
  */
-public class XmlDirectoryDescriptorReader implements ContentHandler
+public class ConfigurationProcessor implements ContentHandler
 {
     private final DescriptorFactory descriptorFactory;
     private List<Descriptor> descriptorStack = new ArrayList<Descriptor>();
     private final XMLReader xmlReader;
     private int depth;
 
-    private XmlDirectoryDescriptorReader(DescriptorFactory descriptorFactory) throws ParserConfigurationException, SAXException
+    private ConfigurationProcessor(DescriptorFactory descriptorFactory) throws ParserConfigurationException, SAXException
     {
         this.descriptorFactory = descriptorFactory;
         SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
@@ -50,16 +50,16 @@ public class XmlDirectoryDescriptorReader implements ContentHandler
     }
 
     /**
-     * Creates a new XmlDirectoryDescriptorReader
+     * Creates a new ConfigurationProcessor
      *
      * @param descriptorFactory factory which can be called to supply descriptors based on the names of XML elements
-     * @return a new XmlDirectoryDescriptorReader
+     * @return a new ConfigurationProcessor
      * @throws ParserConfigurationException
      * @throws SAXException
      */
-    public static XmlDirectoryDescriptorReader newInstance(DescriptorFactory descriptorFactory) throws ParserConfigurationException, SAXException
+    public static ConfigurationProcessor newInstance(DescriptorFactory descriptorFactory) throws ParserConfigurationException, SAXException
     {
-        return new XmlDirectoryDescriptorReader(descriptorFactory);
+        return new ConfigurationProcessor(descriptorFactory);
     }
 
     private void addChild(Descriptor descriptor)

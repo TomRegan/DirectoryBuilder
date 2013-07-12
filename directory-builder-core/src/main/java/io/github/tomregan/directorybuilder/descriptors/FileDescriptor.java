@@ -23,7 +23,7 @@ import io.github.tomregan.directorybuilder.internal.ResourceResolver;
 import java.io.File;
 import java.io.IOException;
 
-public class FileDescriptor extends DescriptorImpl implements TemplateDelegate
+public class FileDescriptor extends DescriptorImpl implements Delegate
 {
     private final FileFactory fileFactory;
 

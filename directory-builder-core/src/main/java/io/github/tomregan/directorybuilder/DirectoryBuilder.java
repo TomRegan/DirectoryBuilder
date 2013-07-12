@@ -50,7 +50,7 @@ public class DirectoryBuilder
      *
      * @param descriptors one or more directory / file descriptor trees.
      * @throws IOException
-     * @see XmlDirectoryDescriptorReader
+     * @see ConfigurationProcessor
      */
     public void createDirectoryStructure(Descriptor... descriptors) throws IOException
     {

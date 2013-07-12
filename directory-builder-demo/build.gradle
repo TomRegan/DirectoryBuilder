@@ -4,6 +4,7 @@ dependencies {
 }
 
 jar {
+    // create a jar with dependencies
     from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
     manifest {
         attributes 'Main-Class': 'io.github.tomregan.directorybuilderdemo.DirectoryBuilderDemo'

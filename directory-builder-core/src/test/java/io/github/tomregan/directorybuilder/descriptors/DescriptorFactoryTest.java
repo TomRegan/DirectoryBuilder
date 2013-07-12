@@ -35,13 +35,16 @@ public class DescriptorFactoryTest
     @Test
     public void testNewInstanceReturnsDescriptorFactory()
     {
-        assertThat("did not return DescriptorFactory", DescriptorFactory.newInstance(), instanceOf(DescriptorFactory.class));
+        assertThat("did not return DescriptorFactory", DescriptorFactory.newInstance(),
+                instanceOf(DescriptorFactory.class));
     }
 
     @Test
     public void shouldReturnCorrectDescriptor()
     {
-        assertThat("did not return DirectoryDescriptor", descriptorFactory.getDescriptorForElement("directory"), instanceOf(DirectoryDescriptor.class));
-        assertThat("did not return FileDescriptor", descriptorFactory.getDescriptorForElement("file"), instanceOf(FileDescriptor.class));
+        assertThat("did not return DirectoryDescriptor", descriptorFactory.getDescriptorForElement("directory"),
+                instanceOf(DirectoryDescriptor.class));
+        assertThat("did not return FileDescriptor", descriptorFactory.getDescriptorForElement("file"),
+                instanceOf(FileDescriptor.class));
     }
 }

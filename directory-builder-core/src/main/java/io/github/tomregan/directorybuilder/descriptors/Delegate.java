@@ -3,7 +3,7 @@ package io.github.tomregan.directorybuilder.descriptors;
 /**
  * Methods which can be called from a file template.
  */
-public interface TemplateDelegate
+public interface Delegate
 {
     /**
      * Returns the ID of the delegate. By default this is the class name of the delegate.

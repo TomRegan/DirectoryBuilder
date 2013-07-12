@@ -17,7 +17,7 @@
 package io.github.tomregan.directorybuilderdemo;
 
 import io.github.tomregan.directorybuilder.DirectoryBuilder;
-import io.github.tomregan.directorybuilder.XmlDirectoryDescriptorReader;
+import io.github.tomregan.directorybuilder.ConfigurationProcessor;
 import io.github.tomregan.directorybuilder.descriptors.Descriptor;
 import io.github.tomregan.directorybuilderdemo.descriptors.JavaSourcesDescriptorFactory;
 import org.xml.sax.SAXException;
@@ -29,40 +29,43 @@ import java.io.IOException;
 public class DirectoryBuilderDemo
 {
 
-    private String descriptor;
-
     public static void main(String[] args)
     {
         DirectoryBuilderDemo app = DirectoryBuilderDemo.newInstance();
-        app.run(new File(System.getProperty("user.dir")));
+        System.exit(app.run(new File(System.getProperty("user.dir"))));
     }
 
     int run(File workingDirectory)
     {
+        String descriptor = "/structure.xml";
         try
         {
-            XmlDirectoryDescriptorReader reader = XmlDirectoryDescriptorReader.newInstance(JavaSourcesDescriptorFactory.newInstance());
-            descriptor = "/structure.xml";
-            Descriptor[] descriptors = reader.getDescriptors(getClass().getResourceAsStream(descriptor));
+            ConfigurationProcessor configurationProcessor = ConfigurationProcessor.newInstance(
+                    JavaSourcesDescriptorFactory.newInstance());
+            Descriptor[] descriptors = configurationProcessor.getDescriptors(
+                    getClass().getResourceAsStream(descriptor));
             DirectoryBuilder builder = DirectoryBuilder.newInstance(workingDirectory);
             builder.createDirectoryStructure(descriptors);
         }
         catch (ParserConfigurationException e)
         {
             e.printStackTrace();
+            return 1;
         }
         catch (SAXException e)
         {
             e.printStackTrace();
+            return 1;
         }
         catch (IOException e)
         {
             // FIXME not tested
             if (e instanceof java.net.MalformedURLException)
             {
-                System.err.println("Could not find XML descriptor " + descriptor + " on classpath.");
+                System.err.println("Could not find configuration " + descriptor + " on classpath.");
             }
             e.printStackTrace();
+            return 1;
         }
         return 0;
     }

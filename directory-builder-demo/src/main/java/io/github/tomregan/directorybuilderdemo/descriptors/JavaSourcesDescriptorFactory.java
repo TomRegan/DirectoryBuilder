@@ -21,6 +21,8 @@ import io.github.tomregan.directorybuilder.descriptors.DescriptorFactory;
 
 public class JavaSourcesDescriptorFactory extends DescriptorFactory
 {
+    //TODO add registry to DescriptorFactory to avoid subclassing
+
     private JavaSourcesDescriptorFactory()
     {
     }
@@ -34,17 +36,16 @@ public class JavaSourcesDescriptorFactory extends DescriptorFactory
     public Descriptor getDescriptorForElement(String element)
     {
         Descriptor result = super.getDescriptorForElement(element);
-        if (result != null)
+        if (result == null)
         {
-            return result;
-        }
-        else if (element.equals("sourcedirectory"))
-        {
-            result = SourceDirectoryDescriptor.newInstance();
-        }
-        else if (element.equals("javafile"))
-        {
-            result = JavaFileDescriptor.newInstance();
+            if (element.equals("sourcedirectory"))
+            {
+                result = SourceDirectoryDescriptor.newInstance();
+            }
+            else if (element.equals("javafile"))
+            {
+                result = JavaFileDescriptor.newInstance();
+            }
         }
         return result;
     }

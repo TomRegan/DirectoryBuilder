@@ -39,7 +39,7 @@ public class DirectoryDescriptorReaderTest
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
-    private XmlDirectoryDescriptorReader directoryDescriptorReader;
+    private ConfigurationProcessor directoryDescriptorReader;
 
     private File getInput(String filename)
     {
@@ -50,7 +50,7 @@ public class DirectoryDescriptorReaderTest
     public void setUp() throws ParserConfigurationException, SAXException
     {
         DescriptorFactory descriptorFactory = DescriptorFactory.newInstance();
-        directoryDescriptorReader = XmlDirectoryDescriptorReader.newInstance(descriptorFactory);
+        directoryDescriptorReader = ConfigurationProcessor.newInstance(descriptorFactory);
     }
 
     @Test

@@ -28,13 +28,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-class TemplateFile extends File
+class VelocityFile extends File
 {
     private final File template;
     private final FileDescriptor delegate;
     private final ResourceResolver resourceResolver;
 
-    public TemplateFile(File template, File parentDirectory, String name, FileDescriptor delegate, ResourceResolver resourceResolver)
+    public VelocityFile(File template, File parentDirectory, String name, FileDescriptor delegate, ResourceResolver resourceResolver)
     {
         super(parentDirectory, name);
         this.template = template;
@@ -46,19 +46,7 @@ class TemplateFile extends File
     {
         if (super.createNewFile())
         {
-            VelocityEngine velocityEngine = new VelocityEngine();
-
-            // TODO tidy up
-            // factory method that returns a properly configured VelocityEngine
-            if (resourceResolver.equals(ResourceResolver.CLASSPATH))
-            {
-                velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
-                velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
-            }
-            else
-            {
-                velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
-            }
+            VelocityEngine velocityEngine = getVelocityEngine();
             VelocityContext velocityContext = new VelocityContext();
             velocityContext.put(delegate.getDescriptorId(), delegate);
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(super.getAbsoluteFile()));
@@ -79,6 +67,22 @@ class TemplateFile extends File
             return true;
         }
         return false;
+    }
+
+    private VelocityEngine getVelocityEngine()
+    {
+        VelocityEngine velocityEngine = new VelocityEngine();
+
+        if (resourceResolver.equals(ResourceResolver.CLASSPATH))
+        {
+            velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+            velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+        }
+        else
+        {
+            velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
+        }
+        return velocityEngine;
     }
 
 }

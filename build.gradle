@@ -12,6 +12,8 @@ subprojects {
     }
 
     dependencies {
-        testCompile 'junit:junit:4+'
+        testCompile 'junit:junit:4+',
+                    'org.mockito:mockito-all:1.8.4'
+
     }
 }

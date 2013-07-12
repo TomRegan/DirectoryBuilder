@@ -203,7 +203,7 @@ public class DirectoryBuilderTest
     @Test
     public void shouldCreateMavenDirectoryStructure() throws ParserConfigurationException, SAXException, IOException
     {
-        XmlDirectoryDescriptorReader reader = XmlDirectoryDescriptorReader.newInstance(DescriptorFactory.newInstance());
+        ConfigurationProcessor reader = ConfigurationProcessor.newInstance(DescriptorFactory.newInstance());
         Descriptor[] descriptors = reader.getDescriptors(new File("src/test/resources/testDirectoryStructure.xml"));
         DirectoryBuilder builder = DirectoryBuilder.newInstance(rootDirectory);
         builder.createDirectoryStructure(descriptors);

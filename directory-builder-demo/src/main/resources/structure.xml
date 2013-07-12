@@ -6,5 +6,8 @@
                 <javafile name="HelloWorld.java" template="classpath:HelloWorld.vm"/>
             </sourcedirectory>
         </directory>
+        <directory name="test">
+            <sourcedirectory name="java"/>
+        </directory>
     </directory>
 </directorystructure>
