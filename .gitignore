@@ -1,5 +1,7 @@
 # compiled files
 *.class
+out/
+classes/
 
 # idea files
 .idea/
