@@ -18,16 +18,31 @@ package io.github.tomregan.directorybuilderdemo.descriptors;
 
 import io.github.tomregan.directorybuilder.descriptors.DirectoryDescriptor;
 import io.github.tomregan.directorybuilder.internal.FileFactory;
+import io.github.tomregan.directorybuilderdemo.messaging.MessageService;
+
+import java.io.File;
+import java.io.IOException;
 
 public class SourceDirectoryDescriptor extends DirectoryDescriptor
 {
-    protected SourceDirectoryDescriptor(FileFactory fileFactory)
+    private MessageService messageService;
+
+    protected SourceDirectoryDescriptor(FileFactory fileFactory, MessageService messageService)
     {
         super(fileFactory);
+        this.messageService = messageService;
     }
 
-    public static SourceDirectoryDescriptor newInstance()
+    public static SourceDirectoryDescriptor newInstance(MessageService messageService)
     {
-        return new SourceDirectoryDescriptor(FileFactory.newInstance());
+        return new SourceDirectoryDescriptor(FileFactory.newInstance(), messageService);
+    }
+
+    @Override
+    public void create(File parentDirectory) throws IOException
+    {
+        super.create(parentDirectory);
+        String name = getValueForAttribute("name");
+        messageService.updateSubject("source_directory", new File(parentDirectory, name).getPath());
     }
 }

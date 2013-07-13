@@ -43,7 +43,7 @@ public class JavaSourcesDescriptorFactory extends DescriptorFactory
         {
             if (element.equals("sourcedirectory"))
             {
-                result = SourceDirectoryDescriptor.newInstance();
+                result = SourceDirectoryDescriptor.newInstance(messageService);
             }
             else if (element.equals("javafile"))
             {

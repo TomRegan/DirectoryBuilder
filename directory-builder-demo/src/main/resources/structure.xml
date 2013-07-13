@@ -7,7 +7,7 @@
             </sourcedirectory>
         </directory>
         <directory name="test">
-            <sourcedirectory name="java"/>
+            <directory name="java"/>
         </directory>
     </directory>
 </directorystructure>

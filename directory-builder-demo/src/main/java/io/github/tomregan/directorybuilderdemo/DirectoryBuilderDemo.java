@@ -21,13 +21,14 @@ import io.github.tomregan.directorybuilder.ConfigurationProcessor;
 import io.github.tomregan.directorybuilder.descriptors.Descriptor;
 import io.github.tomregan.directorybuilderdemo.descriptors.JavaSourcesDescriptorFactory;
 import io.github.tomregan.directorybuilderdemo.messaging.MessageService;
+import io.github.tomregan.directorybuilderdemo.messaging.Subscriber;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
-public class DirectoryBuilderDemo
+public class DirectoryBuilderDemo implements Subscriber
 {
 
     public static void main(String[] args)
@@ -42,6 +43,7 @@ public class DirectoryBuilderDemo
         try
         {
             MessageService messageService = MessageService.newInstance();
+            messageService.addSubscriber(this, "source_directory");
 
             ConfigurationProcessor configurationProcessor = ConfigurationProcessor.newInstance(
                     JavaSourcesDescriptorFactory.newInstance(messageService));
@@ -78,5 +80,14 @@ public class DirectoryBuilderDemo
     static DirectoryBuilderDemo newInstance()
     {
         return new DirectoryBuilderDemo();
+    }
+
+    @Override
+    public void update(String subject, String message)
+    {
+        if (subject.equals("source_directory"))
+        {
+            System.out.println("A source directory was created in " + message);
+        }
     }
 }
