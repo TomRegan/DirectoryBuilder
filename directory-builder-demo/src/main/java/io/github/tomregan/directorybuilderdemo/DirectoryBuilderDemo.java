@@ -43,15 +43,25 @@ public class DirectoryBuilderDemo implements Subscriber
         String descriptor = "/structure.xml";
         try
         {
+            // create a message service to handle two-way communication between the demo application
+            // and the descriptors
             MessageService messageService = MessageService.newInstance();
             messageService.addSubscriber(this, "source_directory");
 
-            ConfigurationProcessor configurationProcessor = ConfigurationProcessor.newInstance(
-                    JavaSourcesDescriptorFactory.newInstance(messageService));
+            // create an overridden instance of the descriptor factory that provides descriptors to handle
+            // custom elements in the demo application's config
+            JavaSourcesDescriptorFactory descriptorFactory = JavaSourcesDescriptorFactory.newInstance(messageService);
+
+            // create a configuration processor to read the config, passing in configuration from
+            // the classpath (contained in the jar at runtime)
+            ConfigurationProcessor configurationProcessor = ConfigurationProcessor.newInstance(descriptorFactory);
             Descriptor[] descriptors = configurationProcessor.getDescriptors(
                     getClass().getResourceAsStream(descriptor));
+
+            // ask the user for input, and update one of the descriptors via the message service
             messageService.updateSubject("user", userInterface.getUserName());
 
+            // create a directory builder and write the directory structure and files to disk
             DirectoryBuilder builder = DirectoryBuilder.newInstance(workingDirectory);
             builder.createDirectoryStructure(descriptors);
         }
