@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilderdemo;
+package io.github.tomregan.directorybuilderdemo.ui;
 
 public class UserInterface
 {

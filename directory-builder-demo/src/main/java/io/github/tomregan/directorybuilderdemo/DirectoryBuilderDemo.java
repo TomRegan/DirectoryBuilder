@@ -22,6 +22,7 @@ import io.github.tomregan.directorybuilder.descriptors.Descriptor;
 import io.github.tomregan.directorybuilderdemo.descriptors.JavaSourcesDescriptorFactory;
 import io.github.tomregan.directorybuilderdemo.messaging.MessageService;
 import io.github.tomregan.directorybuilderdemo.messaging.Subscriber;
+import io.github.tomregan.directorybuilderdemo.ui.UserInterface;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;

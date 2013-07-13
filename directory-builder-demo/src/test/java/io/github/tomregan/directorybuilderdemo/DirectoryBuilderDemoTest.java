@@ -17,6 +17,7 @@
 package io.github.tomregan.directorybuilderdemo;
 
 import com.google.common.io.Files;
+import io.github.tomregan.directorybuilderdemo.ui.UserInterface;
 import org.junit.Before;
 import org.junit.Test;
 
