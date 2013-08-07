@@ -61,7 +61,7 @@ public class FileDescriptor extends DescriptorImpl implements Delegate
         File file = fileFactory.createFile(template, parentDirectory, name, this, getResourceResolverForURI(templateURI));
         if (!file.createNewFile())
         {
-            throw new IOException("Could not create " + file.getAbsolutePath());
+            throw new IOException("Could not create '" + file.getAbsolutePath() + "', file already exists");
         }
     }
 

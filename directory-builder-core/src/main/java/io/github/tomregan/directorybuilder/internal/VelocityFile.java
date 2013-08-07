@@ -33,40 +33,25 @@ class VelocityFile extends File
     private final File template;
     private final FileDescriptor delegate;
     private final ResourceResolver resourceResolver;
+    private VelocityEngine velocityEngine;
+    private VelocityContext velocityContext;
 
-    public VelocityFile(File template, File parentDirectory, String name, FileDescriptor delegate, ResourceResolver resourceResolver)
+    public VelocityFile(File template, File parentDirectory, String name, FileDescriptor delegate,
+                        ResourceResolver resourceResolver)
     {
         super(parentDirectory, name);
         this.template = template;
         this.delegate = delegate;
         this.resourceResolver = resourceResolver;
+        this.velocityEngine = getVelocityEngine();
+        this.velocityContext = getVelocityContext();
     }
 
-    public boolean createNewFile() throws IOException
+    private VelocityContext getVelocityContext()
     {
-        if (super.createNewFile())
-        {
-            VelocityEngine velocityEngine = getVelocityEngine();
-            VelocityContext velocityContext = new VelocityContext();
-            velocityContext.put(delegate.getDescriptorId(), delegate);
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(super.getAbsoluteFile()));
-            try
-            {
-                Template velocityTemplate = velocityEngine.getTemplate(template.getPath());
-                velocityTemplate.merge(velocityContext, bufferedWriter);
-                bufferedWriter.flush();
-            }
-            catch (Exception e)
-            {
-                // to be substitutable, we have to ignore this exception
-            }
-            finally
-            {
-                bufferedWriter.close();
-            }
-            return true;
-        }
-        return false;
+        VelocityContext velocityContext = new VelocityContext();
+        velocityContext.put(delegate.getDescriptorId(), delegate);
+        return velocityContext;
     }
 
     private VelocityEngine getVelocityEngine()
@@ -83,6 +68,36 @@ class VelocityFile extends File
             velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
         }
         return velocityEngine;
+    }
+
+    public boolean createNewFile() throws IOException
+    {
+        if (super.createNewFile())
+        {
+            writeFileContentsFromTemplate();
+            return true;
+        }
+        return false;
+    }
+
+    private void writeFileContentsFromTemplate() throws IOException
+    {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(super.getAbsoluteFile()));
+        try
+        {
+            Template velocityTemplate = velocityEngine.getTemplate(template.getPath());
+            velocityTemplate.merge(velocityContext, bufferedWriter);
+            bufferedWriter.flush();
+        }
+        catch (Exception e)
+        {
+            // FIXME read the File.createNewFile documentation; it looks like I can throw here
+            // to be substitutable, we have to ignore this exception
+        }
+        finally
+        {
+            bufferedWriter.close();
+        }
     }
 
 }
