@@ -16,12 +16,9 @@
 
 package io.github.tomregan.directorybuilder.internal;
 
-import io.github.tomregan.directorybuilder.descriptors.FileDescriptor;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -31,43 +28,15 @@ import java.io.IOException;
 class VelocityFile extends File
 {
     private final File template;
-    private final FileDescriptor delegate;
-    private final ResourceResolver resourceResolver;
     private VelocityEngine velocityEngine;
     private VelocityContext velocityContext;
 
-    public VelocityFile(File template, File parentDirectory, String name, FileDescriptor delegate,
-                        ResourceResolver resourceResolver)
+    public VelocityFile(File template, File parentDirectory, String name, VelocityProvider velocityProvider)
     {
         super(parentDirectory, name);
         this.template = template;
-        this.delegate = delegate;
-        this.resourceResolver = resourceResolver;
-        this.velocityEngine = getVelocityEngine();
-        this.velocityContext = getVelocityContext();
-    }
-
-    private VelocityContext getVelocityContext()
-    {
-        VelocityContext velocityContext = new VelocityContext();
-        velocityContext.put(delegate.getDescriptorId(), delegate);
-        return velocityContext;
-    }
-
-    private VelocityEngine getVelocityEngine()
-    {
-        VelocityEngine velocityEngine = new VelocityEngine();
-
-        if (resourceResolver.equals(ResourceResolver.CLASSPATH))
-        {
-            velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
-            velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
-        }
-        else
-        {
-            velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
-        }
-        return velocityEngine;
+        this.velocityEngine = velocityProvider.getVelocityEngine();
+        this.velocityContext = velocityProvider.getVelocityContext();
     }
 
     public boolean createNewFile() throws IOException
@@ -91,8 +60,7 @@ class VelocityFile extends File
         }
         catch (Exception e)
         {
-            // FIXME read the File.createNewFile documentation; it looks like I can throw here
-            // to be substitutable, we have to ignore this exception
+            throw new IOException();
         }
         finally
         {

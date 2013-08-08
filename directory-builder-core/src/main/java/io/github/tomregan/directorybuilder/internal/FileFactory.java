@@ -39,6 +39,8 @@ public class FileFactory
 
     public File createFile(File template, File parentDirectory, String name, FileDescriptor delegate, ResourceResolver resourceResolver)
     {
-        return new VelocityFile(template, parentDirectory, name, delegate, resourceResolver);
+        VelocityProvider velocityProvider = VelocityProvider.newInstance(resourceResolver, delegate);
+        VelocityFile velocityFile = new VelocityFile(template, parentDirectory, name, velocityProvider);
+        return velocityFile;
     }
 }

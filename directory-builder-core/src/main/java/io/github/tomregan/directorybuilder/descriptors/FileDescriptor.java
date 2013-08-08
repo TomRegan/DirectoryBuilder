@@ -50,6 +50,17 @@ public class FileDescriptor extends DescriptorImpl implements Delegate
         String templateURI = getValueForAttribute("template");
         String templateFilename = getTemplateFilenameFromURI(templateURI);
         File template = fileFactory.createFile(templateFilename);
+        checkTemplateSourceFileExists(templateURI, templateFilename, template);
+        // TODO construct a VelocityProvider and pass it into the factory
+        File file = fileFactory.createFile(template, parentDirectory, name, this, getResourceResolverForURI(templateURI));
+        if (!file.createNewFile())
+        {
+            throw new IOException("Could not create '" + file.getAbsolutePath() + "', file already exists");
+        }
+    }
+
+    private void checkTemplateSourceFileExists(String templateURI, String templateFilename, File template) throws IOException
+    {
         // TODO if template is in a jar, check that it exists
         if (ResourceResolver.FILE.equals(getResourceResolverForURI(templateURI)) && !fileExists(template))
         {
@@ -57,11 +68,6 @@ public class FileDescriptor extends DescriptorImpl implements Delegate
                     ? "No template file was specified for " + getDescriptorId()
                     : template.getPath() + " file not found");
             throw new IOException(message);
-        }
-        File file = fileFactory.createFile(template, parentDirectory, name, this, getResourceResolverForURI(templateURI));
-        if (!file.createNewFile())
-        {
-            throw new IOException("Could not create '" + file.getAbsolutePath() + "', file already exists");
         }
     }
 
