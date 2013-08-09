@@ -35,6 +35,11 @@ class VelocityFile extends File
     {
         super(parentDirectory, name);
         this.template = template;
+        setUpVelocityFromProvider(velocityProvider);
+    }
+
+    private void setUpVelocityFromProvider(VelocityProvider velocityProvider)
+    {
         this.velocityEngine = velocityProvider.getVelocityEngine();
         this.velocityContext = velocityProvider.getVelocityContext();
     }

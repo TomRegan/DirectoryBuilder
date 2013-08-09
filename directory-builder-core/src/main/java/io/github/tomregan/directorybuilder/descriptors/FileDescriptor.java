@@ -19,6 +19,7 @@ package io.github.tomregan.directorybuilder.descriptors;
 import io.github.tomregan.directorybuilder.internal.DescriptorImpl;
 import io.github.tomregan.directorybuilder.internal.FileFactory;
 import io.github.tomregan.directorybuilder.internal.ResourceResolver;
+import io.github.tomregan.directorybuilder.internal.VelocityProvider;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +27,7 @@ import java.io.IOException;
 public class FileDescriptor extends DescriptorImpl implements Delegate
 {
     private final FileFactory fileFactory;
+    private File parentDirectory;
 
     protected FileDescriptor(FileFactory fileFactory)
     {
@@ -46,22 +48,27 @@ public class FileDescriptor extends DescriptorImpl implements Delegate
     @Override
     public void create(File parentDirectory) throws IOException
     {
-        String name = getValueForAttribute("name");
+        this.parentDirectory = parentDirectory;
         String templateURI = getValueForAttribute("template");
         String templateFilename = getTemplateFilenameFromURI(templateURI);
-        File template = fileFactory.createFile(templateFilename);
-        checkTemplateSourceFileExists(templateURI, templateFilename, template);
-        // TODO construct a VelocityProvider and pass it into the factory
-        File file = fileFactory.createFile(template, parentDirectory, name, this, getResourceResolverForURI(templateURI));
+        checkTemplateSourceFileExists(templateURI, templateFilename);
+        createFileFromTemplate(getValueForAttribute("name"), templateURI, fileFactory.createFile(templateFilename));
+    }
+
+    private void createFileFromTemplate(String name, String templateURI, File template) throws IOException
+    {
+        VelocityProvider velocityProvider = VelocityProvider.newInstance(getResourceResolverForURI(templateURI), this);
+        File file = fileFactory.createFile(parentDirectory, name, template, velocityProvider);
         if (!file.createNewFile())
         {
             throw new IOException("Could not create '" + file.getAbsolutePath() + "', file already exists");
         }
     }
 
-    private void checkTemplateSourceFileExists(String templateURI, String templateFilename, File template) throws IOException
+    private void checkTemplateSourceFileExists(String templateURI, String templateFilename) throws IOException
     {
         // TODO if template is in a jar, check that it exists
+        File template = new File(templateFilename);
         if (ResourceResolver.FILE.equals(getResourceResolverForURI(templateURI)) && !fileExists(template))
         {
             String message = (templateFilename.isEmpty()

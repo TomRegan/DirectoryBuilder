@@ -16,8 +16,6 @@
 
 package io.github.tomregan.directorybuilder.internal;
 
-import io.github.tomregan.directorybuilder.descriptors.FileDescriptor;
-
 import java.io.File;
 
 public class FileFactory
@@ -37,10 +35,8 @@ public class FileFactory
         return new File(parentDirectory, name);
     }
 
-    public File createFile(File template, File parentDirectory, String name, FileDescriptor delegate, ResourceResolver resourceResolver)
+    public File createFile(File parentDirectory, String name, File template, VelocityProvider velocityProvider)
     {
-        VelocityProvider velocityProvider = VelocityProvider.newInstance(resourceResolver, delegate);
-        VelocityFile velocityFile = new VelocityFile(template, parentDirectory, name, velocityProvider);
-        return velocityFile;
+        return new VelocityFile(template, parentDirectory, name, velocityProvider);
     }
 }

@@ -17,9 +17,12 @@
 package io.github.tomregan.directorybuilder;
 
 import com.google.common.io.Files;
-import io.github.tomregan.directorybuilder.descriptors.*;
+import io.github.tomregan.directorybuilder.descriptors.Descriptor;
+import io.github.tomregan.directorybuilder.descriptors.DescriptorFactory;
+import io.github.tomregan.directorybuilder.descriptors.DirectoryDescriptor;
+import io.github.tomregan.directorybuilder.descriptors.FileDescriptor;
 import io.github.tomregan.directorybuilder.internal.FileFactory;
-import io.github.tomregan.directorybuilder.internal.ResourceResolver;
+import io.github.tomregan.directorybuilder.internal.VelocityProvider;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -91,7 +94,8 @@ public class DirectoryBuilderTest
         mockFileFactory = mock(FileFactory.class);
         when(mockFileFactory.createFile(any(String.class))).thenReturn(mockFile);
         when(mockFileFactory.createFile(any(File.class), any(String.class))).thenReturn(mockFile);
-        when(mockFileFactory.createFile(any(File.class), any(File.class), any(String.class), any(FileDescriptor.class), any(ResourceResolver.class))).thenReturn(mockFile);
+        when(mockFileFactory.createFile(any(File.class), any(String.class), any(File.class),
+                any(VelocityProvider.class))).thenReturn(mockFile);
         template = "src/test/resources/test.template";
     }
 

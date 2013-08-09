@@ -15,6 +15,7 @@ public class VelocityProvider
 
     private VelocityProvider(ResourceResolver resourceResolver, Delegate delegate)
     {
+        this();
         this.resourceResolver = resourceResolver;
         this.delegate = delegate;
     }
@@ -27,7 +28,6 @@ public class VelocityProvider
     public VelocityEngine getVelocityEngine()
     {
         VelocityEngine velocityEngine = new VelocityEngine();
-
         if (resourceResolver.equals(ResourceResolver.CLASSPATH))
         {
             velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
