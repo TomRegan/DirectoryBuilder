@@ -14,29 +14,30 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.internal;
+package directorybuilder.descriptors;
 
-import java.io.File;
-
-public class FileFactory
+public class DescriptorFactory
 {
-    public static FileFactory newInstance()
+    protected DescriptorFactory()
     {
-        return new FileFactory();
     }
 
-    public File createFile(String name)
+    public static DescriptorFactory newInstance()
     {
-        return new File(name);
+        return new DescriptorFactory();
     }
 
-    public File createFile(File parentDirectory, String name)
+    public Descriptor getDescriptorForElement(String element)
     {
-        return new File(parentDirectory, name);
-    }
-
-    public File createFile(File parentDirectory, String name, File template, VelocityProvider velocityProvider)
-    {
-        return new VelocityFile(template, parentDirectory, name, velocityProvider);
+        Descriptor result = null;
+        if (element.equals("directory"))
+        {
+            result = DirectoryDescriptor.newInstance();
+        }
+        else if (element.equals("file"))
+        {
+            result = FileDescriptor.newInstance();
+        }
+        return result;
     }
 }

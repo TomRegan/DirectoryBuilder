@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.descriptors;
+package directorybuilder.descriptors;
 
 import java.io.File;
 import java.io.IOException;

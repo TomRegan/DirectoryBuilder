@@ -16,8 +16,8 @@
 
 package io.github.tomregan.directorybuilderdemo.descriptors;
 
-import io.github.tomregan.directorybuilder.descriptors.DirectoryDescriptor;
-import io.github.tomregan.directorybuilder.descriptors.FileDescriptor;
+import directorybuilder.descriptors.DirectoryDescriptor;
+import directorybuilder.descriptors.FileDescriptor;
 import io.github.tomregan.directorybuilderdemo.messaging.MessageService;
 import org.junit.Before;
 import org.junit.Test;

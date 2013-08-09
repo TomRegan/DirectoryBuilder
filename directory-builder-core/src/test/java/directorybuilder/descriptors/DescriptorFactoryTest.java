@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.descriptors;
+package directorybuilder.descriptors;
 
 import org.junit.Before;
 import org.junit.Test;

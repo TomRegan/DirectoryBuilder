@@ -16,8 +16,8 @@
 
 package io.github.tomregan.directorybuilderdemo.descriptors;
 
-import io.github.tomregan.directorybuilder.descriptors.DirectoryDescriptor;
-import io.github.tomregan.directorybuilder.internal.FileFactory;
+import directorybuilder.descriptors.DirectoryDescriptor;
+import directorybuilder.internal.FileFactory;
 import io.github.tomregan.directorybuilderdemo.messaging.MessageService;
 
 import java.io.File;

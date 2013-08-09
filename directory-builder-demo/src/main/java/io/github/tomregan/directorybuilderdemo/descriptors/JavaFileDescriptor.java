@@ -16,9 +16,9 @@
 
 package io.github.tomregan.directorybuilderdemo.descriptors;
 
-import io.github.tomregan.directorybuilder.descriptors.Delegate;
-import io.github.tomregan.directorybuilder.descriptors.FileDescriptor;
-import io.github.tomregan.directorybuilder.internal.FileFactory;
+import directorybuilder.descriptors.Delegate;
+import directorybuilder.descriptors.FileDescriptor;
+import directorybuilder.internal.FileFactory;
 import io.github.tomregan.directorybuilderdemo.messaging.MessageService;
 import io.github.tomregan.directorybuilderdemo.messaging.Subscriber;
 

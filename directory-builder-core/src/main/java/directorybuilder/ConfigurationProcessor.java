@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder;
+package directorybuilder;
 
-import io.github.tomregan.directorybuilder.descriptors.Descriptor;
-import io.github.tomregan.directorybuilder.descriptors.DescriptorFactory;
+import directorybuilder.descriptors.Descriptor;
+import directorybuilder.descriptors.DescriptorFactory;
 import org.xml.sax.*;
 
 import javax.xml.parsers.ParserConfigurationException;

@@ -16,9 +16,9 @@
 
 package io.github.tomregan.directorybuilderdemo;
 
-import io.github.tomregan.directorybuilder.DirectoryBuilder;
-import io.github.tomregan.directorybuilder.ConfigurationProcessor;
-import io.github.tomregan.directorybuilder.descriptors.Descriptor;
+import directorybuilder.DirectoryBuilder;
+import directorybuilder.ConfigurationProcessor;
+import directorybuilder.descriptors.Descriptor;
 import io.github.tomregan.directorybuilderdemo.descriptors.JavaSourcesDescriptorFactory;
 import io.github.tomregan.directorybuilderdemo.messaging.MessageService;
 import io.github.tomregan.directorybuilderdemo.messaging.Subscriber;

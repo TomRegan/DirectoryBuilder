@@ -1,6 +1,6 @@
-package io.github.tomregan.directorybuilder.internal;
+package directorybuilder.internal;
 
-import io.github.tomregan.directorybuilder.descriptors.Delegate;
+import directorybuilder.descriptors.Delegate;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.junit.Before;

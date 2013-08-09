@@ -14,30 +14,9 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.descriptors;
+package directorybuilder.internal;
 
-public class DescriptorFactory
+public enum ResourceResolver
 {
-    protected DescriptorFactory()
-    {
-    }
-
-    public static DescriptorFactory newInstance()
-    {
-        return new DescriptorFactory();
-    }
-
-    public Descriptor getDescriptorForElement(String element)
-    {
-        Descriptor result = null;
-        if (element.equals("directory"))
-        {
-            result = DirectoryDescriptor.newInstance();
-        }
-        else if (element.equals("file"))
-        {
-            result = FileDescriptor.newInstance();
-        }
-        return result;
-    }
+    FILE, CLASSPATH
 }

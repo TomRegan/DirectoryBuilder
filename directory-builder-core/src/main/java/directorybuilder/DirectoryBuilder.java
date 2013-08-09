@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder;
+package directorybuilder;
 
 
-import io.github.tomregan.directorybuilder.descriptors.Descriptor;
+import directorybuilder.descriptors.Descriptor;
 
 import java.io.File;
 import java.io.IOException;

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.descriptors;
+package directorybuilder.descriptors;
 
 import com.google.common.io.Files;
-import io.github.tomregan.directorybuilder.internal.FileFactory;
-import io.github.tomregan.directorybuilder.internal.VelocityProvider;
+import directorybuilder.internal.FileFactory;
+import directorybuilder.internal.VelocityProvider;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder;
+package directorybuilder;
 
-import io.github.tomregan.directorybuilder.descriptors.Descriptor;
-import io.github.tomregan.directorybuilder.descriptors.DescriptorFactory;
-import io.github.tomregan.directorybuilder.descriptors.DirectoryDescriptor;
-import io.github.tomregan.directorybuilder.descriptors.FileDescriptor;
+import directorybuilder.descriptors.Descriptor;
+import directorybuilder.descriptors.DescriptorFactory;
+import directorybuilder.descriptors.DirectoryDescriptor;
+import directorybuilder.descriptors.FileDescriptor;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

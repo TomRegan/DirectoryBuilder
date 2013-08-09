@@ -16,8 +16,8 @@
 
 package io.github.tomregan.directorybuilderdemo.descriptors;
 
-import io.github.tomregan.directorybuilder.descriptors.Descriptor;
-import io.github.tomregan.directorybuilder.descriptors.DescriptorFactory;
+import directorybuilder.descriptors.Descriptor;
+import directorybuilder.descriptors.DescriptorFactory;
 import io.github.tomregan.directorybuilderdemo.messaging.MessageService;
 
 public class JavaSourcesDescriptorFactory extends DescriptorFactory

@@ -14,9 +14,29 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.internal;
+package directorybuilder.internal;
 
-public enum ResourceResolver
+import java.io.File;
+
+public class FileFactory
 {
-    FILE, CLASSPATH
+    public static FileFactory newInstance()
+    {
+        return new FileFactory();
+    }
+
+    public File createFile(String name)
+    {
+        return new File(name);
+    }
+
+    public File createFile(File parentDirectory, String name)
+    {
+        return new File(parentDirectory, name);
+    }
+
+    public File createFile(File parentDirectory, String name, File template, VelocityProvider velocityProvider)
+    {
+        return new VelocityFile(template, parentDirectory, name, velocityProvider);
+    }
 }

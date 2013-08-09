@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package io.github.tomregan.directorybuilder.internal;
+package directorybuilder.internal;
 
-import io.github.tomregan.directorybuilder.descriptors.Descriptor;
+import directorybuilder.descriptors.Descriptor;
 
 import java.util.HashSet;
 import java.util.Properties;

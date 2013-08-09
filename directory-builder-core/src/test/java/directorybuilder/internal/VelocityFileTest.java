@@ -1,4 +1,4 @@
-package io.github.tomregan.directorybuilder.internal;
+package directorybuilder.internal;
 
 import com.google.common.io.Files;
 import org.apache.velocity.VelocityContext;
@@ -29,9 +29,8 @@ public class VelocityFileTest
         VelocityProvider velocityProvider = mock(VelocityProvider.class);
         when(velocityProvider.getVelocityEngine()).thenReturn(velocityEngine);
         when(velocityProvider.getVelocityContext()).thenReturn(new VelocityContext());
-        VelocityFile velocityFile = new VelocityFile(File.createTempFile("template", ".tmp"),
+        this.velocityFile = new VelocityFile(File.createTempFile("template", ".tmp"),
                 Files.createTempDir(), "file.tmp", velocityProvider);
-        this.velocityFile = velocityFile;
     }
 
     @Test
